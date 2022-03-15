@@ -9,6 +9,12 @@ info:
 tags:
   - name: Search
     description: API routes to search for journeys. These routes can be left opened to public.
+  - name: status
+    description: status routes
+  - name: NORMATIVE
+    description: API routes which must be used the implementers of the standard if implementing the given use case.
+  - name: INFORMATIVE
+    description: API routes which can be freely used or not by the implementers of the standard.
 
 #
 # API Routes    
@@ -18,6 +24,7 @@ paths:
     get:
       tags:
       - Search
+      - INFORMATIVE
       summary: Search for matching punctual planned outward driver journeys.
       description: Route used to retrieve a collection of punctual planned outward driver journeys matching the provided criteria.
       operationId: getDriverJourneys
@@ -70,6 +77,7 @@ paths:
     get:
       tags:
       - Search
+      - INFORMATIVE
       summary: Search for matching punctual planned outward passenger journeys.
       description: Route used to retrieve a collection of punctual planned outward passenger journeys matching the provided criteria.
       operationId: getPassengerJourneys
@@ -116,11 +124,65 @@ paths:
                 type: integer
         500:
           description: Internal Server Error. Please try again later.
+          
+
+  /versatile_journeys:
+    get:
+      tags:
+      - Search
+      - INFORMATIVE
+      summary: Search for matching punctual/regular planned outward driver/passenger journeys.
+      description: Route used to retrieve a collection of punctual planned outward passenger journeys matching the provided criteria.
+      operationId: getExtendedJourneys
+      parameters:
+        - $ref: '#/components/parameters/departureLat'
+        - $ref: '#/components/parameters/departureLng'
+        - $ref: '#/components/parameters/arrivalLat'
+        - $ref: '#/components/parameters/arrivalLng'
+        - $ref: '#/components/parameters/departureDate'
+        - $ref: '#/components/parameters/timeDelta'
+        - $ref: '#/components/parameters/departureRadius'
+        - $ref: '#/components/parameters/arrivalRadius'
+        - $ref: '#/components/parameters/count'
+      responses:
+        200:
+          description: Ok. Request processed successfully.
+          content:
+            application/json:
+              schema:
+                title: VersatileJourneys
+                type: array
+                items:
+                  $ref: '#/components/schemas/VersatileJourney'
+        400:
+          description: Bad Request. See error message.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: |-
+                      Explain why the request couldn't be processed.
+        401:
+          description: Unauthorized. You must authenticate.
+        429:
+          description: Too Many Requests. Please slow down.
+          headers:
+            Retry-After:
+              description: |-
+                How long to wait before making a new request (in seconds).
+              schema:
+                type: integer
+        500:
+          description: Internal Server Error. Please try again later.
 
   /status:
     get:
       tags:
       - status
+      - INFORMATIVE
       summary: Give health status of the webservice.
       responses:
         200:
@@ -232,12 +294,7 @@ components:
       type: object
       properties:
         id:
-          type: string
-          minLength: 1
-          maxLength: 255
-          description: Journey's id.
-            In order to be a basis for carpool proof, this id must match the `journey_id` that could be provided to a carpool proof register as described for example in [this documentation of an open source product for France](https://tech.covoiturage.beta.gouv.fr/partners/preuves/schema.html#schema-json-complet).
-    
+          $ref: '#/components/schemas/journeyId'
         passengerPickupDate:
           type: number
           description: |-
@@ -383,6 +440,69 @@ components:
               type: integer
               description: If a passenger journey, requested seats.
           
+            
+    VersatileJourney:
+      allOf:
+        - $ref: '#/components/schemas/Journey'
+        - type: object
+          required:
+            - user
+          properties:
+            user:
+              $ref: '#/components/schemas/User'
+            operator:
+              type: string
+              description: Name of the operator owning this journey.
+            operatorUrl:
+              type: string
+              description: Website of the operator owning this journey.
+            availableSeats:
+              type: integer
+              description: If a driver journey, available seats.
+            requestedSeats:
+              type: integer
+              description: If a passenger journey, requested seats.
+            carpoolerType:  
+              type: string
+              description: Role of the carpooler.
+              enum:
+                - driver
+                - passenger
+                - both
+              default: driver
+            waypointsOnlyRoute:
+              type: string
+              description: Waypoints only route as [Google Encoded Polyline Algorithm Format](https://developers.google.com/maps/documentation/utilities/polylinealgorithm).
+            numberOfWaypoints:
+              type: integer
+              description: Number of waypoints (if any).
+            waypoints:
+              type: array
+              description: List of waypoints. Required if `numberOfWaypoints>0`.
+              items:
+                $ref: '#/components/schemas/Waypoint'
+            frequency:
+              type: string
+              description: Frequency of the journey. We can have `frequency=both` only if parameter of GET /journeys.
+              enum:
+                - punctual
+                - regular
+                - both
+              default: punctual
+            details:
+              type: string
+              description: Free comment.
+            nextReturnJourneyId:
+              $ref: '#/components/schemas/journeyId'
+            isStopped:
+              type: integer
+              description: 1 if the journey is now stopped.
+              default: 0
+            regularSchedule:
+              description: Required if `frequency=regular`.
+              allOf:
+                - $ref: '#/components/schemas/RegularSchedule'
+          
     Price:
       type: object
       properties:
@@ -397,7 +517,7 @@ components:
           - UNKNOWN
         amount:
           type: number
-          description: Carpooling passenger cost in euros.
+          description: Carpooling passenger cost.
           format: float
         currency:
           type: string
@@ -504,3 +624,132 @@ components:
               description: |-
                 URI compliant with iOS conventions to open the webservice
                 provider mobile app on the screen presenting the specific journey.
+                
+    
+    Waypoint:
+      type: "object"
+      required:
+        - longitude
+        - latitude
+        - mandatory
+      properties:
+        longitude:
+          description: WGS84 longitude of the geographical point.
+          type: number
+        latitude:
+          description: WGS84 latitude of the geographical point.
+          type: number
+        address:
+          type: string
+          description: Full address of the geographical point.
+        city:
+          type: string
+          description: City of the geographical point.
+        postalCode:
+          type: string
+          description: Postal code of the geographical point.
+        country:
+          type: string
+          description: Country of the geographical point.
+        poiName:
+          type: string
+          description: Point-Of-Interest specific name if this geographical point is a POI.
+        stepDistance:
+          type: integer
+          description: Distance in meters of the step from the previous point until this waypoint.
+        stepDuration:
+          type: integer
+          description: Duration in seconds of the step from the previous point until this waypoint.
+        type:
+          type: string
+          description: Type of waypoint.
+          enum:
+            - pick-up
+            - drop-off
+            - other
+        mandatory:
+          description: 1 if this waypoint is mandatory.
+          type: integer
+          enum:
+            - 0
+            - 1
+    
+    RegularSchedule:
+      type: "object"
+      properties:
+        maxDate:
+          type: integer
+          description: If `frequency=regular` or `frequency=both`, `maxDate` specifies the specifies the end of the validity period for the regular journey, as a datetime using a UNIX UTC timestamp in seconds.
+        schedule:
+          type: "array"
+          items:
+            $ref: '#/components/schemas/WeekSchedule'
+          description: If `frequency=regular`, this parameter specifies the schedule of expected regular journey. If several `WeekSchedule` objects are passed in the array, the journey is expected to happened on all given time slots(two departures the same day is considered a possible case).
+    
+    WeekSchedule:
+      type: "object"
+      properties:
+        mondayTime:
+          description: Time using a UTC partial time string (example "08:30:00") of departure for the journey on Mondays, if any.
+          type: string
+          format: partial-time
+        mondayTimeDelta:
+          description: Optional time margin in seconds. The departure is expected within a +`mondayTimeDelta` / -`mondayTimeDelta` interval around `mondayTime`. If missing, the `timeDelta` value of `journey` object will be used. If both are missing, 900 is the default value.
+          type: integer
+          default: 900
+        tuesdayTime:
+          description: Time using a UTC partial time string (example "08:30:00") of departure for the journey on Tuesdays, if any.
+          type: string
+          format: partial-time
+        tuesdayTimeDelta:
+          description: Optional time margin in seconds. The departure is expected within a +`tuesdayTimeDelta` / -`tuesdayTimeDelta` interval around `tuesdayTime`. If missing, the `timeDelta` value of `journey` object will be used. If both are missing, 900 is the default value.
+          type: integer
+          default: 900
+        wednesdayTime:
+          description: Time using a UTC partial time string (example "08:30:00") of departure for the journey on Wednesdays, if any.
+          type: string
+          format: partial-time
+        wednesdayTimeDelta:
+          description: Optional time margin in seconds. The departure is expected within a +`wednesdayTimeDelta` / -`wednesdayTimeDelta` interval around `wednesdayTime`. If missing, the `timeDelta` value of `journey` object will be used. If both are missing, 900 is the default value.
+          type: integer
+          default: 900
+        thursdayTime:
+          description: Time using a UTC partial time string (example "08:30:00") of departure for the journey on Thursdays, if any.
+          type: string
+          format: partial-time
+        thursdayTimeDelta:
+          description: Optional time margin in seconds. The departure is expected within a +`thursdayTimeDelta` / -`thursdayTimeDelta` interval around `thursdayTime`. If missing, the `timeDelta` value of `journey` object will be used. If both are missing, 900 is the default value.
+          type: integer
+          default: 900
+        fridayTime:
+          description: Time using a UTC partial time string (example "08:30:00") of departure for the journey on Fridays, if any.
+          type: string
+          format: partial-time
+        fridayTimeDelta:
+          description: Optional time margin in seconds. The departure is expected within a +`fridayTimeDelta` / -`fridayTimeDelta` interval around `fridayTime`. If missing, the `timeDelta` value of `journey` object will be used. If both are missing, 900 is the default value.
+          type: integer
+          default: 900
+        saturdayTime:
+          description: Time using a UTC partial time string (example "08:30:00") of departure for the journey on Saturdays, if any.
+          type: string
+          format: partial-time
+        saturdayTimeDelta:
+          description: Optional time margin in seconds. The departure is expected within a +`saturdayTimeDelta` / -`saturdayTimeDelta` interval around `saturdayTime`. If missing, the `timeDelta` value of `journey` object will be used. If both are missing, 900 is the default value.
+          type: integer
+          default: 900
+        sundayTime:
+          description: Time using a UTC partial time string (example "08:30:00") of departure for the journey on Sundays, if any.
+          type: string
+          format: partial-time
+        sundayTimeDelta:
+          description: Optional time margin in seconds. The departure is expected within a +`sundayTimeDelta` / -`sundayTimeDelta` interval around `sundayTime`. If missing, the `timeDelta` value of `journey` object will be used. If both are missing, 900 is the default value.
+          type: integer
+          default: 900
+
+    journeyId:
+      type: string
+      minLength: 1
+      maxLength: 255
+      description: Journey's id.
+        In order to be a basis for carpool proof, this id must match the `journey_id` that could be provided to a carpool proof register as described for example in [this documentation of an open source product for France](https://tech.covoiturage.beta.gouv.fr/partners/preuves/schema.html#schema-json-complet).
+    
