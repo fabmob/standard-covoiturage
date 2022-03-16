@@ -11,7 +11,7 @@ tags:
     description: API routes to search for journeys. These routes can be left opened to public.
 
 #
-# API Routes    
+# API Routes
 #
 paths:
   /driver_journeys:
@@ -137,12 +137,12 @@ paths:
           description: Internal Server Error. Please try again later.
 
 #
-# Schemas 
-#              
+# Schemas
+#
 components:
 
   parameters:
-  
+
     departureLat:
       name: departureLat
       in: query
@@ -150,16 +150,16 @@ components:
       schema:
         type: number
       description: Latitude of searched departure point.
-      
-      
-    departureLng:  
+
+
+    departureLng:
       name: departureLng
       in: query
       description: Longitude of searched departure point.
       required: true
       schema:
         type: number
-    
+
     arrivalLat:
       name: arrivalLat
       in: query
@@ -167,22 +167,22 @@ components:
       required: true
       schema:
         type: number
-    
-    arrivalLng:    
+
+    arrivalLng:
       name: arrivalLng
       in: query
       description: Longitude of searched arrival point.
       required: true
       schema:
         type: number
-        
+
     departureDate:
       name: departureDate
       in: query
-      description: Departure datetime using a UNIX UTC timestamp in seconds. 
+      description: Departure datetime using a UNIX UTC timestamp in seconds.
       schema:
         type: integer
-            
+
     timeDelta:
       name: timeDelta
       in: query
@@ -191,7 +191,7 @@ components:
       schema:
         type: integer
         default: 900
-        
+
     departureRadius:
       name: departureRadius
       in: query
@@ -199,7 +199,7 @@ components:
       schema:
         type: number
         default: 1.0
-        
+
     arrivalRadius:
       name: arrivalRadius
       in: query
@@ -207,7 +207,7 @@ components:
       schema:
         type: number
         default: 1.0
-        
+
     count:
       name: count
       in: query
@@ -215,7 +215,7 @@ components:
         journeys are returned.
       schema:
         type: integer
-        
+
   schemas:
     Journey:
       title: Journey
@@ -233,11 +233,11 @@ components:
       properties:
         id:
           type: string
-          minLength: 1
-          maxLength: 255
-          description: Journey's id.
-            In order to be a basis for carpool proof, this id must match the `journey_id` that could be provided to a carpool proof register as described for example in [this documentation of an open source product for France](https://tech.covoiturage.beta.gouv.fr/partners/preuves/schema.html#schema-json-complet).
-    
+          format: uuid
+          description: |-
+            Unique journey's id in the format of an [UUID](https://datatracker.ietf.org/doc/html/rfc4122).
+            Usage of a [4 UUID](https://datatracker.ietf.org/doc/html/rfc4122#section-4.4) generation algorithm
+            is advised.
         passengerPickupDate:
           type: number
           description: |-
@@ -320,7 +320,7 @@ components:
           $ref: '#/components/schemas/Preferences'
         deepLink:
           $ref: '#/components/schemas/DeepLink'
-          
+
     DriverJourney:
       allOf:
         - $ref: '#/components/schemas/Journey'
@@ -367,8 +367,8 @@ components:
                 Walking
                 [Google Encoded Polyline](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
                 to the requested arrival location from the drop-off location.
-  
-            
+
+
     PassengerJourney:
       allOf:
         - $ref: '#/components/schemas/Journey'
@@ -382,7 +382,7 @@ components:
             requestedSeats:
               type: integer
               description: If a passenger journey, requested seats.
-          
+
     Price:
       type: object
       properties:
@@ -439,7 +439,7 @@ components:
         verifiedIdentity:
           type: boolean
           description: true if the identity of this user has been verified by the operator or a third party; and the firstName, lastName, birthdate have been confirmed as identitical to an official identity proof document. Can be left empty if the information is not available.
-          
+
 
     Preferences:
       type: object
