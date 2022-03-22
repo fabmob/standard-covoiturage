@@ -117,6 +117,153 @@ paths:
         500:
           description: Internal Server Error. Please try again later.
 
+  /booking:
+    post:
+      tags:
+      - Interact
+      summary: Send a booking request to the owner of a journey.
+      description: Route used to allow a user to book a carpool to the owner of a journey. While posting a new Booking, its status shall always be set first as `status=pending`. 
+        _Reminder:_ The sender must also store the Booking object, and be ready to receive modifications of it through the PATCH /bookings 
+      operationId: postBookings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+                  
+      responses:
+        200:
+          description: Ok. Request processed successfully.
+          content:
+            application/json:
+              schema:
+                title: PassengerJourneys
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booking'
+        400:
+          description: Bad Request. See error message.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: |-
+                      Explain why the request couldn't be processed.
+        401:
+          description: Unauthorized. You must authenticate.
+        429:
+          description: Too Many Requests. Please slow down.
+          headers:
+            Retry-After:
+              description: |-
+                How long to wait before making a new request (in seconds).
+              schema:
+                type: integer
+        500:
+          description: Internal Server Error. Please try again later.
+          
+  /bookings/{bookingId}:
+    patch:
+      tags:
+      - Interact
+      summary: Updates status of an existing Booking object.
+      description: Route used to update the status of an existing Booking object. Should be used usually just to accept or reject an existing Booking.
+      operationId: patchBookings
+      parameters:
+      - name: bookingId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/bookingId'
+      - name: status
+        description: New status of the Booking.
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/bookingStatus'
+      responses: 
+        200:
+          description: Successful operation.
+        401:
+          description: Unauthorized. Error code can be among  `access_denied, missing_booking_ownerhsip` .
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: |-
+                      Explain why the request couldn't be processed.
+        404:
+          description: The targeted journey, booking or user no more exists.  Error code can be among  `missing_journey, missing_booking, missing_user` .
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: |-
+                      Explain why the request couldn't be processed.
+        409:
+          description: Conflict. This booking has already the new status requested. Error code is  `status_already_set`.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: |-
+                      Explain why the request couldn't be processed.
+
+
+    get:
+      tags:
+      - Interact
+      summary: Retrieves an existing Booking object.
+      description: Route used to retrieve the details of an existing Booking object. Can only be used by the opeartor having created the Booking object. This route is provided to check if the Booking object state is similar between two operators, but its usage should be required to handle the full use case of a booking.
+      operationId: getBookings
+      parameters:
+      - name: bookingId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/bookingId'
+      responses: 
+        200:
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        401:
+          description: Unauthorized. Error code can be among  `access_denied, missing_booking_ownerhsip` .
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: |-
+                      Explain why the request couldn't be processed.
+        404:
+          description: This Booking object no more exists. Error code can be among  `missing_journey, missing_booking, missing_user` .
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: |-
+                      Explain why the request couldn't be processed.
+
   /status:
     get:
       tags:
@@ -504,3 +651,96 @@ components:
               description: |-
                 URI compliant with iOS conventions to open the webservice
                 provider mobile app on the screen presenting the specific journey.
+                                
+    ConnectionMessage:
+      type: object
+      required:
+        - driverJourneyId
+        - driverUserid
+        - passengerJourneyId
+        - passengerUserid
+      properties:
+        driverJourneyId:
+          type: string
+          format: uuid
+          description: |-
+            Unique journey's id in the format of an [UUID](https://datatracker.ietf.org/doc/html/rfc4122).
+            Usage of a [4 UUID](https://datatracker.ietf.org/doc/html/rfc4122#section-4.4) generation algorithm
+            is advised.
+        driverUserid:
+          type: string
+          description: User's id as retrieved by the route GET /driver_journeys.
+        driverAlias:
+          type: string
+          description: Driver's name alias.
+        details:
+          type: string
+          maxLength: 500
+          description: Free text content of the message. The message can contain all the details (phone number, email, etc.) allowing the recipient to call back the sender in order to carpool with him/her.
+        passengerJourneyId:
+          type: string
+          format: uuid
+          description: |-
+            Unique journey's id in the format of an [UUID](https://datatracker.ietf.org/doc/html/rfc4122).
+            Usage of a [4 UUID](https://datatracker.ietf.org/doc/html/rfc4122#section-4.4) generation algorithm
+            is advised.
+        passengerUserid:
+          type: string
+          description: User's id as retrieved by the route GET /passenger_journeys.
+        passengerAlias:
+          type: string
+          description: Passenger's name alias.
+        driverOperator:
+          $ref: '#/components/schemas/operator'
+        driverOperatorWebUrl:
+          $ref: '#/components/schemas/operatorUrl'
+        passengerOperator:
+          $ref: '#/components/schemas/operator'
+        passengerOperatorWebUrl:
+          $ref: '#/components/schemas/operatorUrl'
+          
+    Booking:
+      allOf:
+        - $ref: '#/components/schemas/ConnectionMessage'
+      type: object
+      required:
+        - id
+        - frequency
+        - outwardSchedule
+        - price
+      properties:
+        id:
+          $ref: '#/components/schemas/bookingId'
+        passengerPickupDate:
+          type: number
+          description: |-
+            Passenger pickup datetime as a UNIX UTC timestamp in seconds.
+          format: long
+        status:
+          $ref: '#/components/schemas/bookingStatus'
+        price:
+          type: number
+          description: Proposed and agreed (when `status=accepted`) price for the journey.
+      
+    bookingId:
+      type: string
+      description: Booking id is common between both operators, and must be set as a MD5 hashing of a string concatenating the `driverJourneyId`, the `passengerJourneyId` and a UNIX UTC timestamp in seconds.
+          
+    bookingStatus:
+      type: string
+      description: Status of the booking.
+      enum:
+        - pending
+        - accepted
+        - rejected
+        - cancelled
+      default: pending
+      
+    operator:
+      type: string
+      description: Name of the operator owning this journey.
+      
+    operatorUrl:
+      type: string
+      description: Url on the website of the operator owning this journey.
+
