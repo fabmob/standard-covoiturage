@@ -268,7 +268,7 @@ components:
           description: Carpooling duration in seconds.
         webUrl:
           type: string
-          description: URL of the journey on the webservice provider platform.
+          description: URL of the journey on the operator platform.
         type:
           type: string
           description: |-
