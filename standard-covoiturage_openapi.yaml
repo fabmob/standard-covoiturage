@@ -233,11 +233,9 @@ components:
       properties:
         id:
           type: string
-          format: uuid
-          description: |-
-            Unique journey's id in the format of an [UUID](https://datatracker.ietf.org/doc/html/rfc4122).
-            Usage of a [4 UUID](https://datatracker.ietf.org/doc/html/rfc4122#section-4.4) generation algorithm
-            is advised.
+          minLength: 1
+          maxLength: 255
+          description: Journey's id. It MUST be unique for a given operator.
         passengerPickupDate:
           type: number
           description: |-
