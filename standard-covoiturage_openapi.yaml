@@ -117,6 +117,217 @@ paths:
         500:
           description: Internal Server Error. Please try again later.
 
+  /regular_driver_journeys:
+    get:
+      tags:
+      - Search
+      summary: Search for matching regular planned outward driver journeys.
+      description: Route used to retrieve a collection of regular planned outward driver journeys matching the provided criteria.
+      operationId: getRegularDriverJourneys
+      parameters:
+        - $ref: '#/components/parameters/departureLat'
+        - $ref: '#/components/parameters/departureLng'
+        - $ref: '#/components/parameters/arrivalLat'
+        - $ref: '#/components/parameters/arrivalLng'
+        - $ref: '#/components/parameters/departureDate'
+        - $ref: '#/components/parameters/maxDate'
+        - $ref: '#/components/parameters/timeDelta'
+        - $ref: '#/components/parameters/departureRadius'
+        - $ref: '#/components/parameters/arrivalRadius'
+        - $ref: '#/components/parameters/count'
+      responses:
+        200:
+          description: Ok. Request processed successfully.
+          content:
+            application/json:
+              schema:
+                title: RegularDriverJourneys
+                type: array
+                items:
+                  $ref: '#/components/schemas/RegularDriverJourney'
+        400:
+          description: Bad Request. See error message.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: |-
+                      Explain why the request couldn't be processed.
+        401:
+          description: Unauthorized. You must authenticate.
+        429:
+          description: Too Many Requests. Please slow down.
+          headers:
+            Retry-After:
+              description: |-
+                How long to wait before making a new request (in seconds).
+              schema:
+                type: integer
+        500:
+          description: Internal Server Error. Please try again later.
+
+  /regular_driver_journeys/{regularJourneyId}/calendar:
+    get:
+      tags:
+      - Search
+      summary: Search for the list of individual driver journeys linked to a regular driver journey.
+      description: Route used to retrieve a collection of individual driver journeys linked to a regular driver journey. MaxDate or count MUST be provided.
+      operationId: getRegularDriverJourneyCalendar
+      parameters:
+        - in: path 
+          name: regularJourneyId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+            description: Regular Journey's id. It MUST be unique for a given operator.
+        - $ref: '#/components/parameters/departureDate'
+        - $ref: '#/components/parameters/maxDate'
+        - $ref: '#/components/parameters/count'
+      responses:
+        200:
+          description: Ok. Request processed successfully.
+          content:
+            application/json:
+              schema:
+                title: DriverJourneys
+                type: array
+                items:
+                  $ref: '#/components/schemas/DriverJourney'
+        400:
+          description: Bad Request. See error message.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: |-
+                      Explain why the request couldn't be processed.
+        401:
+          description: Unauthorized. You must authenticate.
+        429:
+          description: Too Many Requests. Please slow down.
+          headers:
+            Retry-After:
+              description: |-
+                How long to wait before making a new request (in seconds).
+              schema:
+                type: integer
+        500:
+          description: Internal Server Error. Please try again later.
+
+  /regular_passenger_journeys:
+    get:
+      tags:
+      - Search
+      summary: Search for matching regular planned outward passenger journeys.
+      description: Route used to retrieve a collection of punctual planned outward passenger journeys matching the provided criteria.
+      operationId: getRegularPassengerJourneys
+      parameters:
+        - $ref: '#/components/parameters/departureLat'
+        - $ref: '#/components/parameters/departureLng'
+        - $ref: '#/components/parameters/arrivalLat'
+        - $ref: '#/components/parameters/arrivalLng'
+        - $ref: '#/components/parameters/departureDate'
+        - $ref: '#/components/parameters/maxDate'
+        - $ref: '#/components/parameters/timeDelta'
+        - $ref: '#/components/parameters/departureRadius'
+        - $ref: '#/components/parameters/arrivalRadius'
+        - $ref: '#/components/parameters/count'
+      responses:
+        200:
+          description: Ok. Request processed successfully.
+          content:
+            application/json:
+              schema:
+                title: RegularPassengerJourneys
+                type: array
+                items:
+                  $ref: '#/components/schemas/RegularPassengerJourney'
+        400:
+          description: Bad Request. See error message.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: |-
+                      Explain why the request couldn't be processed.
+        401:
+          description: Unauthorized. You must authenticate.
+        429:
+          description: Too Many Requests. Please slow down.
+          headers:
+            Retry-After:
+              description: |-
+                How long to wait before making a new request (in seconds).
+              schema:
+                type: integer
+        500:
+          description: Internal Server Error. Please try again later.
+
+  /regular_passenger_journeys/{regularJourneyId}/calendar:
+    get:
+      tags:
+      - Search
+      summary: Search for the list of individual passenger journeys linked to a regular passenger journey.
+      description: Route used to retrieve a collection of individual passenger journeys linked to a regular passenger journey. MaxDate or count MUST be provided.
+      operationId: getRegularPassengerJourneyCalendar
+      parameters:
+        - in: path 
+          name: regularJourneyId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+            description: Regular Journey's id. It MUST be unique for a given operator.
+        - $ref: '#/components/parameters/departureDate'
+        - $ref: '#/components/parameters/maxDate'
+        - $ref: '#/components/parameters/count'
+      responses:
+        200:
+          description: Ok. Request processed successfully.
+          content:
+            application/json:
+              schema:
+                title: PassengerJourneys
+                type: array
+                items:
+                  $ref: '#/components/schemas/PassengerJourney'
+        400:
+          description: Bad Request. See error message.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: |-
+                      Explain why the request couldn't be processed.
+        401:
+          description: Unauthorized. You must authenticate.
+        429:
+          description: Too Many Requests. Please slow down.
+          headers:
+            Retry-After:
+              description: |-
+                How long to wait before making a new request (in seconds).
+              schema:
+                type: integer
+        500:
+          description: Internal Server Error. Please try again later.
+          
+
   /status:
     get:
       tags:
@@ -178,6 +389,13 @@ components:
 
     departureDate:
       name: departureDate
+      in: query
+      description: Departure datetime using a UNIX UTC timestamp in seconds.
+      schema:
+        type: integer
+
+    maxDate:
+      name: maxDate
       in: query
       description: Departure datetime using a UNIX UTC timestamp in seconds.
       schema:
@@ -380,6 +598,89 @@ components:
             requestedSeats:
               type: integer
               description: If a passenger journey, requested seats.
+
+
+    RegularSchedule:
+      type: "object"
+      properties:
+        maxDate:
+          type: integer
+          description: If `frequency=regular` or `frequency=both`, `maxDate` specifies the specifies the end of the validity period for the regular journey, as a datetime using a UNIX UTC timestamp in seconds.
+        schedule:
+          type: "array"
+          items:
+            $ref: '#/components/schemas/WeekSchedule'
+          description: If `frequency=regular`, this parameter specifies the schedule of expected regular journey. If several `WeekSchedule` objects are passed in the array, the journey is expected to happened on all given time slots(two departures the same day is considered a possible case).
+    
+    WeekSchedule:
+      type: "object"
+      properties:
+        mondayTime:
+          description: Time using a UTC partial time string (example "08:30:00") of departure for the journey on Mondays, if any.
+          type: string
+          format: partial-time
+        mondayTimeDelta:
+          description: Optional time margin in seconds. The departure is expected within a +`mondayTimeDelta` / -`mondayTimeDelta` interval around `mondayTime`. If missing, the `timeDelta` value of `journey` object will be used. If both are missing, 900 is the default value.
+          type: integer
+          default: 900
+        tuesdayTime:
+          description: Time using a UTC partial time string (example "08:30:00") of departure for the journey on Tuesdays, if any.
+          type: string
+          format: partial-time
+        tuesdayTimeDelta:
+          description: Optional time margin in seconds. The departure is expected within a +`tuesdayTimeDelta` / -`tuesdayTimeDelta` interval around `tuesdayTime`. If missing, the `timeDelta` value of `journey` object will be used. If both are missing, 900 is the default value.
+          type: integer
+          default: 900
+        wednesdayTime:
+          description: Time using a UTC partial time string (example "08:30:00") of departure for the journey on Wednesdays, if any.
+          type: string
+          format: partial-time
+        wednesdayTimeDelta:
+          description: Optional time margin in seconds. The departure is expected within a +`wednesdayTimeDelta` / -`wednesdayTimeDelta` interval around `wednesdayTime`. If missing, the `timeDelta` value of `journey` object will be used. If both are missing, 900 is the default value.
+          type: integer
+          default: 900
+        thursdayTime:
+          description: Time using a UTC partial time string (example "08:30:00") of departure for the journey on Thursdays, if any.
+          type: string
+          format: partial-time
+        thursdayTimeDelta:
+          description: Optional time margin in seconds. The departure is expected within a +`thursdayTimeDelta` / -`thursdayTimeDelta` interval around `thursdayTime`. If missing, the `timeDelta` value of `journey` object will be used. If both are missing, 900 is the default value.
+          type: integer
+          default: 900
+        fridayTime:
+          description: Time using a UTC partial time string (example "08:30:00") of departure for the journey on Fridays, if any.
+          type: string
+          format: partial-time
+        fridayTimeDelta:
+          description: Optional time margin in seconds. The departure is expected within a +`fridayTimeDelta` / -`fridayTimeDelta` interval around `fridayTime`. If missing, the `timeDelta` value of `journey` object will be used. If both are missing, 900 is the default value.
+          type: integer
+          default: 900
+        saturdayTime:
+          description: Time using a UTC partial time string (example "08:30:00") of departure for the journey on Saturdays, if any.
+          type: string
+          format: partial-time
+        saturdayTimeDelta:
+          description: Optional time margin in seconds. The departure is expected within a +`saturdayTimeDelta` / -`saturdayTimeDelta` interval around `saturdayTime`. If missing, the `timeDelta` value of `journey` object will be used. If both are missing, 900 is the default value.
+          type: integer
+          default: 900
+        sundayTime:
+          description: Time using a UTC partial time string (example "08:30:00") of departure for the journey on Sundays, if any.
+          type: string
+          format: partial-time
+        sundayTimeDelta:
+          description: Optional time margin in seconds. The departure is expected within a +`sundayTimeDelta` / -`sundayTimeDelta` interval around `sundayTime`. If missing, the `timeDelta` value of `journey` object will be used. If both are missing, 900 is the default value.
+          type: integer
+          default: 900
+
+    RegularDriverJourney:
+      allOf:
+        - $ref: '#/components/schemas/DriverJourney'
+        - $ref: '#/components/schemas/RegularSchedule'
+
+    RegularPassengerJourney:
+      allOf:
+        - $ref: '#/components/schemas/PassengerJourney'
+        - $ref: '#/components/schemas/RegularSchedule'
 
     Price:
       type: object
