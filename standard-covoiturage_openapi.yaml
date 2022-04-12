@@ -172,43 +172,6 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
 
-  /journeys:
-    get:
-      tags:
-      - Search
-      summary: Get journeys by their ids.
-      description: Route used to retrieve journeys using their identifiers.
-      operationId: getJourneys
-      parameters:
-        - in: query
-          name: ids[]
-          required: true
-          explode: true
-          schema:
-            type: array
-            items:
-              type: string
-              minLength: 1
-              maxLength: 255
-      responses:
-        200:
-          description: Ok. Request processed successfully.
-          content:
-            application/json:
-              schema:
-                title: Journey
-                oneOf:
-                - $ref: '#/components/schemas/DriverJourney'
-                - $ref: '#/components/schemas/PassengerJourney'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        429:
-          $ref: '#/components/responses/TooManyRequests'
-        500:
-          $ref: '#/components/responses/InternalServerError'
-
   /status:
     get:
       tags:
@@ -317,8 +280,9 @@ components:
     count:
       name: count
       in: query
-      description: Maximum number of returned journeys. If missing, all matching
-        journeys are returned.
+      description: |-
+        Maximum number of returned results. If missing, all matching results
+        are returned.
       schema:
         type: integer
 
@@ -446,50 +410,47 @@ components:
             passenger:
               $ref: '#/components/schemas/User'
 
-    Journey:
+    JourneySchedule:
       type: object
-      allOf:
-        - $ref: '#/components/schemas/Trip'
-        - type: object
-          required:
-            - passengerPickupDate
-            - type
-            - webUrl
-          properties:
-            id:
-              type: string
-              minLength: 1
-              maxLength: 255
-              description: Journey's id. It MUST be unique for a given operator.
-            passengerPickupDate:
-              type: number
-              description: |-
-                Passenger pickup datetime as a UNIX UTC timestamp in seconds.
-              format: long
-            driverDepartureDate:
-              type: number
-              description: |-
-                Driver departure datetime as a UNIX UTC timestamp in seconds.
-              format: long
-            webUrl:
-              type: string
-              description: URL of the journey on the webservice provider platform.
-            type:
-              type: string
-              description: |-
-                Type of journey. A dynamic journey is happening in real time.
-              enum:
-              - PLANNED
-              - DYNAMIC
-              - LINE
-            deepLink:
-              $ref: '#/components/schemas/DeepLink'
+      required:
+        - passengerPickupDate
+        - type
+        - webUrl
+      properties:
+        id:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Journey's id. It MUST be unique for a given operator.
+        passengerPickupDate:
+          type: number
+          description: |-
+            Passenger pickup datetime as a UNIX UTC timestamp in seconds.
+          format: long
+        driverDepartureDate:
+          type: number
+          description: |-
+            Driver departure datetime as a UNIX UTC timestamp in seconds.
+          format: long
+        webUrl:
+          type: string
+          description: URL of the journey on the webservice provider platform.
+        type:
+          type: string
+          description: |-
+            Type of journey. A dynamic journey is happening in real time.
+          enum:
+          - PLANNED
+          - DYNAMIC
+          - LINE
+        deepLink:
+          $ref: '#/components/schemas/DeepLink'
 
     DriverJourney:
       type: object
       allOf:
         - $ref: '#/components/schemas/DriverTrip'
-        - $ref: '#/components/schemas/Journey'
+        - $ref: '#/components/schemas/JourneySchedule'
         - type: object
           properties:
             availableSeats:
@@ -502,7 +463,7 @@ components:
       type: object
       allOf:
         - $ref: '#/components/schemas/PassengerTrip'
-        - $ref: '#/components/schemas/Journey'
+        - $ref: '#/components/schemas/JourneySchedule'
         - type: object
           required:
             - driverDepartureDate
@@ -531,13 +492,10 @@ components:
             [RFC3339 partial-time](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6).
           type: string
           format: partial-time
-        journeyIds:
+        JourneySchedules:
           type: array
           items:
-            type: string
-            minLength: 1
-            maxLength: 255
-            description: Journey's id. It MUST be unique for a given operator.
+            $ref: '#/components/schemas/JourneySchedule'
 
     Price:
       type: object
