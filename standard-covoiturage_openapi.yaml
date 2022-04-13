@@ -102,6 +102,7 @@ paths:
         - $ref: '#/components/parameters/timeDelta'
         - $ref: '#/components/parameters/departureRadius'
         - $ref: '#/components/parameters/arrivalRadius'
+        - $ref: '#/components/parameters/minDepartureDate'
         - $ref: '#/components/parameters/maxDepartureDate'
         - $ref: '#/components/parameters/count'
       responses:
@@ -145,6 +146,7 @@ paths:
         - $ref: '#/components/parameters/timeDelta'
         - $ref: '#/components/parameters/departureRadius'
         - $ref: '#/components/parameters/arrivalRadius'
+        - $ref: '#/components/parameters/minDepartureDate'
         - $ref: '#/components/parameters/maxDepartureDate'
         - $ref: '#/components/parameters/count'
       responses:
@@ -252,10 +254,19 @@ components:
         type: integer
         default: 900
 
+    minDepartureDate:
+      name: minDepartureDate
+      in: query
+      description:
+        Minimum date of departure for the returned journeys. Datetime using
+        a UNIX UTC timestamp in seconds.
+      schema:
+        type: integer
+
     maxDepartureDate:
       name: maxDepartureDate
       in: query
-      description: |-
+      description:
         Maximum date of departure for the returned journeys. Datetime using
         a UNIX UTC timestamp in seconds.
       schema:
@@ -280,7 +291,7 @@ components:
     count:
       name: count
       in: query
-      description: |-
+      description:
         Maximum number of returned results. If missing, all matching results
         are returned.
       schema:
