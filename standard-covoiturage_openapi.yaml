@@ -99,6 +99,7 @@ paths:
         - $ref: '#/components/parameters/arrivalLat'
         - $ref: '#/components/parameters/arrivalLng'
         - $ref: '#/components/parameters/departureTimeOfDay'
+        - $ref: '#/components/parameters/departureWeekdays'
         - $ref: '#/components/parameters/timeDelta'
         - $ref: '#/components/parameters/departureRadius'
         - $ref: '#/components/parameters/arrivalRadius'
@@ -143,6 +144,7 @@ paths:
         - $ref: '#/components/parameters/arrivalLat'
         - $ref: '#/components/parameters/arrivalLng'
         - $ref: '#/components/parameters/departureTimeOfDay'
+        - $ref: '#/components/parameters/departureWeekdays'
         - $ref: '#/components/parameters/timeDelta'
         - $ref: '#/components/parameters/departureRadius'
         - $ref: '#/components/parameters/arrivalRadius'
@@ -237,13 +239,28 @@ components:
     departureTimeOfDay:
       name: departureTimeOfDay
       in: query
-      description: |-
+      description:
         Departure time of day represented as
         [RFC3339 partial-time](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6).
       required: true
       schema:
         type: string
         format: partial-time
+      example: 07:30:00
+
+    departureWeekdays:
+      name: departureWeekdays
+      in: query
+      style: form
+      explode: false
+      description:
+        Departure days of week. The retrieved trips should have at least one schedule
+        applicable on one of the departureWeekdays.
+      schema:
+        type: array
+        items:
+          type: string
+        default: mon,tue,wed,thu,fri,sat,sun
 
     timeDelta:
       name: timeDelta
