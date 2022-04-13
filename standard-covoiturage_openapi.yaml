@@ -381,6 +381,9 @@ components:
             [Google Encoded Polyline](https://developers.google.com/maps/documentation/utilities/polylinealgorithm), compressed at  level 5.
         preferences:
           $ref: '#/components/schemas/Preferences'
+        webUrl:
+          type: string
+          description: URL of the trip on the webservice provider platform.
 
     DriverTrip:
       type: object
