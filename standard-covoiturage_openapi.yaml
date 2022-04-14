@@ -474,8 +474,6 @@ components:
           - PLANNED
           - DYNAMIC
           - LINE
-        deepLink:
-          $ref: '#/components/schemas/DeepLink'
 
     DriverJourney:
       type: object
@@ -623,33 +621,6 @@ components:
           type: string
           description: Brand of the car.
 
-    DeepLink:
-      type: object
-      description: Platform specific deep-link configurations.
-      properties:
-        android:
-          type: object
-          properties:
-            uri:
-              type: string
-              description: |-
-                URI compliant with Android conventions to open the webservice
-                provider mobile app on the screen presenting the specific journey
-                (see [this guide](https://blog.branch.io/technical-guide-to-deep-linking-on-android-chrome-intents/) for more details).
-            storeUrl:
-              type: string
-              description: |-
-                URL of the webservice provider mobile app on the PlayStore
-                in case the app is not yet installed on the device.
-        ios:
-          type: object
-          properties:
-            universalLink:
-              type: string
-              description: |-
-                URI compliant with iOS conventions to open the webservice
-                provider mobile app on the screen presenting the specific journey.
-
   responses:
     BadRequest:
       description: Bad Request. See error message.
@@ -674,4 +645,3 @@ components:
             type: integer
     InternalServerError:
       description: Internal Server Error. Please try again later.
-
