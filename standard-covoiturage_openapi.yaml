@@ -312,8 +312,6 @@ components:
           description: |-
             Carpooling journey itinerary as a
             [Google Encoded Polyline](https://developers.google.com/maps/documentation/utilities/polylinealgorithm), compressed at  level 5.
-        price:
-          $ref: '#/components/schemas/Price'
         preferences:
           $ref: '#/components/schemas/Preferences'
         deepLink:
@@ -328,6 +326,8 @@ components:
           properties:
             driver:
               $ref: '#/components/schemas/User'
+          price:
+            $ref: '#/components/schemas/Price'
             availableSeats:
               type: integer
               description: If a driver journey, available seats.
