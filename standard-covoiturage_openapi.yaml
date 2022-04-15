@@ -364,32 +364,15 @@ components:
         type: integer
 
   schemas:
-    Journey:
-      title: Journey
-      required:
-      - id
-      - duration
-      - passengerPickupDate
-      - passengerPickupLat
-      - passengerPickupLng
-      - passengerDropLat
-      - passengerDropLng
-      - type
-      - webUrl
+    Trip:
       type: object
+      required:
+        - duration
+        - passengerPickupLat
+        - passengerPickupLng
+        - passengerDropLat
+        - passengerDropLng
       properties:
-        id:
-          type: string
-          format: uuid
-          description: |-
-            Unique journey's id in the format of an [UUID](https://datatracker.ietf.org/doc/html/rfc4122).
-            Usage of a [4 UUID](https://datatracker.ietf.org/doc/html/rfc4122#section-4.4) generation algorithm
-            is advised.
-        passengerPickupDate:
-          type: number
-          description: |-
-            Passenger pickup datetime as a UNIX UTC timestamp in seconds.
-          format: long
         passengerPickupLat:
           type: "number"
           format: "double"
@@ -412,28 +395,9 @@ components:
         passengerDropAddress:
           type: string
           description: String representing the drop-off address.
-        duration:
-          type: integer
-          description: Carpooling duration in seconds.
-        webUrl:
-          type: string
-          description: URL of the journey on the webservice provider platform.
-        type:
-          type: string
-          description: |-
-            Type of journey. A dynamic journey is happening in real time.
-          enum:
-          - PLANNED
-          - DYNAMIC
-          - LINE
         distance:
           type: "integer"
           description: Carpooling distance in meters.
-        driverDepartureDate:
-          type: number
-          description: |-
-            Driver departure datetime as a UNIX UTC timestamp in seconds.
-          format: long
         driverDepartureLat:
           type: "number"
           format: "double"
@@ -456,79 +420,160 @@ components:
         driverArrivalAddress:
           type: string
           description: String representing the arrival address of the driver.
+        duration:
+          type: integer
+          description: Carpooling duration in seconds.
         journeyPolyline:
           type: string
           description: |-
             Carpooling journey itinerary as a
             [Google Encoded Polyline](https://developers.google.com/maps/documentation/utilities/polylinealgorithm), compressed at  level 5.
-        price:
-          $ref: '#/components/schemas/Price'
         preferences:
           $ref: '#/components/schemas/Preferences'
-        deepLink:
-          $ref: '#/components/schemas/DeepLink'
+        webUrl:
+          type: string
+          description: URL of the trip on the webservice provider platform.
 
-    DriverJourney:
+    DriverTrip:
+      type: object
       allOf:
-        - $ref: '#/components/schemas/Journey'
+        - $ref: '#/components/schemas/Trip'
         - type: object
           required:
             - driver
           properties:
             driver:
               $ref: '#/components/schemas/User'
-            availableSeats:
-              type: integer
-              description: If a driver journey, available seats.
-            car:
-              $ref: '#/components/schemas/Car'
-            departureToPickupWalkingDuration:
-              type: integer
-              description: |-
-                Walking duration from the requested departure location
-                to the pick-up location.
-            dropoffToArrivalWalkingDuration:
-              type: integer
-              description: |-
-                Walking duration to the requested arrival location
-                from the drop-off location.
             departureToPickupWalkingDistance:
               type: integer
               description: |-
                 Walking distance from the requested departure location
                 to the pick-up location.
-            dropoffToArrivalWalkingDistance:
+            departureToPickupWalkingDuration:
               type: integer
               description: |-
-                Walking distance to the requested arrival location
-                from the drop-off location.
+                Walking duration from the requested departure location
+                to the pick-up location.
             departureToPickupWalkingPolyline:
               type: string
               description: |-
                 Walking
                 [Google Encoded Polyline](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
                 from the requested departure location to the pick-up location.
+            dropoffToArrivalWalkingDistance:
+              type: integer
+              description: |-
+                Walking distance to the requested arrival location
+                from the drop-off location.
+            dropoffToArrivalWalkingDuration:
+              type: integer
+              description: |-
+                Walking duration to the requested arrival location
+                from the drop-off location.
             dropoffToArrivalWalkingPolyline:
               type: string
               description: |-
                 Walking
                 [Google Encoded Polyline](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
                 to the requested arrival location from the drop-off location.
+            car:
+              $ref: '#/components/schemas/Car'
 
-
-    PassengerJourney:
+    PassengerTrip:
+      type: object
       allOf:
-        - $ref: '#/components/schemas/Journey'
+        - $ref: '#/components/schemas/Trip'
         - type: object
           required:
             - passenger
-            - driverDepartureDate
           properties:
             passenger:
               $ref: '#/components/schemas/User'
+
+    JourneySchedule:
+      type: object
+      required:
+        - passengerPickupDate
+        - type
+        - webUrl
+      properties:
+        id:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Journey's id. It MUST be unique for a given operator.
+        passengerPickupDate:
+          type: number
+          description: |-
+            Passenger pickup datetime as a UNIX UTC timestamp in seconds.
+          format: long
+        driverDepartureDate:
+          type: number
+          description: |-
+            Driver departure datetime as a UNIX UTC timestamp in seconds.
+          format: long
+        webUrl:
+          type: string
+          description: URL of the journey on the webservice provider platform.
+        type:
+          type: string
+          description: |-
+            Type of journey. A dynamic journey is happening in real time.
+          enum:
+          - PLANNED
+          - DYNAMIC
+          - LINE
+
+    DriverJourney:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/DriverTrip'
+        - $ref: '#/components/schemas/JourneySchedule'
+        - type: object
+          properties:
+            availableSeats:
+              type: integer
+              description: Available seats in the car.
+            price:
+              $ref: '#/components/schemas/Price'
+
+    PassengerJourney:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/PassengerTrip'
+        - $ref: '#/components/schemas/JourneySchedule'
+        - type: object
+          required:
+            - driverDepartureDate
+          properties:
             requestedSeats:
               type: integer
-              description: If a passenger journey, requested seats.
+              description: Requested seats by the passenger.
+
+    Schedule:
+      type: object
+      properties:
+        passengerPickupDay:
+          type: string
+          description: Day of week of the passenger pick-up.
+          enum:
+            - mon
+            - tue
+            - wed
+            - thu
+            - fri
+            - sat
+            - sun
+        passengerPickupTimeOfDay:
+          description: |-
+            Passenger pick-up time of day represented as
+            [RFC3339 partial-time](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6).
+          type: string
+          format: partial-time
+        JourneySchedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/JourneySchedule'
 
     Price:
       type: object
