@@ -116,6 +116,98 @@ paths:
                 type: integer
         500:
           description: Internal Server Error. Please try again later.
+  
+  
+
+  /driver_regular_trips:
+    get:
+      tags:
+      - Search
+      summary: Search for matching regular driver trips.
+      description: Route used to retrieve a collection of driver regular trips matching the provided criteria.
+      operationId: getDriverRegularTrips
+      parameters:
+        - $ref: '#/components/parameters/departureLat'
+        - $ref: '#/components/parameters/departureLng'
+        - $ref: '#/components/parameters/arrivalLat'
+        - $ref: '#/components/parameters/arrivalLng'
+        - $ref: '#/components/parameters/departureTimeOfDay'
+        - $ref: '#/components/parameters/departureWeekdays'
+        - $ref: '#/components/parameters/timeDelta'
+        - $ref: '#/components/parameters/departureRadius'
+        - $ref: '#/components/parameters/arrivalRadius'
+        - $ref: '#/components/parameters/minDepartureDate'
+        - $ref: '#/components/parameters/maxDepartureDate'
+        - $ref: '#/components/parameters/count'
+      responses:
+        200:
+          description: Ok. Request processed successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/DriverTrip'
+                    - type: object
+                      properties:
+                        schedules:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/Schedule'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /passenger_regular_trips:
+    get:
+      tags:
+      - Search
+      summary: Search for matching passenger regular trips.
+      description: Route used to retrieve a collection of passenger regular trips matching the provided criteria.
+      operationId: getPassengerRegularTrips
+      parameters:
+        - $ref: '#/components/parameters/departureLat'
+        - $ref: '#/components/parameters/departureLng'
+        - $ref: '#/components/parameters/arrivalLat'
+        - $ref: '#/components/parameters/arrivalLng'
+        - $ref: '#/components/parameters/departureTimeOfDay'
+        - $ref: '#/components/parameters/departureWeekdays'
+        - $ref: '#/components/parameters/timeDelta'
+        - $ref: '#/components/parameters/departureRadius'
+        - $ref: '#/components/parameters/arrivalRadius'
+        - $ref: '#/components/parameters/minDepartureDate'
+        - $ref: '#/components/parameters/maxDepartureDate'
+        - $ref: '#/components/parameters/count'
+      responses:
+        200:
+          description: Ok. Request processed successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/PassengerTrip'
+                    - type: object
+                      properties:
+                        schedules:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/Schedule'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
 
   /bookings:
     post:
@@ -330,6 +422,32 @@ components:
       schema:
         type: integer
 
+    departureTimeOfDay:
+      name: departureTimeOfDay
+      in: query
+      description:
+        Departure time of day represented as
+        [RFC3339 partial-time](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6).
+      required: true
+      schema:
+        type: string
+        format: partial-time
+      example: 07:30:00
+
+    departureWeekdays:
+      name: departureWeekdays
+      in: query
+      style: form
+      explode: false
+      description:
+        Departure days of week. The retrieved trips should have at least one schedule
+        applicable on one of the departureWeekdays.
+      schema:
+        type: array
+        items:
+          type: string
+        default: mon,tue,wed,thu,fri,sat,sun
+
     timeDelta:
       name: timeDelta
       in: query
@@ -338,6 +456,24 @@ components:
       schema:
         type: integer
         default: 900
+
+    minDepartureDate:
+      name: minDepartureDate
+      in: query
+      description:
+        Minimum date of departure for the returned journeys. Datetime using
+        a UNIX UTC timestamp in seconds.
+      schema:
+        type: integer
+
+    maxDepartureDate:
+      name: maxDepartureDate
+      in: query
+      description:
+        Maximum date of departure for the returned journeys. Datetime using
+        a UNIX UTC timestamp in seconds.
+      schema:
+        type: integer
 
     departureRadius:
       name: departureRadius
@@ -358,10 +494,12 @@ components:
     count:
       name: count
       in: query
-      description: Maximum number of returned journeys. If missing, all matching
-        journeys are returned.
+      description:
+        Maximum number of returned results. If missing, all matching results
+        are returned.
       schema:
         type: integer
+
 
   schemas:
     Trip:
@@ -669,33 +807,6 @@ components:
         brand:
           type: string
           description: Brand of the car.
-
-    DeepLink:
-      type: object
-      description: Platform specific deep-link configurations.
-      properties:
-        android:
-          type: object
-          properties:
-            uri:
-              type: string
-              description: |-
-                URI compliant with Android conventions to open the webservice
-                provider mobile app on the screen presenting the specific journey
-                (see [this guide](https://blog.branch.io/technical-guide-to-deep-linking-on-android-chrome-intents/) for more details).
-            storeUrl:
-              type: string
-              description: |-
-                URL of the webservice provider mobile app on the PlayStore
-                in case the app is not yet installed on the device.
-        ios:
-          type: object
-          properties:
-            universalLink:
-              type: string
-              description: |-
-                URI compliant with iOS conventions to open the webservice
-                provider mobile app on the screen presenting the specific journey.
                                 
     ConnectionMessage:
       type: object
@@ -788,4 +899,29 @@ components:
     operatorUrl:
       type: string
       description: Url on the website of the operator owning this journey.
+
+  responses:
+    BadRequest:
+      description: Bad Request. See error message.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: |-
+                  Explain why the request couldn't be processed.
+    Unauthorized:
+      description: Unauthorized. You must authenticate.
+    TooManyRequests:
+      description: Too Many Requests. Please slow down.
+      headers:
+        Retry-After:
+          description: |-
+            How long to wait before making a new request (in seconds).
+          schema:
+            type: integer
+    InternalServerError:
+      description: Internal Server Error. Please try again later.
 
