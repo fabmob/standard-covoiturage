@@ -117,7 +117,7 @@ paths:
         500:
           description: Internal Server Error. Please try again later.
 
-  /booking:
+  /bookings:
     post:
       tags:
       - Interact
