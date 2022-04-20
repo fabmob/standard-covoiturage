@@ -31,12 +31,6 @@ paths:
         - $ref: '#/components/parameters/departureRadius'
         - $ref: '#/components/parameters/arrivalRadius'
         - $ref: '#/components/parameters/count'
-        - $ref: '#/components/parameters/passengerJourneyId'
-        - name: passengerOperator
-          in: query
-          description: Name of the platform make this search for DriverJourneys. If the requester platform aims to monitor in its platform the booking made by its passenger for the Journey, it SHOULD fill this parameter.
-          schema:
-            type: string
       responses:
         200:
           description: Ok. Request processed successfully.
@@ -73,12 +67,6 @@ paths:
         - $ref: '#/components/parameters/departureRadius'
         - $ref: '#/components/parameters/arrivalRadius'
         - $ref: '#/components/parameters/count'
-        - $ref: '#/components/parameters/driverJourneyId'
-        - name: driverOperator
-          in: query
-          description: Name of the platform make this search for PassengerJourneys. If the requester platform aims to monitor in its platform the booking made by its driver for the Journey, it SHOULD fill this parameter.
-          schema:
-            type: string
       responses:
         200:
           description: Ok. Request processed successfully.
