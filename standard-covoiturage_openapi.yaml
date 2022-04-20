@@ -339,36 +339,24 @@ paths:
                     description: |-
                       Explain why the request couldn't be processed.
 
-
-    get:
+  /booking_events:
+    post:
       tags:
-      - Interact
-      summary: Retrieves an existing Booking request.
-      description: Route used to retrieve the details of an existing Booking request. Can only be used by the operator having created the Booking request. This route is provided to check if the Booking object state is similar between two operators, but its usage should be required to handle the full use case of a booking.
-      operationId: getBookings
-      parameters:
-      - name: bookingId
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/bookingId'
-      responses: 
-        200:
+      - Webhooks
+      summary: |-
+        Webhook for booking information push notifications from an operator to a third party provider
+      description: |-
+        Route used to allow a carpool operator to send booking information to a third-party provider. This can be used in the context of a booking flow with deeplinking and when a passenger is using the Connect specification to link their accounts of a third-party service (e.g., a MaaS) and the operator. 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarpoolBookingEvent'
+      responses:
+        201:
           description: Successful operation.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Booking'
         400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        429:
-          $ref: '#/components/responses/TooManyRequests'
-        500:
-          $ref: '#/components/responses/InternalServerError'
-        404:
-          description: This Booking object no more exists. Error code can be among  `missing_journey, missing_booking, missing_user` .
+          description: Bad Request. See error message.
           content:
             application/json:
               schema:
@@ -378,6 +366,20 @@ paths:
                     type: string
                     description: |-
                       Explain why the request couldn't be processed.
+        401:
+          description: Unauthorized. You must authenticate.
+        409:
+          description: Conflict. This booking already exists.
+        429:
+          description: Too Many Requests. Please slow down.
+          headers:
+            Retry-After:
+              description: |-
+                How long to wait before making a new request (in seconds).
+              schema:
+                type: integer
+        500:
+          description: Internal Server Error. Please try again later.
 
   /status:
     get:
@@ -875,9 +877,7 @@ components:
           type: string
           description: Url on the website of the operator owning the PassengerJourney.
           
-    Booking:
-      allOf:
-        - $ref: '#/components/schemas/ConnectionMessage'
+    BookingData:
       type: object
       required:
         - id
@@ -921,13 +921,42 @@ components:
           type: integer
           description: |
             Carpooling distance in meters. When the booking is COMPLETED or VALIDATED, this is the actual distance travelled if available.
-        webUrl:
-          type: string
-          description: URL of the booking on the webservice provider platform.
         price:
           $ref: '#/components/schemas/Price'
         car:
           $ref: '#/components/schemas/Car'
+
+    Booking:
+      allOf:
+        - $ref: '#/components/schemas/ConnectionMessage'
+        - $ref: '#/components/schemas/BookingData'
+      type: object
+      required:
+        - id
+        - status
+        - price
+
+    CarpoolBookingEvent:
+      required:
+      - id
+      - passengerAccessKey
+      - driver
+      - passengerPickupDate
+      - passengerPickupLat
+      - passengerPickupLng
+      - passengerDropLat
+      - passengerDropLng
+      - status
+      - price
+      allOf:
+        - $ref: '#/components/schemas/BookingData'
+      properties:
+        passengerToken: 
+          type: string 
+          description: ID token of the user retrieved using the OpenID Connect flows
+        webUrl:
+          type: string
+          description: URL of the booking on the webservice provider platform.
       
     bookingId:
       type: string
