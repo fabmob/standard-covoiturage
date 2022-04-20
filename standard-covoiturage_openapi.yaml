@@ -319,11 +319,15 @@ components:
       type: object
       required:
         - duration
+        - operator
         - passengerPickupLat
         - passengerPickupLng
         - passengerDropLat
         - passengerDropLng
       properties:
+        operator:
+          type: string
+          description: The operator identifier. MUST be a Fully Qualified Domain Name (example carpool.mycity.com) owned by the operator or a Partially Qualified Domain Name (example operator.org) owned and exclusively operated by the operator. Operators SHOULD always send the same value.
         passengerPickupLat:
           type: "number"
           format: "double"
