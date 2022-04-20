@@ -27,17 +27,42 @@ If the passenger decides not to book the journey being displayed (or if is not a
      style="width: 800px" />
 [Source](https://mermaid-js.github.io/mermaid-live-editor/edit#pako:eNpdkVFrwjAUhf_KJU8Kur2X4VDUMdzc0Kdh9nBtrhpsk5CkG9L635e0jcj6FJpzz3fOTc1yLYhl7FDo3_yE1sPbhisI33Q3l84UeAFvpXna24klVxXexaNW8I64_YbxeNJ8onOkjmQhL2R-ToJO3sCsfnWgDVn02gIaA0HwOJHKeSwKEs_XDjhrzb7INTC__7PWDax2nG1ISEu5B6_BBSuKnMGW0OYnMGixJE-2paMlMIFP9ofEkLPvzm_V-k1Dghs8sFLPOBirgiCPsnD90DwOwaK-tYy6vdZnEmkiNVjA-CEAOFvrEewxP8eo_dY4a2B6L4Ou6nL3kVYT7IVL7lIdU5AWo7uFdw7L3mHWM-JVAy-Dwf8n63IOh1yxESvJlihFeO062nDmT1QSZ1k4CjpgiMkZV9cgrYxATwshQy6WHbBwNGJYeb29qJxl3laURHOJx7D7XnX9Az1byBY)
 
-# Booking feed
+# Sending back booking information to the MaaS
 
-## Functional specification
+## Information flows
 
-The booking feed flow starts as soon as a booking is created. It sends booking data back to the MaaS platform. It allows the MaaS platform to support uses-cases for which booking data need to be instantly available (real-time reporting, incentive program, pricing bundles,...).
+The MaaS platform may need to retrieve booking data after redirecting users to the operator's application.
+
+2 use cases are supported :
+
+- Retrieving direct booking information linked to a specific journey on the MaaS side and on the operator side, for example for multimodal journeys reconciliation
+- Retrieving all the user user carpooling usage on the MaaS side after sending the user to the carpool operator's application. In this case, the booking information is linked to the user and not a specific journey on MaaS side.
+
+## Retrieving direct booking information
+
+### Functional specification
+
+The booking flow starts before the redirect to the deeplink occurs. The MaaS platform initiates a booking transaction with the operator just like in the Booking by API use cases.
+
+Once the booking is really booked/validated on the operator side, the operator sends back the evolution of the booking status to the Maas platform.
+
+### Technical specification
+
+Before using the deeplink to redirect it's user, the MaaS platform SHOULD pre-initialize the booking by sending a "POST /bookings" request with status "PREINITIALIZED". The MaaS platform SHOULD ensure that the response of the operator to this request was successful before redirecting the user to the webURL.
+
+During the booking process on the operator side, the operator SHOULD send back the evolution of the state of this booking using the "PATCH /bookings" or "PUT /bookings" endpoints.
+
+## Retrieving all the user carpooling usage
+
+### Functional specification
+
+The booking feed flow starts as soon as a booking is created on the operator side. It sends booking data back to the MaaS platform. It allows the MaaS platform to support uses-cases for which booking data need to be instantly available (real-time reporting, incentive program, pricing bundles,...).
 
 Once a booking is created, the operator SHOULD send the booking details to the MaaS platform. The operator SHOULD also notify any update of the booking to the MaaS plateform.
 
 The passenger SHOULD have explicitely accepted that the operator shares the details of its bookings with the MaaS platform, in accordance with the applicable data-privacy regulations.
 
-## Technical specification
+### Technical specification
 
 The passenger MUST be authenticated in the operator plateform using an [Open ID Connect 1.0](https://openid.net/specs/openid-connect-core-1_0.html) identity layer where the Provider is the MaaS platform.
 
