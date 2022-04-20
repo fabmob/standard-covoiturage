@@ -66,6 +66,6 @@ The passenger SHOULD have explicitely accepted that the operator shares the deta
 
 The passenger MUST be authenticated in the operator plateform using an [Open ID Connect 1.0](https://openid.net/specs/openid-connect-core-1_0.html) identity layer where the Provider is the MaaS platform.
 
-The MaaS platform MUST provide an API endpoint matching the [UPSERT_ENDPOINT_LINK_PLACEHOLDER] specification.
+The MaaS platform MUST provide an API endpoint matching the "POST /booking_events" specification.
 
-The operator SHOULD call the [UPSERT_ENDPOINT_LINK_PLACEHOLDER] endpoint each time a booking involving the passenger is created or the booking data have changed.
+The operator SHOULD call the "POST /booking_events" endpoint each time a booking involving the passenger is created or the booking data have changed.
