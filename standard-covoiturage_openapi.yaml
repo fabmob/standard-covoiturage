@@ -48,29 +48,13 @@ paths:
                 items:
                   $ref: '#/components/schemas/DriverJourney'
         400:
-          description: Bad Request. See error message.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    description: |-
-                      Explain why the request couldn't be processed.
+          $ref: '#/components/responses/BadRequest'
         401:
-          description: Unauthorized. You must authenticate.
+          $ref: '#/components/responses/Unauthorized'
         429:
-          description: Too Many Requests. Please slow down.
-          headers:
-            Retry-After:
-              description: |-
-                How long to wait before making a new request (in seconds).
-              schema:
-                type: integer
+          $ref: '#/components/responses/TooManyRequests'
         500:
-          description: Internal Server Error. Please try again later.
-
+          $ref: '#/components/responses/InternalServerError'
 
   /passenger_journeys:
     get:
@@ -106,30 +90,13 @@ paths:
                 items:
                   $ref: '#/components/schemas/PassengerJourney'
         400:
-          description: Bad Request. See error message.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    description: |-
-                      Explain why the request couldn't be processed.
+          $ref: '#/components/responses/BadRequest'
         401:
-          description: Unauthorized. You must authenticate.
+          $ref: '#/components/responses/Unauthorized'
         429:
-          description: Too Many Requests. Please slow down.
-          headers:
-            Retry-After:
-              description: |-
-                How long to wait before making a new request (in seconds).
-              schema:
-                type: integer
+          $ref: '#/components/responses/TooManyRequests'
         500:
-          description: Internal Server Error. Please try again later.
-  
-  
+          $ref: '#/components/responses/InternalServerError'
 
   /driver_regular_trips:
     get:
@@ -219,7 +186,7 @@ paths:
         429:
           $ref: '#/components/responses/TooManyRequests'
         500:
-          $ref: '#/components/responses/InternalServerError'
+          description: Internal Server Error. Please try again later.
 
   /messages:
     post:
@@ -433,15 +400,9 @@ paths:
         200:
           description: Ok. Webservice is available.
         429:
-          description: Too Many Requests. Please slow down.
-          headers:
-            Retry-After:
-              description: |-
-                How long to wait before making a new request (in seconds).
-              schema:
-                type: integer
+          $ref: '#/components/responses/TooManyRequests'
         500:
-          description: Internal Server Error. Please try again later.
+          $ref: '#/components/responses/InternalServerError'
 
 #
 # Schemas
@@ -812,7 +773,7 @@ components:
           - UNKNOWN
         amount:
           type: number
-          description: Carpooling passenger cost in euros.
+          description: Carpooling passenger cost.
           format: float
         currency:
           type: string
@@ -1019,4 +980,3 @@ components:
             type: integer
     InternalServerError:
       description: Internal Server Error. Please try again later.
-
