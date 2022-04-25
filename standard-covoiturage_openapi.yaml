@@ -176,68 +176,34 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
 
-  /bookings:
+  /booking_events:
     post:
-      summary: |-
-        Sends new booking information of a passenger connected with a third-party provider back to the provider
-      description: |-
-        Route used to allow a carpool operator to send booking information to a third-party provider. This can be used in the context of a booking flow with deeplinking and when a passenger is using the Connect specification to link their accounts of a third-party service (e.g., a MaaS) and the operator.
+      tags:
+      - Webhooks
+      summary:
+        Sends new booking information of a passenger connected with a third-party
+        provider back to the provider.
+      description:
+        Route used to allow a carpool operator to send booking information to a third-party
+        provider. This can be used in the context of a booking flow with deeplinking and
+        when a passenger is using the Connect specification to link their accounts of a
+        third-party service (e.g., a MaaS) and the operator.
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CarpoolBooking'
-      responses:
-        201:
-          description: Successful operation.
-        400:
-          description: Bad Request. See error message.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    description: |-
-                      Explain why the request couldn't be processed.
-        401:
-          description: Unauthorized. You must authenticate.
-        409:
-          description: Conflict. This booking already exists.
-        429:
-          description: Too Many Requests. Please slow down.
-          headers:
-            Retry-After:
-              description: |-
-                How long to wait before making a new request (in seconds).
-              schema:
-                type: integer
-        500:
-          description: Internal Server Error. Please try again later.
-
-  /bookings/{bookingId}:
-    patch:
-      summary: Updates information of an existing CarpoolBooking object.
-      parameters:
-        - name: bookingId
-          description: The id of a previously sent booking
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CarpoolBookingPatch'
+              $ref: '#/components/schemas/CarpoolBookingEvent'
       responses:
         200:
-          description: Successful operation.
+          description: Ok. Request processed successfully.
+        400:
+          $ref: '#/components/responses/BadRequest'
         401:
-          description: Unauthorized.
-        404:
-          description: The booking no longer exists.
+          $ref: '#/components/responses/Unauthorized'
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
 
   /status:
     get:
@@ -589,8 +555,37 @@ components:
           items:
             $ref: '#/components/schemas/JourneySchedule'
 
-    CarpoolBookingPatch:
+    CarpoolBookingEvent:
+      required:
+        - id
+        - passengerToken
+        - data
       properties:
+        id:
+          type: "string"
+          description: Unique identifier of the event.
+        passengerToken:
+          type: "string"
+          description: ID token of the user retrieved using the OpenID Connect flows.
+        data:
+          $ref: '#/components/schemas/CarpoolBooking'
+
+    CarpoolBooking:
+      required:
+      - id
+      - driver
+      - passengerPickupDate
+      - passengerPickupLat
+      - passengerPickupLng
+      - passengerDropLat
+      - passengerDropLng
+      - status
+      - webUrl
+      - price
+      properties:
+        id:
+          type: "string"
+          description: Unique identifier of the booking.
         passengerPickupDate:
           type: number
           description: Passenger pickup datetime as a UNIX UTC timestamp in seconds.
@@ -625,43 +620,22 @@ components:
             - CANCELLED
             - COMPLETED_PENDING_VALIDATION
             - VALIDATED
-        duration:
-          type: integer
-          description: Carpooling duration in seconds.
         distance:
           type: "integer"
           description: |
             Carpooling distance in meters. When the booking is COMPLETED or VALIDATED, this is the actual distance travelled if available.
-    CarpoolBooking:
-      required:
-      - id
-      - passengerId
-      - driver
-      - passengerPickupDate
-      - passengerPickupLat
-      - passengerPickupLng
-      - passengerDropLat
-      - passengerDropLng
-      - status
-      - price
-      allOf:
-        - $ref: '#/components/schemas/CarpoolBookingPatch'
-      properties:
-        id:
-          type: "string"
-          description: Unique identifier of the booking.
-        passengerId:
-          type: "string"
-          description: Identifier of the third-party passenger as returned by the Connect specification.
+        duration:
+          type: integer
+          description: Carpooling duration in seconds.
         webUrl:
           type: string
           description: URL of the booking on the webservice provider platform.
-        price:
-          $ref: '#/components/schemas/Price'
         driver:
           $ref: '#/components/schemas/User'
         car:
           $ref: '#/components/schemas/Car'
+        price:
+          $ref: '#/components/schemas/Price'
 
     Price:
       type: object
