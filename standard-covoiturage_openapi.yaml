@@ -181,7 +181,7 @@ paths:
       tags:
       - Webhooks
       summary:
-        Sends new booking information of a passenger connected with a third-party
+        Sends booking information of a user connected with a third-party
         provider back to the provider.
       description:
         Route used to allow a carpool operator to send booking information to a third-party
@@ -232,7 +232,6 @@ components:
       schema:
         type: number
       description: Latitude of searched departure point.
-
 
     departureLng:
       name: departureLng
@@ -558,22 +557,27 @@ components:
     CarpoolBookingEvent:
       required:
         - id
-        - passengerToken
+        - idToken
         - data
       properties:
         id:
-          type: "string"
-          description: Unique identifier of the event.
-        passengerToken:
-          type: "string"
+          type: string
+          format: uuid
+          description:
+            Unique journey's id in the format of an [UUID](https://datatracker.ietf.org/doc/html/rfc4122).
+            Usage of a [4 UUID](https://datatracker.ietf.org/doc/html/rfc4122#section-4.4) generation algorithm
+            is advised.
+        idToken:
+          type: string
           description: ID token of the user retrieved using the OpenID Connect flows.
         data:
-          $ref: '#/components/schemas/CarpoolBooking'
+          oneOf:
+          - $ref: '#/components/schemas/DriverCarpoolBooking'
+          - $ref: '#/components/schemas/PassengerCarpoolBooking'
 
     CarpoolBooking:
       required:
       - id
-      - driver
       - passengerPickupDate
       - passengerPickupLat
       - passengerPickupLng
@@ -581,7 +585,6 @@ components:
       - passengerDropLng
       - status
       - webUrl
-      - price
       properties:
         id:
           type: "string"
@@ -630,12 +633,33 @@ components:
         webUrl:
           type: string
           description: URL of the booking on the webservice provider platform.
-        driver:
-          $ref: '#/components/schemas/User'
-        car:
-          $ref: '#/components/schemas/Car'
-        price:
-          $ref: '#/components/schemas/Price'
+
+    PassengerCarpoolBooking:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CarpoolBooking'
+        - type: object
+          required:
+            - passenger
+          properties:
+            passenger:
+              $ref: '#/components/schemas/User'
+
+    DriverCarpoolBooking:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CarpoolBooking'
+        - type: object
+          required:
+            - driver
+            - price
+          properties:
+            driver:
+              $ref: '#/components/schemas/User'
+            price:
+              $ref: '#/components/schemas/Price'
+            car:
+              $ref: '#/components/schemas/Car'
 
     Price:
       type: object
