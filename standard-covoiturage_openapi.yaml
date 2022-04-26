@@ -327,7 +327,7 @@ components:
       properties:
         operator:
           type: string
-          description: The operator identifier. MUST be a Fully Qualified Domain Name (example carpool.mycity.com) owned by the operator or a Partially Qualified Domain Name (example operator.org) owned and exclusively operated by the operator. Operators SHOULD always send the same value.
+          description: The operator identifier. MUST be a Root Domain (example operator.org) owned by the operator or a Fully Qualified Domain Name (example carpool.mycity.com) exclusively operated by the operator. A given operator SHOULD always send the same value.
         passengerPickupLat:
           type: "number"
           format: "double"
