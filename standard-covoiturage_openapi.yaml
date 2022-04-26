@@ -474,6 +474,17 @@ components:
           - PLANNED
           - DYNAMIC
           - LINE
+        waypointsOnlyRoute:
+          type: string
+          description: Waypoints only route as [Google Encoded Polyline Algorithm Format](https://developers.google.com/maps/documentation/utilities/polylinealgorithm).
+        numberOfWaypoints:
+          type: integer
+          description: Number of waypoints (if any).
+        waypoints:
+          description: List of waypoints. Required if `numberOfWaypoints>0`.
+          type: array
+          items:
+            $ref: '#/components/schemas/Waypoint'
 
     DriverJourney:
       type: object
@@ -620,6 +631,54 @@ components:
         brand:
           type: string
           description: Brand of the car.
+   
+    Waypoint:
+      type: object
+      required:
+        - longitude
+        - latitude
+        - mandatory
+      properties:
+        longitude:
+          description: WGS84 longitude of the geographical point.
+          type: number
+        latitude:
+          description: WGS84 latitude of the geographical point.
+          type: number
+        address:
+          type: string
+          description: Full address of the geographical point.
+        city:
+          type: string
+          description: City of the geographical point.
+        postalCode:
+          type: string
+          description: Postal code of the geographical point.
+        country:
+          type: string
+          description: Country of the geographical point.
+        poiName:
+          type: string
+          description: Point-Of-Interest specific name if this geographical point is a POI.
+        stepDistance:
+          type: integer
+          description: Distance in meters of the step from the previous point until this waypoint.
+        stepDuration:
+          type: integer
+          description: Duration in seconds of the step from the previous point until this waypoint.
+        type:
+          type: string
+          description: Type of waypoint.
+          enum:
+            - pick-up
+            - drop-off
+            - other
+        mandatory:
+          description: 1 if this waypoint is mandatory.
+          type: integer
+          enum:
+            - 0
+            - 1
 
   responses:
     BadRequest:
