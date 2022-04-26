@@ -444,6 +444,7 @@ components:
     JourneySchedule:
       type: object
       required:
+        - id
         - passengerPickupDate
         - type
         - webUrl
@@ -474,6 +475,12 @@ components:
           - PLANNED
           - DYNAMIC
           - LINE
+        nextReturnJourneyId:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Id of next Journey in the return direction.
+          
 
     DriverJourney:
       type: object
