@@ -176,6 +176,43 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
 
+  /journeys:
+    get:
+      tags:
+      - List
+      summary: Get journeys by their ids.
+      description: Route used to retrieve journeys using their identifiers.
+      operationId: getJourneys
+      parameters:
+        - in: query
+          name: ids[]
+          required: true
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+              minLength: 1
+              maxLength: 255
+      responses:
+        200:
+          description: Ok. Request processed successfully.
+          content:
+            application/json:
+              schema:
+                title: Journey
+                oneOf:
+                - $ref: '#/components/schemas/DriverJourney'
+                - $ref: '#/components/schemas/PassengerJourney'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
   /status:
     get:
       tags:
@@ -444,6 +481,7 @@ components:
     JourneySchedule:
       type: object
       required:
+        - id
         - passengerPickupDate
         - type
         - webUrl
@@ -474,6 +512,12 @@ components:
           - PLANNED
           - DYNAMIC
           - LINE
+        nextReturnJourneyId:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Id of next Journey in the return direction.
+
 
     DriverJourney:
       type: object
