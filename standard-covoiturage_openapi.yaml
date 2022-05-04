@@ -268,7 +268,7 @@ components:
           description: Carpooling duration in seconds.
         webUrl:
           type: string
-          description: URL of the journey on the webservice provider platform.
+          description: URL of the journey on the operator platform.
         type:
           type: string
           description: |-
@@ -312,12 +312,8 @@ components:
           description: |-
             Carpooling journey itinerary as a
             [Google Encoded Polyline](https://developers.google.com/maps/documentation/utilities/polylinealgorithm), compressed at  level 5.
-        price:
-          $ref: '#/components/schemas/Price'
         preferences:
           $ref: '#/components/schemas/Preferences'
-        deepLink:
-          $ref: '#/components/schemas/DeepLink'
 
     DriverJourney:
       allOf:
@@ -328,6 +324,8 @@ components:
           properties:
             driver:
               $ref: '#/components/schemas/User'
+          price:
+            $ref: '#/components/schemas/Price'
             availableSeats:
               type: integer
               description: If a driver journey, available seats.
@@ -476,29 +474,3 @@ components:
           type: string
           description: Brand of the car.
 
-    DeepLink:
-      type: object
-      description: Platform specific deep-link configurations.
-      properties:
-        android:
-          type: object
-          properties:
-            uri:
-              type: string
-              description: |-
-                URI compliant with Android conventions to open the webservice
-                provider mobile app on the screen presenting the specific journey
-                (see [this guide](https://blog.branch.io/technical-guide-to-deep-linking-on-android-chrome-intents/) for more details).
-            storeUrl:
-              type: string
-              description: |-
-                URL of the webservice provider mobile app on the PlayStore
-                in case the app is not yet installed on the device.
-        ios:
-          type: object
-          properties:
-            universalLink:
-              type: string
-              description: |-
-                URI compliant with iOS conventions to open the webservice
-                provider mobile app on the screen presenting the specific journey.
