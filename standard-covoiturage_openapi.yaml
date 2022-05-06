@@ -26,7 +26,7 @@ paths:
         - $ref: '#/components/parameters/departureLng'
         - $ref: '#/components/parameters/arrivalLat'
         - $ref: '#/components/parameters/arrivalLng'
-        - $ref: '#/components/parameters/departureDate'
+        - $ref: '#/components/parameters/departureTime'
         - $ref: '#/components/parameters/timeDelta'
         - $ref: '#/components/parameters/departureRadius'
         - $ref: '#/components/parameters/arrivalRadius'
@@ -62,7 +62,7 @@ paths:
         - $ref: '#/components/parameters/departureLng'
         - $ref: '#/components/parameters/arrivalLat'
         - $ref: '#/components/parameters/arrivalLng'
-        - $ref: '#/components/parameters/departureDate'
+        - $ref: '#/components/parameters/departureTime'
         - $ref: '#/components/parameters/timeDelta'
         - $ref: '#/components/parameters/departureRadius'
         - $ref: '#/components/parameters/arrivalRadius'
@@ -229,8 +229,8 @@ components:
       schema:
         type: number
 
-    departureDate:
-      name: departureDate
+    departureTime:
+      name: departureTime
       in: query
       description: Departure datetime using a UNIX UTC timestamp in seconds.
       schema:
@@ -444,7 +444,7 @@ components:
     JourneySchedule:
       type: object
       required:
-        - passengerPickupDate
+        - passengerPickupTime
         - type
         - webUrl
       properties:
@@ -453,12 +453,12 @@ components:
           minLength: 1
           maxLength: 255
           description: Journey's id. It MUST be unique for a given operator.
-        passengerPickupDate:
+        passengerPickupTime:
           type: number
           description: |-
             Passenger pickup datetime as a UNIX UTC timestamp in seconds.
           format: long
-        driverDepartureDate:
+        driverDepartureTime:
           type: number
           description: |-
             Driver departure datetime as a UNIX UTC timestamp in seconds.
@@ -495,7 +495,7 @@ components:
         - $ref: '#/components/schemas/JourneySchedule'
         - type: object
           required:
-            - driverDepartureDate
+            - driverDepartureTime
           properties:
             requestedSeats:
               type: integer
