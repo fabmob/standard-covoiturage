@@ -532,15 +532,13 @@ components:
         type:
           type: string
           description: |-
-            Either « FREE », « PAYING » or « UNKNOWN ». « UNKNOWN » is given
-            when it should be « PAYING » but we cannot set the price yet.
+            Either « FREE » or « PAYING ».
           enum:
           - FREE
           - PAYING
-          - UNKNOWN
         amount:
           type: number
-          description: Carpooling passenger cost.
+          description: Carpooling passenger cost estimate. If `type` is PAYING, a missing amount means that the price cannot be estimated yet.
           format: float
         currency:
           type: string
