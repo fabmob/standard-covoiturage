@@ -446,7 +446,6 @@ components:
       required:
         - passengerPickupTime
         - type
-        - webUrl
       properties:
         id:
           type: string
@@ -465,7 +464,7 @@ components:
           format: long
         webUrl:
           type: string
-          description: URL of the journey on the webservice provider platform.
+          description: URL of the journey on the webservice provider platform. Required to support booking by deeplink.
         type:
           type: string
           description: |-
@@ -532,7 +531,7 @@ components:
         type:
           type: string
           description: |-
-            Either « FREE » or « PAYING ».
+            Either « FREE » or « PAYING » or « UNKNOWN ».
           enum:
           - FREE
           - PAYING
