@@ -42,19 +42,21 @@ The first draft versions of this specification do not include normative parts.
 ##### General Workflow
 
 There are two flavours of searches: a driver can search for passengers (so, he 
-searches `passenger_journey`), or a passenger can search for a driver (looking 
-for a `driver_journey`). The difference between these two searches are in the 
-endpoints used and the return values, so the following sequence diagram works 
-for both.
+searches a `passenger_journey`), or a passenger can search for a driver 
+(looking for a `driver_journey`). The difference between these two searches 
+are in the endpoints used and the return values, the following sequence 
+diagram works for both.
 
 ~~~mermaid
 sequenceDiagram
     participant U as User
     participant M as MaaS
     participant T as TO
-    U->>M: Search for trips
+    U->>M: Search for journeys
+    rect rgb(255, 255, 236)
     M->>T: GET /driver_journeys (or /passenger_journeys)
     T-->>M: DriverJourneys[] (or PassengerJourneys[])
+    end
     M-->>U: Show results
 ~~~
 
@@ -71,8 +73,8 @@ searches for the outward and return journey separately.
 
 ##### The case of regular journeys
 
-Searching for regular journeys has its own specific workflow presented in 
-{TODO anchor link}.
+Searching for regular journeys has its own specific workflow presented in
+[a dedicated section](https://github.com/fabmob/standard-covoiturage/blob/spec_search/standard-covoiturage_specification.md#3112-search-for-regular-trips-and-associated-journeys).
 
 ##### Simple search technical specification
 
