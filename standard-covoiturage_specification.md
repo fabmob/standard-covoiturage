@@ -37,7 +37,7 @@ The first draft versions of this specification do not include normative parts.
 
 ### 3.1. Search / Carpool information
 
-#### 3.1.1. Search for Journeys
+#### 3.1.1 Search for Journeys
 
 ##### General Workflow
 
@@ -94,7 +94,7 @@ Operator, among all journeys (`passengerJourneys` and `driverJourneys`).
 The `price` attribute of the response SHOULD be a price estimation, if no 
 estimation is possible, a price with type "UNKNOWN" SHOULD be returned.
 
-#### Search for Regular trips and associated journeys
+#### 3.1.1.2 Search for Regular trips and associated journeys
 
 ##### General workflow 
 
