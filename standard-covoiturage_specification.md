@@ -123,25 +123,12 @@ The transport operator MUST return at most `count` matching results, or all
 matching results if `count` parameter is not specified. All returned results 
 MUST match the query parameters.
 
-The returned results MAY not reach the `maxDepartureDate` depending on the 
-forecasting horizon of the transport operator.
-
 A regular trip matches the `departureWeekdays` and `departureTimeOfDay` if 
-*any* journey of the regular trip matches the time and day constraint.
+*any* journey of the regular trip matches the time and day constraint and 
+starts between `minDepartureDate` and `maxDepartureDate` (included).
 
-The `webUrl` attribute in the response SHOULD link to a page giving an 
-overview of the regular trips (e.g. a "driver" page) and allowing to continue 
-the process of booking regular trips by the user (booking by deeplink).
-
-The transport operator MUST return at most `count` matching results, or all 
-matching results if `count` parameter is not specified. All returned results 
-MUST match the query parameters.
-
-The returned results MAY not reach the `maxDepartureDate` depending on the 
-forecasting horizon of the transport operator.
-
-A regular trip matches the `departureWeekdays` and `departureTimeOfDay` if 
-*any* journey of the regular trip matches the time and day constraint.
+The returned results may not reach the `maxDepartureDate` because of the 
+limited forecasting horizon of the transport operator.
 
 The `webUrl` attribute in the response SHOULD link to a page giving an 
 overview of the regular trips (e.g. a "driver" page) and allowing to continue 
