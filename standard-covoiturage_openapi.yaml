@@ -176,6 +176,22 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
 
+  /operator/meta:
+      get:
+        tags:
+          - documentation
+        summary: Describes the running API implementation
+        description: Gives the version of the standard used, and the supported endpoints
+        responses:
+          '200':
+            description: successful operation
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/endpointImplementation"
+
   /status:
     get:
       tags:
@@ -620,6 +636,51 @@ components:
         brand:
           type: string
           description: Brand of the car.
+
+    endpointImplementation:
+      type: object
+      description: Documentation of the endpoints and their implementation status.
+      required:
+        - version
+        - baseUrl
+        - endpoints
+      properties:
+        version:
+          type: string
+        baseUrl:
+          type: string
+        endpoints:
+          type: array
+          items:
+            $ref: "#/components/schemas/endpoint"
+
+    endpoint:
+      type: object
+      description: a formal description of an endpoint.
+      required:
+        - method
+        - path
+        - status
+      properties:
+        method:
+          type: string
+          enum:
+            - POST
+            - PUT
+            - GET
+            - DELETE
+            - PATCH
+        path:
+          description: the exact path of the endpoint, starting after the base URL
+          type: string
+          example: /plannings/
+        status:
+          type: string
+          enum:
+            - NOT_IMPLEMENTED
+            - IMPLEMENTED
+      example:
+        { "method": "POST", "path": "/bookings/{bookingId}", "status": "IMPLEMENTED" }
 
   responses:
     BadRequest:
