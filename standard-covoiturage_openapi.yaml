@@ -260,7 +260,7 @@ components:
         type: array
         items:
           type: string
-        default: mon,tue,wed,thu,fri,sat,sun
+        default: MON,TUE,WED,THU,FRI,SAT,SUN
 
     timeDelta:
       name: timeDelta
@@ -507,13 +507,13 @@ components:
           type: string
           description: Day of week of the passenger pick-up.
           enum:
-            - mon
-            - tue
-            - wed
-            - thu
-            - fri
-            - sat
-            - sun
+            - MON
+            - TUE
+            - WED
+            - THU
+            - FRI
+            - SAT
+            - SUN
         passengerPickupTimeOfDay:
           description: |-
             Passenger pick-up time of day represented as
