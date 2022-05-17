@@ -50,9 +50,15 @@ TODO explain driver/passenger regular trips and link to OpenAPI spec
 This specifications provides 2 flows for implementing an initial booking transaction : 
 
 - Integrated booking by API : the initial booking is handled by an API exchange between MaaS platforms and operators. Users stay on their original application, without having to switch to another.
-- Delegated booking by Deeplink : booking is handled by switching applications, with a deeplink to access directly to the right page on the carpooling operator application.
+- Delegated booking by deep link : booking is handled by switching 
+  applications, with a deep link to access directly to the right page on the 
+  carpooling operator application.
 
-These 2 flows share a common syntax for operations after the initial booking occurs. Integrated booking by API can still leverage deeplink information to access the operator's application while Delegated booking by deeplink uses API endpoints to provide information of the evolution of the booking process to the MaaS platform.
+These 2 flows share a common syntax for operations after the initial booking 
+occurs. Integrated booking by API can still leverage deep link information to 
+access the operator's application while Delegated booking by deep link uses 
+API endpoints to provide information of the evolution of the booking process 
+to the MaaS platform.
 
 MaaS platforms and carpooling operators MUST support at least one of these 2 flows if they implement booking.
 
@@ -67,14 +73,14 @@ specification](standard-covoiturage_openapi.yaml) :
 - PATCH /bookings : modify the state of the booking status to complete the booking flow 
 - GET /bookings/{bookingId} : get the state of the booking
 
-#### 3.2.2. Delegated booking by Deeplink
-
-##### General workflow: Providing the link
+#### 3.2.2. Delegated booking by deep link
 
 This section provides precise guidelines for a carpooling operator and a MaaS 
 platform to implement a "booking" flow for passengers, with information to 
-complete the booking shared via deeplinking between the two and booking 
+complete the booking shared via deep linking between the two and booking 
 information sent back to the MaaS platform.
+
+##### General workflow: Providing the link
 
 The booking flow with a deep link starts when a passenger clicks on a journey 
 search result in the MaaS app. This search result MUST open the deep link 
