@@ -82,17 +82,19 @@ information sent back to the MaaS platform.
 
 ##### General workflow: Providing the link
 
-The booking flow with a deep link starts when a passenger clicks on a journey 
-search result in the MaaS app. This search result MUST open the deep link 
+The transport operator supporting deep linking MUST provide for each `Journey` 
+shared with the MaaS platform an attribute `webUrl`, with the full URL (with 
+all needed parameters) for the user's device to redirect the passenger from 
+the app of the MaaS platform to the operator's app or website.
+
+The booking flow with a deep link is initiated by the MaaS platform with a 
+`Journey` object provided by a transport operator (e.g. as a result of a 
+previous search). To do that, it MUST redirect the user to the deep link 
 contained in the 
 [webUrl](https://github.com/fabmob/standard-covoiturage/pull/2/files#diff-c722233128f788ea06650bffef56e418732898441b4e2199997c40e9070e3345R269) 
-parameter returned by a 
+parameter of the
 [Journey](https://github.com/fabmob/standard-covoiturage/pull/2/files#diff-c722233128f788ea06650bffef56e418732898441b4e2199997c40e9070e3345R220) 
-object. This parameter MUST be provided by the carpool operator responsible 
-for their implementation of the search API public specification. It contains 
-the full URL and its corresponding parameters needed for the mobile device to 
-redirect the passenger from the app displaying the search results to the 
-operator's app or website.
+object.
 
 If the operator is providing an app (and not a website), one obstacle to 
 redirecting the passenger is whether they have the operator's app already 
@@ -105,12 +107,13 @@ parameters can be recovered to automatically redirect the passenger to the
 booking flow as if the app had always been installed.
 
 If the operator provides a website or if its app was already installed, then 
-clicking on the deep link SHOULD automatically and seamlessly redirect the 
+redirecting on the deep link SHOULD automatically and seamlessly bring the 
 passenger to the operator's booking flow. It is up to the operator to decide 
 where to start this flow and what to do with the parameters sent to the MaaS 
 app in the search to provide the passenger with the best booking experience.  
-It is up to the passenger to decide whether to book the clicked journey or 
-not.
+
+It is up to the passenger to decide whether to book the journey, any other 
+journey or none.
 
 If the passenger decides not to book the journey being displayed (or if is not 
 available anymore), the operator MAY provide the means for the passenger to go 
