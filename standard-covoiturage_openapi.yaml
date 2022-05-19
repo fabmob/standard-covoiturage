@@ -1025,7 +1025,8 @@ components:
 
     bookingId:
       type: string
-      description: Booking id is common between both operators, and must be set as a MD5 hashing of a string concatenating the `driverJourneyId`, the `passengerJourneyId` and a UNIX UTC timestamp in seconds.
+      format: uuid
+      description: Booking id is common between both operators, and must be created as a UUID by whoever initiates the booking.
 
     bookingStatus:
       type: string
