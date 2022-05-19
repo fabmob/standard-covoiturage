@@ -205,6 +205,209 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
 
+  /messages:
+    post:
+      tags:
+      - Interact
+      summary: Send a message to the owner of a retrieved journey.
+      description: Route used to allow a user to connect back to the owner of a retrieved journey through a texte message.
+      operationId: postConnections
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ConnectionMessage'
+              type: object
+              required:
+                - message
+                - recipientCarpoolerType
+              properties:
+                recipientCarpoolerType:
+                  type: string
+                  enum:
+                    - driver
+                    - passenger
+                  default: driver
+                  description: Defines if the recipient of this message is either the driver or the passenger.
+      responses:
+        201:
+          description: Successful operation.
+        404:
+          description: The targeted journey or user no more exists.
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /bookings:
+    post:
+      tags:
+      - Interact
+      summary: Create a punctual outward Booking request.
+      description: Route used to synchronize a Booking request initiated by a platform to the second platform involved in the shared punctual outward journey. While posting a new Booking, its status shall always be set first as `status=WAITING_CONFIRMATION`. The  Booking MUST be created using the relevant `passengerJourneyId` or `driverJourneyId` attributes according to the operator role handling the request (the operator can recognize its own role thanks to the `driverOperator` and `passengerOperator` attributes).
+        _Reminder:_ In case of booking without deeplink, the sender platform MUST also store the Booking object, and be ready to receive modifications of it through the PATCH /bookings API endpoint.
+      operationId: postBookings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+
+      responses:
+        201:
+          description: Successful operation. A new Booking has been created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /bookings/{bookingId}:
+    put:
+      tags:
+      - Interact
+      summary: Update a punctual outward Booking request.
+      description: Route used to update a Booking request made by a platform through deeplinking to the platform having initiated the Book (e.g. the MaaS platform). In order to avoid unsynchronized data, a pair of platforms handling a shared booking initiated without deeplinking SHOULD NOT used this API endpoint but only the PATCH /bookings one.
+      operationId: putBookings
+      parameters:
+      - name: bookingId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/bookingId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+
+      responses:
+        200:
+          description: Successful operation. The Booking has been updated.
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+        404:
+          description: The targeted journey, booking or user no more exists.  Error code can be among  `missing_journey, missing_booking, missing_user` .
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: |-
+                      Explain why the request couldn't be processed.
+
+    patch:
+      tags:
+      - Interact
+      summary: Updates status of an existing Booking request.
+      description: Route used to update the status of an existing Booking request. Should be used usually just to confirm, cancel, etc. an existing Booking.
+      operationId: patchBookings
+      parameters:
+      - name: bookingId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/bookingId'
+      - name: status
+        description: New status of the Booking.
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/bookingStatus'
+      responses:
+        200:
+          description: Successful operation.
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+        404:
+          description: The targeted journey, booking or user no more exists.  Error code can be among  `missing_journey, missing_booking, missing_user` .
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: |-
+                      Explain why the request couldn't be processed.
+        409:
+          description: Conflict. This booking has already the new status requested. Error code is  `status_already_set`.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: |-
+                      Explain why the request couldn't be processed.
+
+
+    get:
+      tags:
+      - Interact
+      summary: Retrieves an existing Booking request.
+      description: Route used to retrieve the details of an existing Booking request. Can only be used by the operator having created the Booking request. This route is provided to check if the Booking object state is similar between two operators, but its usage should be required to handle the full use case of a booking.
+      operationId: getBookings
+      parameters:
+      - name: bookingId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/bookingId'
+      responses:
+        200:
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+        404:
+          description: This Booking object no more exists. Error code can be among  `missing_journey, missing_booking, missing_user` .
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: |-
+                      Explain why the request couldn't be processed.
+
   /status:
     get:
       tags:
@@ -341,6 +544,24 @@ components:
         are returned.
       schema:
         type: integer
+
+    passengerJourneyId:
+      name: passengerJourneyId
+      in: query
+      description: Identifier of the passenger Journey representing the initial context of a search for drivers. If the requester platform aims to monitor in its platform the booking made by its passenger for the Journey, it SHOULD fill this parameter. This id MUST be unique for a given operator.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 255
+
+    driverJourneyId:
+      name: driverJourneyId
+      in: query
+      description: Identifier of the driver Journey representing the initial context of a search for passengers. If the requester platform aims to monitor in its platform the booking made by its driver for the Journey, it SHOULD fill this parameter. This id MUST be unique for a given operator.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 255
 
   schemas:
     Trip:
@@ -755,6 +976,108 @@ components:
         brand:
           type: string
           description: Brand of the car.
+
+    ConnectionMessage:
+      type: object
+      required:
+        - driverJourneyId
+        - passengerJourneyId
+      properties:
+        driverJourneyId:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Driver Journey's id. It MUST be unique for a given operator.
+        passengerJourneyId:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Passenger Journey's id. It MUST be unique for a given operator.
+        message:
+          type: string
+          maxLength: 500
+          description: Free text content of a message. The message can contain all the details (phone number, email, etc.) allowing the recipient to call back the sender in order to carpool with him/her.
+        driverOperator:
+          type: string
+          description: Name of the operator owning the DriverJourney.
+        driverOperatorWebUrl:
+          type: string
+          description: Url on the website of the operator owning the DriverJourney.
+        passengerOperator:
+          type: string
+          description: Name of the operator owning the PassengerJourney.
+        passengerOperatorWebUrl:
+          type: string
+          description: Url on the website of the operator owning the PassengerJourney.
+
+    Booking:
+      allOf:
+        - $ref: '#/components/schemas/ConnectionMessage'
+      type: object
+      required:
+        - id
+        - status
+        - price
+      properties:
+        id:
+          $ref: '#/components/schemas/bookingId'
+        passengerPickupDate:
+          type: number
+          description: Passenger pickup datetime as a UNIX UTC timestamp in seconds.
+          format: long
+        passengerPickupLat:
+          type: "number"
+          format: "double"
+          description: Latitude of the passenger pick-up point.
+        passengerPickupLng:
+          type: "number"
+          format: "double"
+          description: Longitude of the passenger pick-up point.
+        passengerDropLat:
+          type: "number"
+          format: "double"
+          description: Latitude of the passenger drop-off point.
+        passengerDropLng:
+          type: "number"
+          format: "double"
+          description: Longitude of the passenger drop-off point.
+        passengerPickupAddress:
+          type: string
+          description: String representing the pickup-up address.
+        passengerDropAddress:
+          type: string
+          description: String representing the drop-off address.
+        status:
+          $ref: '#/components/schemas/bookingStatus'
+        duration:
+          type: integer
+          description: Carpooling duration in seconds.
+        distance:
+          type: integer
+          description: |
+            Carpooling distance in meters. When the booking is COMPLETED or VALIDATED, this is the actual distance travelled if available.
+        webUrl:
+          type: string
+          description: URL of the booking on the webservice provider platform.
+        price:
+          $ref: '#/components/schemas/Price'
+        car:
+          $ref: '#/components/schemas/Car'
+
+    bookingId:
+      type: string
+      description: Booking id is common between both operators, and must be set as a MD5 hashing of a string concatenating the `driverJourneyId`, the `passengerJourneyId` and a UNIX UTC timestamp in seconds.
+
+    bookingStatus:
+      type: string
+      description: Status of the booking.
+      enum:
+        - WAITING_CONFIRMATION
+        - CONFIRMED
+        - CANCELLED
+        - COMPLETED_PENDING_VALIDATION
+        - VALIDATED
+      default: WAITING_CONFIRMATION
 
   responses:
     BadRequest:
