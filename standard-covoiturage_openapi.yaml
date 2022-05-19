@@ -249,8 +249,7 @@ paths:
       tags:
       - Interact
       summary: Create a punctual outward Booking request.
-      description: Route used to synchronize a Booking request initiated by a platform to the second platform involved in the shared punctual outward journey. While posting a new Booking, its status shall always be set first as `status=WAITING_CONFIRMATION`. The  Booking MUST be created using the relevant `passengerJourneyId` or `driverJourneyId` attributes according to the operator role handling the request (the operator can recognize its own role thanks to the `driverOperator` and `passengerOperator` attributes).
-        _Reminder:_ In case of booking without deeplink, the sender platform MUST also store the Booking object, and be ready to receive modifications of it through the PATCH /bookings API endpoint.
+      description: Route used to synchronize a Booking request initiated by a platform to the second platform involved in the shared punctual outward journey. While posting a new Booking, its status must always be set first as `status=WAITING_CONFIRMATION`. _Reminder:_ In case of booking without deeplink, the sender platform MUST also store the Booking object, and be ready to receive modifications of it through the PATCH /bookings API endpoint.
       operationId: postBookings
       requestBody:
         content:
@@ -503,24 +502,6 @@ components:
         are returned.
       schema:
         type: integer
-
-    passengerJourneyId:
-      name: passengerJourneyId
-      in: query
-      description: Identifier of the passenger Journey representing the initial context of a search for drivers. If the requester platform aims to monitor in its platform the booking made by its passenger for the Journey, it SHOULD fill this parameter. This id MUST be unique for a given operator.
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 255
-
-    driverJourneyId:
-      name: driverJourneyId
-      in: query
-      description: Identifier of the driver Journey representing the initial context of a search for passengers. If the requester platform aims to monitor in its platform the booking made by its driver for the Journey, it SHOULD fill this parameter. This id MUST be unique for a given operator.
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 255
 
   schemas:
     Trip:
@@ -938,20 +919,7 @@ components:
 
     ConnectionMessage:
       type: object
-      required:
-        - driverJourneyId
-        - passengerJourneyId
       properties:
-        driverJourneyId:
-          type: string
-          minLength: 1
-          maxLength: 255
-          description: Driver Journey's id. It MUST be unique for a given operator.
-        passengerJourneyId:
-          type: string
-          minLength: 1
-          maxLength: 255
-          description: Passenger Journey's id. It MUST be unique for a given operator.
         message:
           type: string
           maxLength: 500
