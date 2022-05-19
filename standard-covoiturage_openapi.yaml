@@ -275,47 +275,6 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 
   /bookings/{bookingId}:
-    put:
-      tags:
-      - Interact
-      summary: Update a punctual outward Booking request.
-      description: Route used to update a Booking request made by a platform through deeplinking to the platform having initiated the Book (e.g. the MaaS platform). In order to avoid unsynchronized data, a pair of platforms handling a shared booking initiated without deeplinking SHOULD NOT used this API endpoint but only the PATCH /bookings one.
-      operationId: putBookings
-      parameters:
-      - name: bookingId
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/bookingId'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Booking'
-
-      responses:
-        200:
-          description: Successful operation. The Booking has been updated.
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        429:
-          $ref: '#/components/responses/TooManyRequests'
-        500:
-          $ref: '#/components/responses/InternalServerError'
-        404:
-          description: The targeted journey, booking or user no more exists.  Error code can be among  `missing_journey, missing_booking, missing_user` .
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    description: |-
-                      Explain why the request couldn't be processed.
-
     patch:
       tags:
       - Interact
