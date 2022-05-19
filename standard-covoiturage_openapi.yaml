@@ -982,7 +982,7 @@ components:
     bookingId:
       type: string
       format: uuid
-      description: Booking id is common between both operators, and must be created as a UUID by whoever initiates the booking.
+      description: Booking id is common between both operators, and must be created as a [UUID](https://datatracker.ietf.org/doc/html/rfc4122) by whoever initiates the booking.  Usage of a [4 UUID](https://datatracker.ietf.org/doc/html/rfc4122#section-4.4) generation algorithm is advised.
 
     bookingStatus:
       type: string
