@@ -70,7 +70,7 @@ information of a `Booking` object apart from its `status` attribute are
 definitely fixed at creation. For both flows, if any information apart from 
 `status` needs to be changed, the carsharing operator or MaaS platform MUST 
 create a new `Booking` with a new `booking_id`, and MUST update the status of 
-the previous booking to CANCELLED.
+the former booking to "CANCELLED".
 
 #### 3.2.1. Integrated booking by API
 
@@ -115,7 +115,7 @@ parameters can be recovered to automatically redirect the passenger to the
 booking flow as if the app had always been installed.
 
 If the operator provides a website or if its app was already installed, then 
-redirecting on the deep link SHOULD automatically and seamlessly bring the 
+following the deep link SHOULD automatically and seamlessly redirect the 
 passenger to the operator's booking flow. It is up to the operator to decide 
 where to start this flow and what to do with the parameters sent to the MaaS 
 app in the search to provide the passenger with the best booking experience.  
@@ -150,15 +150,17 @@ information to the MaaS platform, about the booking events happening on the
 transport operator website or app. The booking feed mechanism relies on an 
 [Open ID Connect 1.0](https://openid.net/specs/openid-connect-core-1_0.html) 
 identity layer where the Provider is the MaaS platform, subsequently referred 
-to as "MaaS connect".
+to as "MaaS connect". See section [TODO ref]() for further information.
 
 A transport operator offering booking by deep link MUST accept 
 authentification via "MaaS connect".  
 
-A MaaS platform SHOULD provide a "Maas Connect" identity layer in order to get 
+A MaaS platform SHOULD provide a "MaaS Connect" identity layer in order to get 
 back information on booking events happening on the platform of the transport 
 operator. In that case, it also MUST provide an API endpoint matching the 
-`POST /booking_events` specification.
+`POST /booking_events` specification. Moreover, the passenger MUST be 
+authenticated using MaaS Connect at the time of the redirection to allow the 
+booking feed.
 
 The booking feed flow starts as soon as a booking is created. It sends booking 
 data back to the MaaS platform. It allows the MaaS platform to support 
@@ -172,7 +174,7 @@ to the MaaS plateform. As specified in section [TODO](), every other change
 MUST be operated by creating a new `Booking` object and udating the `status` 
 of the former booking to "CANCELLED".  
 
-A status update with the `POST /booking_events` MUST repeat the whole 
+A status update with the `POST /booking_events` endpoint MUST repeat the whole 
 `Booking` object each time as redunduncy allows for a better resilience to 
 communication failures (e.g. a status update event can be processed even if 
 the booking creation event has been missed).
