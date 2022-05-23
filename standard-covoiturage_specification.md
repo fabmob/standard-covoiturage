@@ -150,7 +150,7 @@ information to the MaaS platform, about the booking events happening on the
 transport operator website or app. The booking feed mechanism relies on an 
 [Open ID Connect 1.0](https://openid.net/specs/openid-connect-core-1_0.html) 
 identity layer where the Provider is the MaaS platform, subsequently referred 
-to as "MaaS connect". See section [TODO ref]() for further information.
+to as "MaaS connect". See [the dedicated section](#33-authentication-across-platforms-maas-connect) for further information.
 
 A transport operator offering booking by deep link MUST accept 
 authentification via "MaaS connect".  
@@ -170,9 +170,9 @@ reporting, incentive program, pricing bundles,...).
 If the MaaS platform is offering the `POST /booking_events` endpoint, and once 
 a booking is created, the operator MUST send the booking details to the MaaS 
 platform. The operator MUST also notify every `status` update of the booking 
-to the MaaS plateform. As specified in section [TODO](), every other change 
-MUST be operated by creating a new `Booking` object and udating the `status` 
-of the former booking to "CANCELLED".  
+to the MaaS plateform. As specified in [the introduction of the booking 
+section](#32-booking), every other change MUST be operated by creating a new `Booking` 
+object and udating the `status` of the former booking to "CANCELLED".  
 
 A status update with the `POST /booking_events` endpoint MUST repeat the whole 
 `Booking` object each time as redunduncy allows for a better resilience to 
