@@ -176,6 +176,35 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
 
+  /booking_events:
+    post:
+      tags:
+      - Webhooks
+      summary:
+        Sends booking information of a user connected with a third-party
+        provider back to the provider.
+      description:
+        Route used to allow a carpool operator to send booking information to a third-party
+        provider. This can be used in the context of a booking flow with deeplinking and
+        when a passenger is using the Connect specification to link their accounts of a
+        third-party service (e.g., a MaaS) and the operator.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarpoolBookingEvent'
+      responses:
+        200:
+          description: Ok. Request processed successfully.
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
   /status:
     get:
       tags:
@@ -203,7 +232,6 @@ components:
       schema:
         type: number
       description: Latitude of searched departure point.
-
 
     departureLng:
       name: departureLng
@@ -525,6 +553,113 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/JourneySchedule'
+
+    CarpoolBookingEvent:
+      required:
+        - id
+        - idToken
+        - data
+      properties:
+        id:
+          type: string
+          format: uuid
+          description:
+            Unique journey's id in the format of an [UUID](https://datatracker.ietf.org/doc/html/rfc4122).
+            Usage of a [4 UUID](https://datatracker.ietf.org/doc/html/rfc4122#section-4.4) generation algorithm
+            is advised.
+        idToken:
+          type: string
+          description: ID token of the user retrieved using the OpenID Connect flows.
+        data:
+          oneOf:
+          - $ref: '#/components/schemas/DriverCarpoolBooking'
+          - $ref: '#/components/schemas/PassengerCarpoolBooking'
+
+    CarpoolBooking:
+      required:
+      - id
+      - passengerPickupDate
+      - passengerPickupLat
+      - passengerPickupLng
+      - passengerDropLat
+      - passengerDropLng
+      - status
+      - webUrl
+      properties:
+        id:
+          type: "string"
+          description: Unique identifier of the booking.
+        passengerPickupDate:
+          type: number
+          description: Passenger pickup datetime as a UNIX UTC timestamp in seconds.
+          format: long
+        passengerPickupLat:
+          type: "number"
+          format: "double"
+          description: Latitude of the passenger pick-up point.
+        passengerPickupLng:
+          type: "number"
+          format: "double"
+          description: Longitude of the passenger pick-up point.
+        passengerDropLat:
+          type: "number"
+          format: "double"
+          description: Latitude of the passenger drop-off point.
+        passengerDropLng:
+          type: "number"
+          format: "double"
+          description: Longitude of the passenger drop-off point.
+        passengerPickupAddress:
+          type: string
+          description: String representing the pickup-up address.
+        passengerDropAddress:
+          type: string
+          description: String representing the drop-off address.
+        status:
+          type: string
+          enum:
+            - WAITING_CONFIRMATION
+            - CONFIRMED
+            - CANCELLED
+            - COMPLETED_PENDING_VALIDATION
+            - VALIDATED
+        distance:
+          type: "integer"
+          description: |
+            Carpooling distance in meters. When the booking is COMPLETED or VALIDATED, this is the actual distance travelled if available.
+        duration:
+          type: integer
+          description: Carpooling duration in seconds.
+        webUrl:
+          type: string
+          description: URL of the booking on the webservice provider platform.
+
+    PassengerCarpoolBooking:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CarpoolBooking'
+        - type: object
+          required:
+            - passenger
+          properties:
+            passenger:
+              $ref: '#/components/schemas/User'
+
+    DriverCarpoolBooking:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CarpoolBooking'
+        - type: object
+          required:
+            - driver
+            - price
+          properties:
+            driver:
+              $ref: '#/components/schemas/User'
+            price:
+              $ref: '#/components/schemas/Price'
+            car:
+              $ref: '#/components/schemas/Car'
 
     Price:
       type: object
