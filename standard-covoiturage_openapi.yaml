@@ -223,6 +223,10 @@ paths:
                 - message
                 - recipientCarpoolerType
               properties:
+                from:
+                  $ref: '#/components/schemas/User'
+                to:
+                  $ref: '#/components/schemas/User'
                 message:
                   type: string
                   maxLength: 500
