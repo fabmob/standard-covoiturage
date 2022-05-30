@@ -244,7 +244,8 @@ paths:
                   maxLength: 255
                   description: ID of the journey to which the message is related (if any)
                 bookingId:
-                  $ref: '#/components/schemas/bookingId'
+                  allOf:
+                    - $ref: '#/components/schemas/bookingId'
                   description: ID of the booking to which the message is related (if any)
 
       responses:
