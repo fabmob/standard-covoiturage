@@ -864,10 +864,14 @@ components:
       required:
         - id
         - alias
+        - operatorWebUrl
       properties:
         id:
           type: string
-          description: User's unique identifier.
+          description: User's identifier. It MUST be unique for a given `operatorWebUrl`.
+        operatorWebUrl:
+          type: string
+          description: Base URL of the website of the operator owning the DriverJourney.
         alias:
           type: string
           description: User's alias.
