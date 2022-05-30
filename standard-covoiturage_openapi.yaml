@@ -238,6 +238,15 @@ paths:
                     - passenger
                   default: driver
                   description: Defines if the recipient of this message is either the driver or the passenger.
+                journeyId:
+                  type: string
+                  minLength: 1
+                  maxLength: 255
+                  description: ID of the journey to which the message is related (if any)
+                bookingId:
+                  $ref: '#/components/schemas/bookingId'
+                  description: ID of the booking to which the message is related (if any)
+
       responses:
         201:
           description: Successful operation.
