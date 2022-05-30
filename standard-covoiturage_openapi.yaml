@@ -208,7 +208,7 @@ paths:
   /status:
     get:
       tags:
-      - status
+        - API information
       summary: Give health status of the webservice.
       responses:
         200:
@@ -217,6 +217,36 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         500:
           $ref: '#/components/responses/InternalServerError'
+
+  /api/info:
+     get:
+       tags:
+         - API information
+       summary: describes the running API implementation
+       description: Gives the version of the running API, and the available endpoints.
+       responses:
+         '200':
+           description: successful operation
+           content:
+             application/json:
+               schema:
+                   type: object
+                   required:
+                     - version
+                     - baseUrl
+                     - endpoints
+                   properties:
+                     version:
+                       type: string
+                       description: Version of the running API
+                     baseUrl:
+                       type: string
+                       description: base url of the API
+                     endpoints:
+                       type: array
+                       description: List of endpoints with their implementation status
+                       items:
+                         $ref: "#/components/schemas/Endpoint"
 
 #
 # Schemas
@@ -755,6 +785,34 @@ components:
         brand:
           type: string
           description: Brand of the car.
+
+    Endpoint:
+      type: object
+      description: a formal description of an endpoint.
+      required:
+        - method
+        - path
+        - status
+      properties:
+        method:
+          type: string
+          enum: [
+            POST,
+            PUT,
+            GET,
+            DELETE,
+            PATCH
+          ]
+        path:
+          description: the exact path of the endpoint, starting after the base URL
+          type: string
+          example: /bookings
+        status:
+          type: string
+          enum: [
+            NOT_IMPLEMENTED,
+            IMPLEMENTED
+          ]
 
   responses:
     BadRequest:
