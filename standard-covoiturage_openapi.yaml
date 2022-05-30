@@ -309,6 +309,13 @@ paths:
         required: true
         schema:
           $ref: '#/components/schemas/bookingStatus'
+      - name: message
+        description: Free text content of a message. The message can contain explanations on the status change.
+        in: query
+        schema:
+          type: string
+          maxLength: 500
+
       responses:
         200:
           description: Successful operation.
