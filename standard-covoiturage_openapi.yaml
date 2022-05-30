@@ -216,13 +216,17 @@ paths:
         content:
           application/json:
             schema:
-              allOf:
-                - $ref: '#/components/schemas/ConnectionMessage'
               type: object
               required:
+                - from
+                - to
                 - message
                 - recipientCarpoolerType
               properties:
+                message:
+                  type: string
+                  maxLength: 500
+                  description: Free text content of a message. The message can contain all the details (phone number, email, etc.) allowing the recipient to call back the sender in order to carpool with him/her.
                 recipientCarpoolerType:
                   type: string
                   enum:
@@ -917,17 +921,8 @@ components:
           type: string
           description: Brand of the car.
 
-    ConnectionMessage:
-      type: object
-      properties:
-        message:
-          type: string
-          maxLength: 500
-          description: Free text content of a message. The message can contain all the details (phone number, email, etc.) allowing the recipient to call back the sender in order to carpool with him/her.
 
     Booking:
-      allOf:
-        - $ref: '#/components/schemas/ConnectionMessage'
       type: object
       required:
         - id
@@ -983,6 +978,10 @@ components:
           $ref: '#/components/schemas/Price'
         car:
           $ref: '#/components/schemas/Car'
+        message:
+          type: string
+          maxLength: 500
+          description: Free text content of a message. The message can contain all the details (phone number, email, etc.) allowing the recipient to call back the sender in order to carpool with him/her.
 
     bookingId:
       type: string
