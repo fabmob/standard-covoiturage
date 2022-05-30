@@ -933,6 +933,11 @@ components:
         - id
         - status
         - price
+        - passengerPickupDate
+        - passengerPickupLat
+        - passengerPickupLng
+        - passengerDropLat
+        - passengerDropLng
       properties:
         id:
           $ref: '#/components/schemas/bookingId'
