@@ -1014,6 +1014,11 @@ components:
           $ref: '#/components/schemas/Price'
         car:
           $ref: '#/components/schemas/Car'
+        journeyId:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: ID of the journey to which the booking is related (if any)
         message:
           type: string
           maxLength: 500
