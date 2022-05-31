@@ -234,9 +234,9 @@ paths:
                 recipientCarpoolerType:
                   type: string
                   enum:
-                    - driver
-                    - passenger
-                  default: driver
+                    - DRIVER
+                    - PASSENGER
+                  default: DRIVER
                   description: Defines if the recipient of this message is either the driver or the passenger.
                 journeyId:
                   type: string
