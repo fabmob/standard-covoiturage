@@ -956,6 +956,8 @@ components:
       type: object
       required:
         - id
+        - driver
+        - passenger
         - status
         - price
         - passengerPickupDate
@@ -966,6 +968,10 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/bookingId'
+        driver:
+          $ref: '#/components/schemas/UserId'
+        passenger:
+          $ref: '#/components/schemas/UserId'
         passengerPickupDate:
           type: number
           description: Passenger pickup datetime as a UNIX UTC timestamp in seconds.
