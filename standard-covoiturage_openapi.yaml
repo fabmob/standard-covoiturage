@@ -273,7 +273,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Booking'
+              $ref: '#/components/schemas/VersatileBookingRequest'
 
       responses:
         201:
@@ -281,7 +281,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Booking'
+                $ref: '#/components/schemas/VersatileBookingRequest'
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -370,7 +370,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Booking'
+                $ref: '#/components/schemas/VersatileBookingRequest'
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -770,11 +770,9 @@ components:
       - passengerDropLat
       - passengerDropLng
       - status
-      - webUrl
       properties:
         id:
-          type: "string"
-          description: Unique identifier of the booking.
+          $ref: '#/components/schemas/bookingId'
         passengerPickupDate:
           type: number
           description: Passenger pickup datetime as a UNIX UTC timestamp in seconds.
@@ -802,13 +800,7 @@ components:
           type: string
           description: String representing the drop-off address.
         status:
-          type: string
-          enum:
-            - WAITING_CONFIRMATION
-            - CONFIRMED
-            - CANCELLED
-            - COMPLETED_PENDING_VALIDATION
-            - VALIDATED
+          $ref: '#/components/schemas/bookingStatus'
         distance:
           type: "integer"
           description: |
@@ -827,9 +819,10 @@ components:
         - type: object
           required:
             - passenger
+            - webUrl
           properties:
-            passenger:
-              $ref: '#/components/schemas/User'
+            passengerId:
+              $ref: '#/components/schemas/UserId'
 
     DriverCarpoolBooking:
       type: object
@@ -839,13 +832,49 @@ components:
           required:
             - driver
             - price
+            - webUrl
           properties:
-            driver:
-              $ref: '#/components/schemas/User'
+            driverId:
+              $ref: '#/components/schemas/UserId'
             price:
               $ref: '#/components/schemas/Price'
             car:
               $ref: '#/components/schemas/Car'
+
+    VersatileBookingRequest:
+      allOf:
+        - $ref: '#/components/schemas/CarpoolBooking'
+      type: object
+      required:
+        - passenger
+        - driverId
+        - priceId
+      properties:
+        passengerId:
+          $ref: '#/components/schemas/UserId'
+        driverId:
+          $ref: '#/components/schemas/UserId'
+        passengerJourneyId:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: ID of the passenger's journey to which the booking is related (if any)
+        driverJourneyId:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: ID of the driver's journey to which the booking is related (if any)
+        price:
+          $ref: '#/components/schemas/Price'
+        duration:
+          type: integer
+          description: Carpooling duration in seconds.
+        car:
+          $ref: '#/components/schemas/Car'
+        message:
+          type: string
+          maxLength: 500
+          description: Free text content of a message.
 
     Price:
       type: object
@@ -950,68 +979,6 @@ components:
         brand:
           type: string
           description: Brand of the car.
-
-
-    Booking:
-      type: object
-      required:
-        - id
-        - status
-        - price
-        - passengerPickupDate
-        - passengerPickupLat
-        - passengerPickupLng
-        - passengerDropLat
-        - passengerDropLng
-      properties:
-        id:
-          $ref: '#/components/schemas/bookingId'
-        passengerPickupDate:
-          type: number
-          description: Passenger pickup datetime as a UNIX UTC timestamp in seconds.
-          format: long
-        passengerPickupLat:
-          type: "number"
-          format: "double"
-          description: Latitude of the passenger pick-up point.
-        passengerPickupLng:
-          type: "number"
-          format: "double"
-          description: Longitude of the passenger pick-up point.
-        passengerDropLat:
-          type: "number"
-          format: "double"
-          description: Latitude of the passenger drop-off point.
-        passengerDropLng:
-          type: "number"
-          format: "double"
-          description: Longitude of the passenger drop-off point.
-        passengerPickupAddress:
-          type: string
-          description: String representing the pickup-up address.
-        passengerDropAddress:
-          type: string
-          description: String representing the drop-off address.
-        status:
-          $ref: '#/components/schemas/bookingStatus'
-        duration:
-          type: integer
-          description: Carpooling duration in seconds.
-        distance:
-          type: integer
-          description: |
-            Carpooling distance in meters. When the booking is COMPLETED or VALIDATED, this is the actual distance travelled if available.
-        webUrl:
-          type: string
-          description: URL of the booking on the webservice provider platform.
-        price:
-          $ref: '#/components/schemas/Price'
-        car:
-          $ref: '#/components/schemas/Car'
-        message:
-          type: string
-          maxLength: 500
-          description: Free text content of a message. The message can contain all the details (phone number, email, etc.) allowing the recipient to call back the sender in order to carpool with him/her.
 
     bookingId:
       type: string
