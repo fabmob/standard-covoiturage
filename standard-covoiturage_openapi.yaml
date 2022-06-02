@@ -224,9 +224,9 @@ paths:
                 - recipientCarpoolerType
               properties:
                 from:
-                  $ref: '#/components/schemas/UserId'
+                  $ref: '#/components/schemas/User'
                 to:
-                  $ref: '#/components/schemas/UserId'
+                  $ref: '#/components/schemas/User'
                 message:
                   type: string
                   maxLength: 500
@@ -868,10 +868,21 @@ components:
           description: ISO 4217 code representing the currency of the price.
 
     User:
-      allOf:
-        - $ref: '#/components/schemas/UserId'
       type: object
+      required:
+        - id
+        - alias
+        - operator
       properties:
+        id:
+          type: string
+          description: User's identifier. It MUST be unique for a given `operator`.
+        operator:
+          type: string
+          description: The operator identifier. MUST be a Fully Qualified Domain Name (example carpool.mycity.com) owned by the operator or a Partially Qualified Domain Name (example operator.org) owned and exclusively operated by the operator. Operators SHOULD always send the same value.
+        alias:
+          type: string
+          description: User's alias.
         firstName:
           type: string
           description: User's first name.
@@ -897,22 +908,6 @@ components:
           type: boolean
           description: true if the identity of this user has been verified by the operator or a third party; and the firstName, lastName, birthdate have been confirmed as identitical to an official identity proof document. Can be left empty if the information is not available.
 
-    UserId:
-      type: object
-      required:
-        - id
-        - alias
-        - operator
-      properties:
-        id:
-          type: string
-          description: User's identifier. It MUST be unique for a given `operator`
-        operator:
-          type: string
-          description: The operator identifier. MUST be a Fully Qualified Domain Name (example carpool.mycity.com) owned by the operator or a Partially Qualified Domain Name (example operator.org) owned and exclusively operated by the operator. Operators SHOULD always send the same value.
-        alias:
-          type: string
-          description: User's alias
 
     Preferences:
       type: object
@@ -969,9 +964,9 @@ components:
         id:
           $ref: '#/components/schemas/bookingId'
         driver:
-          $ref: '#/components/schemas/UserId'
+          $ref: '#/components/schemas/User'
         passenger:
-          $ref: '#/components/schemas/UserId'
+          $ref: '#/components/schemas/User'
         passengerPickupDate:
           type: number
           description: Passenger pickup datetime as a UNIX UTC timestamp in seconds.
