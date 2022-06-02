@@ -1021,7 +1021,7 @@ components:
           type: string
           minLength: 1
           maxLength: 255
-          description: ID of the journey to which the booking is related (if any). Unique given the `User`'s `operator` property.
+          description: ID of the Passenger's journey to which the booking is related (if any). Unique given the `User`'s `operator` property.
 
     bookingId:
       type: string
