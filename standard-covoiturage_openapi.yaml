@@ -1001,7 +1001,7 @@ components:
         distance:
           type: integer
           description: |
-            Carpooling distance in meters. When the booking is COMPLETED or VALIDATED, this is the actual distance travelled if available.
+            Carpooling distance in meters.
         webUrl:
           type: string
           description: URL of the booking on the webservice provider platform.
