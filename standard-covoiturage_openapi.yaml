@@ -1014,10 +1014,6 @@ components:
           minLength: 1
           maxLength: 255
           description: ID of the journey to which the booking is related (if any)
-        message:
-          type: string
-          maxLength: 500
-          description: Free text content of a message.
 
     bookingId:
       type: string
