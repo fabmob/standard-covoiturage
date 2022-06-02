@@ -238,11 +238,16 @@ paths:
                     - PASSENGER
                   default: DRIVER
                   description: Defines if the recipient of this message is either the driver or the passenger.
-                journeyId:
+                driverJourneyId:
                   type: string
                   minLength: 1
                   maxLength: 255
-                  description: ID of the journey to which the message is related (if any)
+                  description: ID of the Driver's journey to which the message is related (if any). Unique given the `User`'s `operator` property.
+                passengerJourneyId:
+                  type: string
+                  minLength: 1
+                  maxLength: 255
+                  description: ID of the Passenger's journey to which the message is related (if any). Unique given the `User`'s `operator` property.
                 bookingId:
                   allOf:
                     - $ref: '#/components/schemas/bookingId'
@@ -1009,11 +1014,16 @@ components:
           $ref: '#/components/schemas/Price'
         car:
           $ref: '#/components/schemas/Car'
-        journeyId:
+        driverJourneyId:
           type: string
           minLength: 1
           maxLength: 255
-          description: ID of the journey to which the booking is related (if any)
+          description: ID of the Driver's journey to which the booking is related (if any). Unique given the `User`'s `operator` property.
+        passengerJourneyId:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: ID of the journey to which the booking is related (if any). Unique given the `User`'s `operator` property.
 
     bookingId:
       type: string
