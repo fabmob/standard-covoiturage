@@ -532,13 +532,13 @@ components:
         type:
           type: string
           description: |-
-            Either « FREE » or « PAYING »
+            Either « FREE » or « PAYING » or « UNKNOWN ».
           enum:
           - FREE
           - PAYING
         amount:
           type: number
-          description: Amount expected by the carpooling operator. If `type` is PAYING, a missing amount means that the price cannot be estimated yet.
+          description: Carpooling passenger cost estimate. If `type` is PAYING, a missing amount means that the price cannot be estimated yet.
           format: float
         currency:
           type: string
