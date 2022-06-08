@@ -261,6 +261,7 @@ components:
       name: departureDate
       in: query
       description: Departure datetime using a UNIX UTC timestamp in seconds.
+      required: true
       schema:
         type: integer
 
@@ -288,7 +289,7 @@ components:
         type: array
         items:
           type: string
-        default: mon,tue,wed,thu,fri,sat,sun
+        default: MON,TUE,WED,THU,FRI,SAT,SUN
 
     timeDelta:
       name: timeDelta
@@ -478,7 +479,6 @@ components:
       required:
         - passengerPickupDate
         - type
-        - webUrl
       properties:
         id:
           type: string
@@ -497,7 +497,7 @@ components:
           format: long
         webUrl:
           type: string
-          description: URL of the journey on the webservice provider platform.
+          description: URL of the journey on the webservice provider platform. Required to support booking by deeplink.
         type:
           type: string
           description: |-
@@ -540,13 +540,13 @@ components:
           type: string
           description: Day of week of the passenger pick-up.
           enum:
-            - mon
-            - tue
-            - wed
-            - thu
-            - fri
-            - sat
-            - sun
+            - MON
+            - TUE
+            - WED
+            - THU
+            - FRI
+            - SAT
+            - SUN
         passengerPickupTimeOfDay:
           description: |-
             Passenger pick-up time of day represented as
@@ -679,7 +679,7 @@ components:
           - UNKNOWN
         amount:
           type: number
-          description: Carpooling passenger cost.
+          description: Carpooling passenger cost estimate. In the case of integrated booking by API, amount expected by the carpooling operator.
           format: float
         currency:
           type: string
