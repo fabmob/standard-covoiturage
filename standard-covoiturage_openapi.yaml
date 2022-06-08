@@ -26,7 +26,7 @@ paths:
         - $ref: '#/components/parameters/departureLng'
         - $ref: '#/components/parameters/arrivalLat'
         - $ref: '#/components/parameters/arrivalLng'
-        - $ref: '#/components/parameters/departureTime'
+        - $ref: '#/components/parameters/departureDate'
         - $ref: '#/components/parameters/timeDelta'
         - $ref: '#/components/parameters/departureRadius'
         - $ref: '#/components/parameters/arrivalRadius'
@@ -62,7 +62,7 @@ paths:
         - $ref: '#/components/parameters/departureLng'
         - $ref: '#/components/parameters/arrivalLat'
         - $ref: '#/components/parameters/arrivalLng'
-        - $ref: '#/components/parameters/departureTime'
+        - $ref: '#/components/parameters/departureDate'
         - $ref: '#/components/parameters/timeDelta'
         - $ref: '#/components/parameters/departureRadius'
         - $ref: '#/components/parameters/arrivalRadius'
@@ -229,8 +229,8 @@ components:
       schema:
         type: number
 
-    departureTime:
-      name: departureTime
+    departureDate:
+      name: departureDate
       in: query
       description: Departure datetime using a UNIX UTC timestamp in seconds. If left out, the current time should be assumed.
       schema:
@@ -444,7 +444,7 @@ components:
     JourneySchedule:
       type: object
       required:
-        - passengerPickupTime
+        - passengerPickupDate
         - type
       properties:
         id:
@@ -452,12 +452,12 @@ components:
           minLength: 1
           maxLength: 255
           description: Journey's id. It MUST be unique for a given operator.
-        passengerPickupTime:
+        passengerPickupDate:
           type: number
           description: |-
             Passenger pickup datetime as a UNIX UTC timestamp in seconds.
           format: long
-        driverDepartureTime:
+        driverDepartureDate:
           type: number
           description: |-
             Driver departure datetime as a UNIX UTC timestamp in seconds.
@@ -494,7 +494,7 @@ components:
         - $ref: '#/components/schemas/JourneySchedule'
         - type: object
           required:
-            - driverDepartureTime
+            - driverDepartureDate
           properties:
             requestedSeats:
               type: integer
