@@ -232,7 +232,8 @@ components:
     departureDate:
       name: departureDate
       in: query
-      description: Departure datetime using a UNIX UTC timestamp in seconds. If left out, the current time should be assumed.
+      description: Departure datetime using a UNIX UTC timestamp in seconds.
+      required: true
       schema:
         type: integer
 
