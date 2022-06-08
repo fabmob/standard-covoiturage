@@ -532,13 +532,19 @@ components:
         type:
           type: string
           description: |-
+<<<<<<< HEAD
             Either « FREE » or « PAYING » or « UNKNOWN ».
+=======
+            Either « FREE », « PAYING » or « UNKNOWN ». « UNKNOWN » is given
+            when it should be « PAYING » but we cannot set the price yet.
+>>>>>>> parent of 71d5e37... Remove "UNKNOWN" modality
           enum:
           - FREE
           - PAYING
+          - UNKNOWN
         amount:
           type: number
-          description: Carpooling passenger cost estimate. If `type` is PAYING, a missing amount means that the price cannot be estimated yet.
+          description: Carpooling passenger cost.
           format: float
         currency:
           type: string
