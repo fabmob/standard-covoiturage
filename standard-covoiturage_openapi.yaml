@@ -744,6 +744,10 @@ components:
             [RFC3339 partial-time](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6).
           type: string
           format: partial-time
+        everyWeeks:
+          type: boolean
+          description: Set as `true` if the schedule is identical every weeks.
+          default: true
         JourneySchedules:
           type: array
           items:
