@@ -60,7 +60,7 @@ sequenceDiagram
     M-->>U: Show results
 ~~~
 
-The search results are queried by the MaaS platform to the transport operator 
+The search results are queried by the MaaS platform to the carpooling operator 
 in a single API call, providing all relevant query informations. The minimum 
 required information is the starting and arrival places.  
 
@@ -78,20 +78,20 @@ Searching for regular journeys has its own specific workflow presented in
 
 ##### Simple search technical specification
 
-The transport operator MUST return at most `count` matching results, or all 
+The carpooling operator MUST return at most `count` matching results, or all 
 matching results if `count` parameter is not specified. All returned results 
 MUST match the query parameters.
 
-If the parameter `count` is specified, the transport operator SHOULD return in 
-priority the most relevant results. The measure of relevance is left to the 
-discretion of the transport operator.
+If the parameter `count` is specified, the carpooling operator SHOULD return 
+in priority the most relevant results. The measure of relevance is left to the 
+discretion of the carpooling operator.
 
 If no `departureDate` attribute is provided by the MaaS platform in the call 
 to `GET \driver_journeys` or `GET \passenger_journeys`, the current datetime 
 MUST be assumed.
 
-The `id` attribute of the response MUST be unique for a given Transport 
-Operator, among all journeys (`passengerJourneys` and `driverJourneys`).
+The `id` attribute of the response MUST be unique for a given carpooling 
+operator, among all journeys (`passengerJourneys` and `driverJourneys`).
 
 The `price` attribute of the response SHOULD be a price estimation, if no 
 estimation is possible, a price with type "UNKNOWN" SHOULD be returned.
@@ -119,7 +119,7 @@ with a large `timeDelta` and post-filtering, or with several calls with
 
 ##### Technical specification for searching for regular journeys
 
-The transport operator MUST return at most `count` matching results, or all 
+The carpooling operator MUST return at most `count` matching results, or all 
 matching results if `count` parameter is not specified. All returned results 
 MUST match the query parameters.
 
@@ -128,7 +128,7 @@ A regular trip matches the `departureWeekdays` and `departureTimeOfDay` if
 starts between `minDepartureDate` and `maxDepartureDate` (included).
 
 The returned results may not reach the `maxDepartureDate` because of the 
-limited forecasting horizon of the transport operator.
+limited forecasting horizon of the carpooling operator.
 
 The `webUrl` attribute in the response SHOULD link to a page giving an 
 overview of the regular trips (e.g. a "driver" page) and allowing to continue 
