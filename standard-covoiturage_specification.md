@@ -66,7 +66,7 @@ required information is the starting and arrival places.
 
 In particular, no user information is required to perform a search.
 
-###### The case of a round trip
+##### The case of a round trip
 
 If the case of a round trip, it is up to the MaaS platform to perform the 
 searches for the outward and return journey separately.
