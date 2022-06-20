@@ -50,7 +50,8 @@ There are two flavours of searches: a driver can search for passengers (so, he
 searches a `passenger_journey`), or a passenger can search for a driver 
 (looking for a `driver_journey`). The difference between these two searches 
 are in the endpoints used and the return values, the following sequence 
-diagram works for both.
+diagram works for both. The carpooling operator can implement one or the other 
+or both API endpoints.
 
 ~~~mermaid
 sequenceDiagram
@@ -109,7 +110,7 @@ the actual amount expected by the carpooling operator. Therefore, the
 carpooling operator SHOULD return a `price` of type "FREE" or "PAYING" to 
 allow the MaaS platform to book by API.
 
-#### 3.1.2 Search for Regular trips and associated journeys
+#### 3.1.2 Search for regular trips and associated journeys
 
 ##### General workflow 
 
@@ -119,7 +120,8 @@ Endpoints implemented by the carpooling operator:
 * `GET /passenger_regular_trips`
 
 These are the counterparts of the `GET \passenger_journeys` and `GET 
-\driver_journeys` endpointS, but for searching regular trips.
+\driver_journeys` endpoints, but for searching regular trips. The carpooling 
+operator can implement one or the other or both API endpoints.
 
 A regular trip is a recurring trip that is repeated from one week to another.  
 The API allows for searching regular trips that start around the same time of 
