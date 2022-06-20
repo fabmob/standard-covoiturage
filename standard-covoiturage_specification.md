@@ -184,10 +184,11 @@ flows if they implement booking. They MAY implement both.
 
 #### 3.2.1. Flow independent specifications 
 
-Both flows share a common pattern: a `Booking` object with unique `booking_id` 
-is shared between the MaaS platform and the carsharing operator, and its 
-status is subsequently updated. However, these operations are performed 
-differently depending on the selected booking flow.
+Both flows share a common pattern: a `*Booking` object with unique 
+`booking_id` is shared between the MaaS platform and the carsharing operator, 
+and its status is subsequently updated (some details of this object may differ 
+depending on the flow).  However, these operations are performed differently 
+depending on the selected booking flow.
 
 All information of a `Booking` object apart from its `status` attribute are 
 definitely fixed at creation. For both flows, if any information apart from 
