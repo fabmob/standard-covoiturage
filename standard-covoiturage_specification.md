@@ -37,7 +37,7 @@ The first draft versions of this specification do not include normative parts.
 
 ### 3.1. Search / Carpool information
 
-#### 3.1.1 Search for Journeys
+#### 3.1.1. Search for Journeys
 
 ##### General Workflow
 
