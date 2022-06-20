@@ -1,4 +1,4 @@
-% Introduction au standard covoiturage
+# Introduction au standard covoiturage
 
 Ce répertoire présente les travaux du groupe de travail pour faire émerger un
 standard pour mettre à disposition ou échanger des données, réaliser des 
