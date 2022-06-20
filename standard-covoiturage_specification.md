@@ -47,32 +47,41 @@ TODO explain driver/passenger regular trips and link to OpenAPI spec
 
 ### 3.2. Booking
 
-This specifications provides 2 flows for implementing an initial booking transaction : 
+This specifications provides two flows for implementing an initial booking 
+transaction : 
 
-- Integrated booking by API : the initial booking is handled by an API exchange between MaaS platforms and operators. Users stay on their original application, without having to switch to another.
-- Delegated booking by deep link : booking is handled by switching 
+- Integrated booking by API: the initial booking is handled by an API exchange 
+  between MaaS platforms and operators. Users stay on their original 
+  application, without having to switch to another, and they don't need to be 
+  authenticated with the carpooling operator.
+- Delegated booking by deep link: booking is handled by switching 
   applications, with a deep link to access directly to the right page on the 
-  carpooling operator application.
+  carpooling operator application. The user needs to authenticate with the 
+  carpooling operator.
 
-These 2 flows share a common syntax for operations after the initial booking 
-occurs. Integrated booking by API can still leverage deep link information to 
-access the operator's application while Delegated booking by deep link uses 
-API endpoints to provide information of the evolution of the booking process 
-to the MaaS platform.
+MaaS platforms and carpooling operators MUST support at least one of these two 
+flows if they implement booking. They MAY implement both.
 
-MaaS platforms and carpooling operators MUST support at least one of these 2 flows if they implement booking.
-
-They MAY implement both.
+#### 3.2.1. Flow independent specifications 
 
 Both flows share a common pattern: a `Booking` object with unique `booking_id` 
-is shared between the MaaS platform and the carsharing operator.  All 
-information of a `Booking` object apart from its `status` attribute are 
+is shared between the MaaS platform and the carsharing operator, and its 
+status is subsequently updated. However, these operations are performed 
+differently depending on the selected booking flow.
+
+All information of a `Booking` object apart from its `status` attribute are 
 definitely fixed at creation. For both flows, if any information apart from 
 `status` needs to be changed, the carsharing operator or MaaS platform MUST 
 create a new `Booking` with a new `booking_id`, and MUST update the status of 
 the former booking to "CANCELLED".
 
-#### 3.2.1. Integrated booking by API
+For both flows, a status change MUST update the `status` to a subsequent 
+status respecting the following order: [ WAITING_CONFIRMATION, CONFIRMED,  
+COMPLETED_PENDING_VALIDATION, VALIDATED, CANCELLED ]. `status` update requests 
+that do not comply with this rule SHOULD be dismissed (they may be the result 
+of an order of receipt different from that of the requests sending).
+
+#### 3.2.2. Integrated booking by API
 
 Integrated booking by API is based on 3 routes described in the [OpenAPI 
 specification](standard-covoiturage_openapi.yaml) : 
@@ -81,12 +90,16 @@ specification](standard-covoiturage_openapi.yaml) :
 - PATCH /bookings : modify the state of the booking status to complete the booking flow 
 - GET /bookings/{bookingId} : get the state of the booking
 
-#### 3.2.2. Delegated booking by deep link
+#### 3.2.3. Delegated booking by deep link
 
 This section provides precise guidelines for a carpooling operator and a MaaS 
-platform to implement a "booking" flow for passengers, with information to 
-complete the booking shared via deep linking between the two and booking 
-information sent back to the MaaS platform.
+platform to implement a "booking" flow for passengers with deep linking, in 
+addition to the above flow independent specifications.
+
+There is no specific API endpoint associated to this flow, but the MaaS 
+platform that wishes to retrieve the booking information SHOULD implement the 
+booking feed functional block. In this case, the carpooling operator MUST 
+comply to the booking feed specification.
 
 ##### Redirection towards the carsharing operator
 
@@ -143,17 +156,24 @@ flowchart LR
     F -.-> |Back to MaaS| G((Display trip<br>booked))
 ~~~
 
-##### Information push from carsharing operator to MaaS platform (booking feed flow)
+#### 3.2.4. Booking information push from carsharing operator to MaaS platform (booking feed flow)
 
 The booking feed is the channel by which the transport operator sends 
 information to the MaaS platform, about the booking events happening on the 
 transport operator website or app. The booking feed mechanism relies on an 
 [Open ID Connect 1.0](https://openid.net/specs/openid-connect-core-1_0.html) 
 identity layer where the Provider is the MaaS platform, subsequently referred 
-to as "MaaS connect". See [the dedicated section](#33-authentication-across-platforms-maas-connect) for further information.
+to as "MaaS connect". See [the dedicated 
+section](#33-authentication-across-platforms-maas-connect) for further 
+information. This section adds up to the above flow independent 
+specifications.
 
-A transport operator offering booking by deep link MUST accept 
-authentification via "MaaS connect".  
+The MaaS platform needs to implement the following endpoint:
+
+* `POST /booking_events`
+
+A transport operator offering booking by deep link MUST accept authentication 
+via "MaaS connect".  
 
 A MaaS platform SHOULD provide a "MaaS Connect" identity layer in order to get 
 back information on booking events happening on the platform of the transport 
@@ -162,10 +182,11 @@ operator. In that case, it also MUST provide an API endpoint matching the
 authenticated using MaaS Connect at the time of the redirection to allow the 
 booking feed.
 
-The booking feed flow starts as soon as a booking is created. It sends booking 
-data back to the MaaS platform. It allows the MaaS platform to support 
-use-cases for which booking data need to be instantly available (real-time 
-reporting, incentive program, pricing bundles,...).
+The booking feed flow starts as soon as a booking is created, regardless of 
+whether the trip was first consulted on the MaaS app. It sends booking data to 
+the MaaS platform. It allows the MaaS platform to support use-cases for which 
+booking data need to be instantly available (real-time reporting, incentive 
+program, pricing bundles,...).
 
 If the MaaS platform is offering the `POST /booking_events` endpoint, and once 
 a booking is created, the operator MUST send the booking details to the MaaS 
@@ -179,18 +200,11 @@ A status update with the `POST /booking_events` endpoint MUST repeat the whole
 communication failures (e.g. a status update event can be processed even if 
 the booking creation event has been missed).
 
-The passenger SHOULD have explicitely accepted that the operator shares the 
-details of its bookings with the MaaS platform, in accordance with the 
-applicable data-privacy regulations.
-
-
-##### Information pull by th MaaS platform operator
-
-The MaaS platform operator can also pull information on a given booking.
-
-To do that, it uses the same routes as Integrated booking by API to query the 
-carsharing operator for the status of the booking: `GET /bookings/{bookingId}`.
 
 ### 3.3. Authentication across platforms ("MaaS Connect")
+
+The "MaaS Connect" authentication mechanism SHOULD ensure that the user 
+explicitely accepts that the operator shares the details of its bookings with 
+the MaaS platform, in accordance with the applicable data-privacy regulations.
 
 TODO link to the connect spec
