@@ -41,6 +41,11 @@ The first draft versions of this specification do not include normative parts.
 
 ##### General Workflow
 
+Endpoints implemented by the carpooling operator:
+ 
+* `GET /driver_journeys` and/or
+* `GET /passenger_journeys`
+
 There are two flavours of searches: a driver can search for passengers (so, he 
 searches a `passenger_journey`), or a passenger can search for a driver 
 (looking for a `driver_journey`). The difference between these two searches 
@@ -66,56 +71,79 @@ required information is the starting and arrival places.
 
 In particular, no user information is required to perform a search.
 
+The search provides the necessary information to procede to the booking phase 
+(described in other sections). If booking by deep link is supported, the link 
+is shared along the journey information in the response's attribute `webUrl`.  
+If integrated booking by API is supported, then the journey information plus 
+the `price` attribute enable to make a booking request.
+
 ##### The case of a round trip
 
 If the case of a round trip, it is up to the MaaS platform to perform the 
-searches for the outward and return journey separately.
+searches for the outward and return journeys separately.
 
-##### The case of regular journeys
+##### The case of regular trips
 
-Searching for regular journeys has its own specific workflow presented in
+Searching for regular trips has its own specific workflow presented in
 [a dedicated section](https://github.com/fabmob/standard-covoiturage/blob/spec_search/standard-covoiturage_specification.md#3112-search-for-regular-trips-and-associated-journeys).
 
-##### Simple search technical specification
+##### Technical specification
 
 The carpooling operator MUST return at most `count` matching results, or all 
 matching results if `count` parameter is not specified. All returned results 
-MUST match the query parameters.
-
-If the parameter `count` is specified, the carpooling operator SHOULD return 
-in priority the most relevant results. The measure of relevance is left to the 
-discretion of the carpooling operator.
-
-If no `departureDate` attribute is provided by the MaaS platform in the call 
-to `GET \driver_journeys` or `GET \passenger_journeys`, the current datetime 
-MUST be assumed.
+MUST match the query parameters. If the parameter `count` is specified, the 
+carpooling operator SHOULD return in priority the most relevant results. The 
+measure of relevance is left to the discretion of the carpooling operator.
 
 The `id` attribute of the response MUST be unique for a given carpooling 
-operator, among all journeys (`passengerJourneys` and `driverJourneys`).
+operator (same `operator` attribute) among all journeys (`passengerJourneys` 
+and `driverJourneys`).
 
-The `price` attribute of the response SHOULD be a price estimation, if no 
-estimation is possible, a price with type "UNKNOWN" SHOULD be returned.
+The meaning of `price` attribute of the response SHOULD be a price estimation, 
+if no estimation is possible, a price with `type` "UNKNOWN" SHOULD be 
+returned. If the `type` is "PAYING", then the attributes `amount` and 
+`currency` are required.
 
-#### 3.1.1.2 Search for Regular trips and associated journeys
+In the case of integrated booking by API, this estimation is to be taken as 
+the actual amount expected by the carpooling operator. Therefore, the 
+carpooling operator SHOULD return a `price` of type "FREE" or "PAYING" to 
+allow the MaaS platform to book by API.
+
+#### 3.1.2 Search for Regular trips and associated journeys
 
 ##### General workflow 
 
-The counterpart of `\passenger_journeys` and `\driver_journeys` endpoints for 
-searching regular journeys are two GET endpoints: `\driver_regular_trips` and 
-`\passenger_regular_trips`. The query parameters specify an additionnal 
-required `departureTimeOfDay`, and an optional `departureWeekdays`.
+Endpoints implemented by the carpooling operator:
 
-The return values are similar, they differ mainly in that they offer a 
-`schedules` attribute that details several trips.  More differences will occur 
-at the booking phase.
+* `GET /driver_regular_trips` and/or
+* `GET /passenger_regular_trips`
+
+These are the counterparts of the `GET \passenger_journeys` and `GET 
+\driver_journeys` endpointS, but for searching regular trips.
+
+A regular trip is a recurring trip that is repeated from one week to another.  
+The API allows for searching regular trips that start around the same time of 
+the day at given week days. The query parameters therefore specify an 
+additionnal required `departureTimeOfDay`, and an optional `departureWeekdays` 
+compared to the single journey search.
+
+The return values offer a `schedules` attribute that details the decomposition 
+of the regular trip into single journeys. All attributes combined give the 
+same level of information for the single journeys than a simple search would.
+
+Again, the response gives all the necessary elements to procede with the 
+booking phase as with single journey objects, but with an additionnal optional 
+`webUrl` attribute, that allows for a better user experience than having to go 
+back and forth between the MaaS the carpooling apps as many times as there are 
+journeys to book.
 
 ##### Workflow for more sophisticated regular journeys
 
 It is up to the MaaS platform to assemble the results of several calls into a 
 more sophisticated regular journey. For instance, a varying 
-`departureTimeOfDay` (in the same week, or alterning weeks) can be queried 
-with a large `timeDelta` and post-filtering, or with several calls with 
-`departureTimeOfDay` and concatenation.
+`departureTimeOfDay` depending on week day, or different schedules on 
+alternating weeks, can be queried with a large `timeDelta` and post-filtering, 
+or with several calls with different `departureTimeOfDay` and concatenation.
 
 ##### Technical specification for searching for regular journeys
 
@@ -130,9 +158,10 @@ starts between `minDepartureDate` and `maxDepartureDate` (included).
 The returned results may not reach the `maxDepartureDate` because of the 
 limited forecasting horizon of the carpooling operator.
 
-The `webUrl` attribute in the response SHOULD link to a page giving an 
-overview of the regular trips (e.g. a "driver" page) and allowing to continue 
-the process of booking regular trips by the user (booking by deeplink).
+If the carpooling operator supports booking by deep link, the `webUrl` 
+attribute in the response SHOULD link to a page giving an overview of the 
+regular trips (e.g. a "driver" page) and allowing to continue the process of 
+booking regular trips by the user.
 
 ### 3.2. Booking
 
