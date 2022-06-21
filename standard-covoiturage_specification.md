@@ -29,31 +29,29 @@ It makes reference to other parts of the standard :
 - An OpenAPI schema describing the entire API
 - Other documents describing specific technical parts like process flows ...
 
-### 1.4. Standard compliance
+### 1.4. Functional blocks and standard compliance
 
 The standard is decomposed into functional blocks. To implement a functional 
 block, the transport operator MUST implement all the specifications related to
-this functional block (each has a dedicated section in the current document).
+this functional block (they have dedicated sections in the current document).
 
 Functional blocks for searching:
-* Searching for a journey as a passenger
-* Searching for a passenger as a driver
-* Searching for a regular journey as passenger
+* Searching for a driver journey as a passenger
+* Searching for a passenger journey as a driver
+* Searching for a regular journey as a passenger
 * Searching for a regular passenger as a driver
 
 Functional blocks for booking:
-* Booking a journey with a deeplink to the transport operator's application / 
-  website
-* Booking a journey direcly via API
+* Delegated booking with a deep link to the transport operator's application
+* Booking information feed to the MaaS (recommended extension to the delegated 
+  booking with a deep link)
+* Integrated booking via API
 
 To comply with this standard, a transport operator MUST implement at least one 
-functional block for performing a search, and one of the two booking options 
+functional block for performing a search, or one of the two booking options 
 that comply with this specification.
 
-It MUST also implement the /operator/meta endpoint, which documents the 
-version of the standard used and the endpoints that are implemented.
-
-In addition, any functionnality offered by the transport operator that is 
+In addition, any functionality offered by the transport operator's API that is 
 covered by the standard MUST comply with the current specifications. The 
 transport operator MAY agree with the MaaS platform to provide additional 
 functionalities, not covered by the standard, in a custom manner.
