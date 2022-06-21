@@ -25,9 +25,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 This document is the entry point for the "Standard covoiturage" specification. Its goal is to explain from a functional point of view how the technical parts should be interpreted.
 
 It makes reference to other parts of the standard : 
-
 - An OpenAPI schema describing the entire API
-- Other documents describing specific technical parts like process flows ...
 
 ### 1.4. Functional blocks and standard compliance
 
@@ -46,6 +44,9 @@ Functional blocks for booking:
 * Booking information feed to the MaaS (recommended extension to the delegated 
   booking with a deep link)
 * Integrated booking via API
+
+Functional block for user information:
+* Exchanging messages between two users
 
 To comply with this standard, a transport operator MUST implement at least one 
 functional block for performing a search, or one of the two booking options 
