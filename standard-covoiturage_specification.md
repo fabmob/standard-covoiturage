@@ -25,9 +25,37 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 This document is the entry point for the "Standard covoiturage" specification. Its goal is to explain from a functional point of view how the technical parts should be interpreted.
 
 It makes reference to other parts of the standard : 
-
 - An OpenAPI schema describing the entire API
-- Other documents describing specific technical parts like process flows ...
+
+### 1.4. Functional blocks and standard compliance
+
+The standard is decomposed into functional blocks. To implement a functional 
+block, the transport operator MUST implement all the specifications related to
+this functional block (they have dedicated sections in the current document).
+
+Functional blocks for searching:
+- Searching for a driver journey as a passenger
+- Searching for a passenger journey as a driver
+- Searching for a regular journey as a passenger
+- Searching for a regular passenger as a driver
+
+Functional blocks for booking:
+- Delegated booking with a deep link to the transport operator's application
+- Booking information feed to the MaaS (recommended extension to the delegated 
+  booking with a deep link)
+- Integrated booking via API
+
+Functional block for user information:
+- Exchanging messages between two users
+
+To comply with this standard, a transport operator MUST implement at least one 
+functional block for performing a search, or one of the two booking options 
+that comply with this specification.
+
+In addition, any functionality offered by the transport operator's API that is 
+covered by the standard MUST comply with the current specifications. The 
+transport operator MAY agree with the MaaS platform to provide additional 
+functionalities, not covered by the standard, in a custom manner.
 
 ## 2. Normative 
 
@@ -43,8 +71,8 @@ The first draft versions of this specification do not include normative parts.
 
 Endpoints implemented by the carpooling operator:
  
-* `GET /driver_journeys` and/or
-* `GET /passenger_journeys`
+- `GET /driver_journeys` and/or
+- `GET /passenger_journeys`
 
 There are two flavours of searches: a driver can search for passengers (so, he 
 searches a `passenger_journey`), or a passenger can search for a driver 
@@ -116,8 +144,8 @@ allow the MaaS platform to book by API.
 
 Endpoints implemented by the carpooling operator:
 
-* `GET /driver_regular_trips` and/or
-* `GET /passenger_regular_trips`
+- `GET /driver_regular_trips` and/or
+- `GET /passenger_regular_trips`
 
 These are the counterparts of the `GET \passenger_journeys` and `GET 
 \driver_journeys` endpoints, but for searching regular trips. The carpooling 
@@ -291,7 +319,7 @@ specifications.
 
 The MaaS platform needs to implement the following endpoint:
 
-* `POST /booking_events`
+- `POST /booking_events`
 
 A transport operator offering booking by deep link MUST accept authentication 
 via "MaaS connect".  
