@@ -1,0 +1,1069 @@
+openapi: 3.0.1
+
+info:
+  title: ""
+  description: ""
+  version: 0.0.1
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+tags:
+  - name: Search
+    description: API routes to search for journeys. These routes can be left opened to public.
+
+#
+# API Routes
+#
+paths:
+  /driver_journeys:
+    get:
+      tags:
+      - Search
+      summary: Search for matching punctual planned outward driver journeys.
+      description: Route used to retrieve a collection of punctual planned outward driver journeys matching the provided criteria.
+      operationId: getDriverJourneys
+      parameters:
+        - $ref: '#/components/parameters/departureLat'
+        - $ref: '#/components/parameters/departureLng'
+        - $ref: '#/components/parameters/arrivalLat'
+        - $ref: '#/components/parameters/arrivalLng'
+        - $ref: '#/components/parameters/departureDate'
+        - $ref: '#/components/parameters/timeDelta'
+        - $ref: '#/components/parameters/departureRadius'
+        - $ref: '#/components/parameters/arrivalRadius'
+        - $ref: '#/components/parameters/count'
+      responses:
+        200:
+          description: Ok. Request processed successfully.
+          content:
+            application/json:
+              schema:
+                title: DriverJourneys
+                type: array
+                items:
+                  $ref: '#/components/schemas/DriverJourney'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /passenger_journeys:
+    get:
+      tags:
+      - Search
+      summary: Search for matching punctual planned outward passenger journeys.
+      description: Route used to retrieve a collection of punctual planned outward passenger journeys matching the provided criteria.
+      operationId: getPassengerJourneys
+      parameters:
+        - $ref: '#/components/parameters/departureLat'
+        - $ref: '#/components/parameters/departureLng'
+        - $ref: '#/components/parameters/arrivalLat'
+        - $ref: '#/components/parameters/arrivalLng'
+        - $ref: '#/components/parameters/departureDate'
+        - $ref: '#/components/parameters/timeDelta'
+        - $ref: '#/components/parameters/departureRadius'
+        - $ref: '#/components/parameters/arrivalRadius'
+        - $ref: '#/components/parameters/count'
+      responses:
+        200:
+          description: Ok. Request processed successfully.
+          content:
+            application/json:
+              schema:
+                title: PassengerJourneys
+                type: array
+                items:
+                  $ref: '#/components/schemas/PassengerJourney'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /driver_regular_trips:
+    get:
+      tags:
+      - Search
+      summary: Search for matching regular driver trips.
+      description: Route used to retrieve a collection of driver regular trips matching the provided criteria.
+      operationId: getDriverRegularTrips
+      parameters:
+        - $ref: '#/components/parameters/departureLat'
+        - $ref: '#/components/parameters/departureLng'
+        - $ref: '#/components/parameters/arrivalLat'
+        - $ref: '#/components/parameters/arrivalLng'
+        - $ref: '#/components/parameters/departureTimeOfDay'
+        - $ref: '#/components/parameters/departureWeekdays'
+        - $ref: '#/components/parameters/timeDelta'
+        - $ref: '#/components/parameters/departureRadius'
+        - $ref: '#/components/parameters/arrivalRadius'
+        - $ref: '#/components/parameters/minDepartureDate'
+        - $ref: '#/components/parameters/maxDepartureDate'
+        - $ref: '#/components/parameters/count'
+      responses:
+        200:
+          description: Ok. Request processed successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/DriverTrip'
+                    - type: object
+                      properties:
+                        schedules:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/Schedule'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /passenger_regular_trips:
+    get:
+      tags:
+      - Search
+      summary: Search for matching passenger regular trips.
+      description: Route used to retrieve a collection of passenger regular trips matching the provided criteria.
+      operationId: getPassengerRegularTrips
+      parameters:
+        - $ref: '#/components/parameters/departureLat'
+        - $ref: '#/components/parameters/departureLng'
+        - $ref: '#/components/parameters/arrivalLat'
+        - $ref: '#/components/parameters/arrivalLng'
+        - $ref: '#/components/parameters/departureTimeOfDay'
+        - $ref: '#/components/parameters/departureWeekdays'
+        - $ref: '#/components/parameters/timeDelta'
+        - $ref: '#/components/parameters/departureRadius'
+        - $ref: '#/components/parameters/arrivalRadius'
+        - $ref: '#/components/parameters/minDepartureDate'
+        - $ref: '#/components/parameters/maxDepartureDate'
+        - $ref: '#/components/parameters/count'
+      responses:
+        200:
+          description: Ok. Request processed successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/PassengerTrip'
+                    - type: object
+                      properties:
+                        schedules:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/Schedule'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /booking_events:
+    post:
+      tags:
+      - Webhooks
+      summary:
+        Sends booking information of a user connected with a third-party
+        provider back to the provider.
+      description:
+        Route used to allow a carpool operator to send booking information to a third-party
+        provider. This can be used in the context of a booking flow with deeplinking and
+        when a passenger is using the Connect specification to link their accounts of a
+        third-party service (e.g., a MaaS) and the operator.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarpoolBookingEvent'
+      responses:
+        200:
+          description: Ok. Request processed successfully.
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /messages:
+    post:
+      tags:
+      - Interact
+      summary: Send a message to the owner of a retrieved journey.
+      description: Route used to allow a user to connect back to the owner of a retrieved journey through a texte message.
+      operationId: postConnections
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - from
+                - to
+                - message
+                - recipientCarpoolerType
+              properties:
+                from:
+                  $ref: '#/components/schemas/User'
+                to:
+                  $ref: '#/components/schemas/User'
+                message:
+                  type: string
+                  maxLength: 500
+                  description: Free text content of a message. The message can contain all the details (phone number, email, etc.) allowing the recipient to call back the sender in order to carpool with him/her.
+                recipientCarpoolerType:
+                  type: string
+                  enum:
+                    - DRIVER
+                    - PASSENGER
+                  default: DRIVER
+                  description: Defines if the recipient of this message is either the driver or the passenger.
+                driverJourneyId:
+                  type: string
+                  minLength: 1
+                  maxLength: 255
+                  description: ID of the Driver's journey to which the message is related (if any). Unique given the `Driver`'s `operator` property.
+                passengerJourneyId:
+                  type: string
+                  minLength: 1
+                  maxLength: 255
+                  description: ID of the Passenger's journey to which the message is related (if any). Unique given the `Passenger`'s `operator` property.
+                bookingId:
+                  allOf:
+                    - $ref: '#/components/schemas/bookingId'
+                  description: ID of the booking to which the message is related (if any)
+
+      responses:
+        201:
+          description: Successful operation.
+        404:
+          description: The targeted journey or user no more exists.
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /bookings:
+    post:
+      tags:
+      - Interact
+      summary: Create a punctual outward Booking request.
+      description: Route used to synchronize a Booking request initiated by a platform to the second platform involved in the shared punctual outward journey. While posting a new Booking, its status must always be set first as `status=WAITING_CONFIRMATION`. _Reminder:_ In case of booking without deeplink, the sender platform MUST also store the Booking object, and be ready to receive modifications of it through the PATCH /bookings API endpoint.
+      operationId: postBookings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+
+      responses:
+        201:
+          description: Successful operation. A new Booking has been created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /bookings/{bookingId}:
+    patch:
+      tags:
+      - Interact
+      summary: Updates status of an existing Booking request.
+      description: Route used to update the status of an existing Booking request. Should be used usually just to confirm, cancel, etc. an existing Booking.
+      operationId: patchBookings
+      parameters:
+      - name: bookingId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/bookingId'
+      - name: status
+        description: New status of the Booking.
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/bookingStatus'
+      - name: message
+        description: Free text content of a message. The message can contain explanations on the status change.
+        in: query
+        schema:
+          type: string
+          maxLength: 500
+
+      responses:
+        200:
+          description: Successful operation.
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+        404:
+          description: The targeted journey, booking or user no more exists.  Error code can be among  `missing_journey, missing_booking, missing_user` .
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: |-
+                      Explain why the request couldn't be processed.
+        409:
+          description: Conflict. This booking has already the new status requested. Error code is  `status_already_set`.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: |-
+                      Explain why the request couldn't be processed.
+
+
+    get:
+      tags:
+      - Interact
+      summary: Retrieves an existing Booking request.
+      description: Route used to retrieve the details of an existing Booking request. Can only be used by the operator having created the Booking request. This route is provided to check if the Booking object state is similar between two operators, but its usage should be required to handle the full use case of a booking.
+      operationId: getBookings
+      parameters:
+      - name: bookingId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/bookingId'
+      responses:
+        200:
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+        404:
+          description: This Booking object no more exists. Error code can be among  `missing_journey, missing_booking, missing_user` .
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: |-
+                      Explain why the request couldn't be processed.
+
+  /status:
+    get:
+      tags:
+      - status
+      summary: Give health status of the webservice.
+      responses:
+        200:
+          description: Ok. Webservice is available.
+        429:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+#
+# Schemas
+#
+components:
+  parameters:
+    departureLat:
+      name: departureLat
+      in: query
+      required: true
+      schema:
+        type: number
+      description: Latitude of searched departure point.
+
+    departureLng:
+      name: departureLng
+      in: query
+      description: Longitude of searched departure point.
+      required: true
+      schema:
+        type: number
+
+    arrivalLat:
+      name: arrivalLat
+      in: query
+      description: Latitude of searched arrival point.
+      required: true
+      schema:
+        type: number
+
+    arrivalLng:
+      name: arrivalLng
+      in: query
+      description: Longitude of searched arrival point.
+      required: true
+      schema:
+        type: number
+
+    departureDate:
+      name: departureDate
+      in: query
+      description: Departure datetime using a UNIX UTC timestamp in seconds.
+      required: true
+      schema:
+        type: integer
+
+    departureTimeOfDay:
+      name: departureTimeOfDay
+      in: query
+      description:
+        Departure time of day represented as
+        [RFC3339 partial-time](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6).
+      required: true
+      schema:
+        type: string
+        format: partial-time
+      example: 07:30:00
+
+    departureWeekdays:
+      name: departureWeekdays
+      in: query
+      style: form
+      explode: false
+      description:
+        Departure days of week. The retrieved trips should have at least one schedule
+        applicable on one of the departureWeekdays.
+      schema:
+        type: array
+        items:
+          type: string
+        default: MON,TUE,WED,THU,FRI,SAT,SUN
+
+    timeDelta:
+      name: timeDelta
+      in: query
+      description: Time margin in seconds. The retrieved journeys must match the
+        given time parameters within a +`timeDelta` / -`timeDelta` interval .
+      schema:
+        type: integer
+        default: 900
+
+    minDepartureDate:
+      name: minDepartureDate
+      in: query
+      description:
+        Minimum date of departure for the returned journeys. Datetime using
+        a UNIX UTC timestamp in seconds.
+      schema:
+        type: integer
+
+    maxDepartureDate:
+      name: maxDepartureDate
+      in: query
+      description:
+        Maximum date of departure for the returned journeys. Datetime using
+        a UNIX UTC timestamp in seconds.
+      schema:
+        type: integer
+
+    departureRadius:
+      name: departureRadius
+      in: query
+      description: Search radius in kilometers around the departure point.
+      schema:
+        type: number
+        default: 1.0
+
+    arrivalRadius:
+      name: arrivalRadius
+      in: query
+      description: Search radius in kilometers around the arrival point.
+      schema:
+        type: number
+        default: 1.0
+
+    count:
+      name: count
+      in: query
+      description:
+        Maximum number of returned results. If missing, all matching results
+        are returned.
+      schema:
+        type: integer
+
+  schemas:
+    Trip:
+      type: object
+      required:
+        - duration
+        - operator
+        - passengerPickupLat
+        - passengerPickupLng
+        - passengerDropLat
+        - passengerDropLng
+      properties:
+        operator:
+          type: string
+          description: The operator identifier. MUST be a Root Domain (example operator.org) owned by the operator or a Fully Qualified Domain Name (example carpool.mycity.com) exclusively operated by the operator. A given operator SHOULD always send the same value.
+        passengerPickupLat:
+          type: "number"
+          format: "double"
+          description: Latitude of the passenger pick-up point.
+        passengerPickupLng:
+          type: "number"
+          format: "double"
+          description: Longitude of the passenger pick-up point.
+        passengerDropLat:
+          type: "number"
+          format: "double"
+          description: Latitude of the passenger drop-off point.
+        passengerDropLng:
+          type: "number"
+          format: "double"
+          description: Longitude of the passenger drop-off point.
+        passengerPickupAddress:
+          type: string
+          description: String representing the pickup-up address.
+        passengerDropAddress:
+          type: string
+          description: String representing the drop-off address.
+        distance:
+          type: "integer"
+          description: Carpooling distance in meters.
+        driverDepartureLat:
+          type: "number"
+          format: "double"
+          description: Latitude of the departure.
+        driverDepartureLng:
+          type: "number"
+          format: "double"
+          description: Longitude of the departure.
+        driverArrivalLat:
+          type: "number"
+          format: "double"
+          description: Latitude of the arrival.
+        driverArrivalLng:
+          type: "number"
+          format: "double"
+          description: Longitude of the arrival.
+        driverDepartureAddress:
+          type: string
+          description: String representing the departure address of the driver.
+        driverArrivalAddress:
+          type: string
+          description: String representing the arrival address of the driver.
+        duration:
+          type: integer
+          description: Carpooling duration in seconds.
+        journeyPolyline:
+          type: string
+          description: |-
+            Carpooling journey itinerary as a
+            [Google Encoded Polyline](https://developers.google.com/maps/documentation/utilities/polylinealgorithm), compressed at  level 5.
+        preferences:
+          $ref: '#/components/schemas/Preferences'
+        webUrl:
+          type: string
+          description: URL of the trip on the webservice provider platform.
+
+    DriverTrip:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Trip'
+        - type: object
+          required:
+            - driver
+          properties:
+            driver:
+              $ref: '#/components/schemas/User'
+            departureToPickupWalkingDistance:
+              type: integer
+              description: |-
+                Walking distance from the requested departure location
+                to the pick-up location.
+            departureToPickupWalkingDuration:
+              type: integer
+              description: |-
+                Walking duration from the requested departure location
+                to the pick-up location.
+            departureToPickupWalkingPolyline:
+              type: string
+              description: |-
+                Walking
+                [Google Encoded Polyline](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
+                from the requested departure location to the pick-up location.
+            dropoffToArrivalWalkingDistance:
+              type: integer
+              description: |-
+                Walking distance to the requested arrival location
+                from the drop-off location.
+            dropoffToArrivalWalkingDuration:
+              type: integer
+              description: |-
+                Walking duration to the requested arrival location
+                from the drop-off location.
+            dropoffToArrivalWalkingPolyline:
+              type: string
+              description: |-
+                Walking
+                [Google Encoded Polyline](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
+                to the requested arrival location from the drop-off location.
+            car:
+              $ref: '#/components/schemas/Car'
+
+    PassengerTrip:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Trip'
+        - type: object
+          required:
+            - passenger
+          properties:
+            passenger:
+              $ref: '#/components/schemas/User'
+
+    JourneySchedule:
+      type: object
+      required:
+        - passengerPickupDate
+        - type
+      properties:
+        id:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Journey's id. It MUST be unique for a given operator.
+        passengerPickupDate:
+          type: number
+          description: |-
+            Passenger pickup datetime as a UNIX UTC timestamp in seconds.
+          format: long
+        driverDepartureDate:
+          type: number
+          description: |-
+            Driver departure datetime as a UNIX UTC timestamp in seconds.
+          format: long
+        webUrl:
+          type: string
+          description: URL of the journey on the webservice provider platform. Required to support booking by deeplink.
+        type:
+          type: string
+          description: |-
+            Type of journey. A dynamic journey is happening in real time.
+          enum:
+          - PLANNED
+          - DYNAMIC
+          - LINE
+
+    DriverJourney:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/DriverTrip'
+        - $ref: '#/components/schemas/JourneySchedule'
+        - type: object
+          properties:
+            availableSeats:
+              type: integer
+              description: Available seats in the car.
+            price:
+              $ref: '#/components/schemas/Price'
+
+    PassengerJourney:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/PassengerTrip'
+        - $ref: '#/components/schemas/JourneySchedule'
+        - type: object
+          required:
+            - driverDepartureDate
+          properties:
+            requestedSeats:
+              type: integer
+              description: Requested seats by the passenger.
+
+    Schedule:
+      type: object
+      properties:
+        passengerPickupDay:
+          type: string
+          description: Day of week of the passenger pick-up.
+          enum:
+            - MON
+            - TUE
+            - WED
+            - THU
+            - FRI
+            - SAT
+            - SUN
+        passengerPickupTimeOfDay:
+          description: |-
+            Passenger pick-up time of day represented as
+            [RFC3339 partial-time](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6).
+          type: string
+          format: partial-time
+        JourneySchedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/JourneySchedule'
+
+    CarpoolBookingEvent:
+      required:
+        - id
+        - idToken
+        - data
+      properties:
+        id:
+          type: string
+          format: uuid
+          description:
+            Unique journey's id in the format of an [UUID](https://datatracker.ietf.org/doc/html/rfc4122).
+            Usage of a [4 UUID](https://datatracker.ietf.org/doc/html/rfc4122#section-4.4) generation algorithm
+            is advised.
+        idToken:
+          type: string
+          description: ID token of the user retrieved using the OpenID Connect flows.
+        data:
+          oneOf:
+          - $ref: '#/components/schemas/DriverCarpoolBooking'
+          - $ref: '#/components/schemas/PassengerCarpoolBooking'
+
+    CarpoolBooking:
+      required:
+      - id
+      - passengerPickupDate
+      - passengerPickupLat
+      - passengerPickupLng
+      - passengerDropLat
+      - passengerDropLng
+      - status
+      - webUrl
+      properties:
+        id:
+          type: "string"
+          description: Unique identifier of the booking.
+        passengerPickupDate:
+          type: number
+          description: Passenger pickup datetime as a UNIX UTC timestamp in seconds.
+          format: long
+        passengerPickupLat:
+          type: "number"
+          format: "double"
+          description: Latitude of the passenger pick-up point.
+        passengerPickupLng:
+          type: "number"
+          format: "double"
+          description: Longitude of the passenger pick-up point.
+        passengerDropLat:
+          type: "number"
+          format: "double"
+          description: Latitude of the passenger drop-off point.
+        passengerDropLng:
+          type: "number"
+          format: "double"
+          description: Longitude of the passenger drop-off point.
+        passengerPickupAddress:
+          type: string
+          description: String representing the pickup-up address.
+        passengerDropAddress:
+          type: string
+          description: String representing the drop-off address.
+        status:
+          type: string
+          enum:
+            - WAITING_CONFIRMATION
+            - CONFIRMED
+            - CANCELLED
+            - COMPLETED_PENDING_VALIDATION
+            - VALIDATED
+        distance:
+          type: "integer"
+          description: |
+            Carpooling distance in meters. When the booking is COMPLETED or VALIDATED, this is the actual distance travelled if available.
+        duration:
+          type: integer
+          description: Carpooling duration in seconds.
+        webUrl:
+          type: string
+          description: URL of the booking on the webservice provider platform.
+
+    PassengerCarpoolBooking:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CarpoolBooking'
+        - type: object
+          required:
+            - passenger
+          properties:
+            passenger:
+              $ref: '#/components/schemas/User'
+
+    DriverCarpoolBooking:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CarpoolBooking'
+        - type: object
+          required:
+            - driver
+            - price
+          properties:
+            driver:
+              $ref: '#/components/schemas/User'
+            price:
+              $ref: '#/components/schemas/Price'
+            car:
+              $ref: '#/components/schemas/Car'
+
+    Price:
+      type: object
+      properties:
+        type:
+          type: string
+          description: |-
+            Either « FREE », « PAYING » or « UNKNOWN ». « UNKNOWN » is given
+            when it should be « PAYING » but we cannot set the price yet.
+          enum:
+          - FREE
+          - PAYING
+          - UNKNOWN
+        amount:
+          type: number
+          description: Carpooling passenger cost estimate. In the case of integrated booking by API, amount expected by the carpooling operator.
+          format: float
+        currency:
+          type: string
+          description: ISO 4217 code representing the currency of the price.
+
+    User:
+      type: object
+      required:
+        - id
+        - alias
+        - operator
+      properties:
+        id:
+          type: string
+          description: User's identifier. It MUST be unique for a given `operator`.
+        operator:
+          type: string
+          description: The operator identifier. MUST be a Fully Qualified Domain Name (example carpool.mycity.com) owned by the operator or a Partially Qualified Domain Name (example operator.org) owned and exclusively operated by the operator. Operators SHOULD always send the same value.
+        alias:
+          type: string
+          description: User's alias.
+        firstName:
+          type: string
+          description: User's first name.
+        lastName:
+          type: string
+          description: User's last name.
+        grade:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: User's grade from 1 to 5.
+        picture:
+          type: string
+          description: User's profile picture absolute URL.
+        gender:
+          type: string
+          description: User's gender. 'O' stands for 'Other'.
+          enum:
+            - F
+            - M
+            - O
+        verifiedIdentity:
+          type: boolean
+          description: true if the identity of this user has been verified by the operator or a third party; and the firstName, lastName, birthdate have been confirmed as identitical to an official identity proof document. Can be left empty if the information is not available.
+
+    Preferences:
+      type: object
+      properties:
+        smoking:
+          type: boolean
+          description: |-
+            If driver journey, specifies if the driver allows smoking in the car.
+        animals:
+          type: boolean
+          description: |-
+            If driver journey, specifies if the driver allows animals in the car.
+        music:
+          type: boolean
+          description: |-
+            If driver journey, specifies if the driver enjoys music in the car.
+        isTalker:
+          type: boolean
+          description: |-
+            If driver journey, specifies if the driver enjoys talking with passengers.
+        luggageSize:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: |-
+            If driver journey, specifies the size of allowed luggages.
+            From very small (1) to very big (5).
+
+    Car:
+      type: object
+      properties:
+        model:
+          type: string
+          description: Model of the car.
+        brand:
+          type: string
+          description: Brand of the car.
+
+    Booking:
+      type: object
+      required:
+        - id
+        - driver
+        - passenger
+        - status
+        - price
+        - passengerPickupDate
+        - passengerPickupLat
+        - passengerPickupLng
+        - passengerDropLat
+        - passengerDropLng
+      properties:
+        id:
+          $ref: '#/components/schemas/bookingId'
+        driver:
+          $ref: '#/components/schemas/User'
+        passenger:
+          $ref: '#/components/schemas/User'
+        passengerPickupDate:
+          type: number
+          description: Passenger pickup datetime as a UNIX UTC timestamp in seconds.
+          format: long
+        passengerPickupLat:
+          type: "number"
+          format: "double"
+          description: Latitude of the passenger pick-up point.
+        passengerPickupLng:
+          type: "number"
+          format: "double"
+          description: Longitude of the passenger pick-up point.
+        passengerDropLat:
+          type: "number"
+          format: "double"
+          description: Latitude of the passenger drop-off point.
+        passengerDropLng:
+          type: "number"
+          format: "double"
+          description: Longitude of the passenger drop-off point.
+        passengerPickupAddress:
+          type: string
+          description: String representing the pickup-up address.
+        passengerDropAddress:
+          type: string
+          description: String representing the drop-off address.
+        status:
+          $ref: '#/components/schemas/bookingStatus'
+        duration:
+          type: integer
+          description: Carpooling duration in seconds.
+        distance:
+          type: integer
+          description: |
+            Carpooling distance in meters.
+        webUrl:
+          type: string
+          description: URL of the booking on the webservice provider platform.
+        price:
+          $ref: '#/components/schemas/Price'
+        car:
+          $ref: '#/components/schemas/Car'
+        driverJourneyId:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: ID of the Driver's journey to which the booking is related (if any). Unique given the `User`'s `operator` property.
+        passengerJourneyId:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: ID of the Passenger's journey to which the booking is related (if any). Unique given the `User`'s `operator` property.
+
+    bookingId:
+      type: string
+      format: uuid
+      description: Booking id is common between both operators, and must be created as a [UUID](https://datatracker.ietf.org/doc/html/rfc4122) by whoever initiates the booking.  Usage of a [4 UUID](https://datatracker.ietf.org/doc/html/rfc4122#section-4.4) generation algorithm is advised.
+
+    bookingStatus:
+      type: string
+      description: Status of the booking.
+      enum:
+        - WAITING_CONFIRMATION
+        - CONFIRMED
+        - CANCELLED
+        - COMPLETED_PENDING_VALIDATION
+        - VALIDATED
+      default: WAITING_CONFIRMATION
+
+  responses:
+    BadRequest:
+      description: Bad Request. See error message.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: |-
+                  Explain why the request couldn't be processed.
+    Unauthorized:
+      description: Unauthorized. You must authenticate.
+    TooManyRequests:
+      description: Too Many Requests. Please slow down.
+      headers:
+        Retry-After:
+          description: |-
+            How long to wait before making a new request (in seconds).
+          schema:
+            type: integer
+    InternalServerError:
+      description: Internal Server Error. Please try again later.
