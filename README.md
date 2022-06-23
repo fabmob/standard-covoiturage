@@ -13,8 +13,8 @@ Additional documentation is being written (see the
 [README of the "doc" directory](./doc/README.md)).
 
 The standard is published in a draft version, to allow an experimentation 
-before publication in a normative version. As such, it is may be subject to 
-changes that are not backward compatible.
+before publication in a normative version. As such, it may be subject to 
+breaking changes.
 
 Publication in normative version is planned for the end of 2022.
 
