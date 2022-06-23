@@ -13,7 +13,10 @@ Une documentation additionnelle est en cours de rédaction (cf. le
 
 Le standard est publié en version informative, pour permettre une 
 expérimentation avant publication en version normative. À ce titre, il est 
-possible que le standard soit sujet à des changements non rétro-compatibles.
+possible que le standard soit sujet à des changements non rétro-compatibles.  
+Se référer au
+[document de gouvernance](./Gouvernance du GT Covoiturage v0.3.1.pdf) pour 
+plus de détails.
 
 La publication en version normative est prévue pour fin 2022.
 
