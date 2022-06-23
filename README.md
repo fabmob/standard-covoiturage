@@ -12,8 +12,9 @@ To date, the standard is based on a [OpenAPI specification](./standard-carpoolin
 Additional documentation is being written (see the
 [README of the "doc" directory](./doc/README.md)).
 
-The standard is published in an informative version, to allow an experimentation 
-experimentation before publication in a normative version. As such, it is may be subject to changes that are not backward compatible.
+The standard is published in a draft version, to allow an experimentation 
+before publication in a normative version. As such, it is may be subject to 
+changes that are not backward compatible.
 
 Publication in normative version is planned for the end of 2022.
 
