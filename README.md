@@ -1,15 +1,17 @@
 # Introduction au standard covoiturage
 
-Ce répertoire présente les travaux du groupe de travail pour faire émerger un
-standard pour mettre à disposition ou échanger des données, réaliser des 
-transactions et plus généralement permettre des échanges de services entre 
-opérateurs de covoiturage et opérateurs de MaaS. Le groupe de travail 
-rassemble des acteurs français du covoiturage et du MaaS.
+Ce répertoire présente les travaux du [groupe de travail sur le « standard covoiturage »](https://wiki.lafabriquedesmobilites.fr/wiki/Standard_Covoiturage)
+qui rassemble des acteurs français du covoiturage et du MaaS.
 
-Le standard covoiturage couvre plusieurs blocs fonctionnels qui peuvent être 
-implémentés séparément ou conjointement. 
+Le standard covoiturage a vocation à décrire des méthodes de référence pour
+mettre à disposition ou échanger des données, réaliser des transactions et plus
+généralement permettre des échanges de services entre opérateurs de covoiturage
+et opérateurs de MaaS.
 
-Les blocs fonctionnels couverts par l'API sont les suivants (plus de détails 
+Le standard covoiturage couvre plusieurs blocs fonctionnels qui peuvent être
+implémentés séparément ou conjointement.
+
+Les blocs fonctionnels couverts par l'API sont les suivants (plus de détails
 ci-dessous) :
 
 * [La recherche d'un trajet d'un conducteur, en tant que 
