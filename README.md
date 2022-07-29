@@ -12,21 +12,21 @@ the exchange of services between carpooling operators and MaaS platforms.
 
 To date, the standard is based on an
 [OpenAPI specification](./standard-carpooling_openapi.yaml).
-Additional documentation is being written (see the
+Additional documentation is currently being written (see the
 [README of the "doc" directory](./doc/README.md)).
 
 The standard is published in a draft version, to allow an experimentation 
 before publication in a final version. As such, it might be subject to 
 breaking changes.
 
-Publication in final version is planned for the end of 2022.
+The publication in final version is planned for the end of 2022.
 
 # Functional scope
 
-The "standard-covoiturage" (carpooling-standard)  covers several functional 
+The "standard covoiturage" (carpooling standard)  covers several functional 
 blocks that can be implemented separately or jointly.
 
-The functional blocks covered by the API are the following (more details below):
+The functional blocks covered by the API are the following :
 
 * The search for a driver's journey, as a passenger
 * The search for a passenger's journey, as a driver
