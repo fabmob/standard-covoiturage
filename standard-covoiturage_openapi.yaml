@@ -744,7 +744,7 @@ components:
             [RFC3339 partial-time](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6).
           type: string
           format: partial-time
-        JourneySchedules:
+        journeySchedules:
           type: array
           items:
             $ref: '#/components/schemas/JourneySchedule'
