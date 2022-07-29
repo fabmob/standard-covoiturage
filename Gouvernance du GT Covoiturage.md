@@ -57,7 +57,7 @@ d’élaboration.
 #### 1. Les principes
 
 Le « standard covoiturage » et sa gouvernance préservent les intérêts des 
-parties prenantes de la communauté de manière non-discriminante. A cet effet 
+parties prenantes de la communauté de manière non-discriminante. À cet effet 
 ils respectent des principes fondamentaux des « standards ouverts » tels que 
 [définis par OpenStand](https://open-stand.org/about-us/principles/) et 
 pratiqués par des organisations de référence de standardisation pour le 
@@ -266,26 +266,25 @@ covoiturage ».
 
 ## III. Processus d'élaboration du standard
 
-### a. Elaboration de la version 1.0.0
+### a. Élaboration de la version 1.0.0
 
 > Julie : à revoir
 
-> :warning:
 > Les contributeurs de la communauté adoptent à l’unanimité une version 0.3.0 
-> du standard composée uniquement du présent document de gouvernance. A partir 
-> de ce moment, les signataires ayant apporté leur soutien seront ajoutés dans 
-> la partie 4 et deviennent membres délibérants de droit. Les règes de la 
-> gouvernance sont dès lors appliquées pour faire évoluer le document de 
-> gouvernance et publier des premières versions des travaux dans les volets 
-> informatifs puis normatifs. Ce standard publié sur le dépôt de référence 
-> contient les éléments suivants :
+du standard composée uniquement du présent document de gouvernance. À partir 
+de ce moment, les signataires ayant apporté leur soutien seront ajoutés dans 
+la partie 4 et deviennent membres délibérants de droit. Les règes de la  
+gouvernance sont dès lors appliquées pour faire évoluer le document de
+gouvernance et publier des premières versions des travaux dans les volets
+informatifs puis normatifs. Ce standard publié sur le dépôt de référence  
+contient les éléments suivants :
 > * Validation de la version 0.3.0 au 31/01/2022
 > * Adoption des thèmes des premiers groupes de travail : d'ici le 07/02/2022
 > * Publication des premiers résultats au volet informatif : 31/03/2022
 > * Publication d'une version 1.0.0 du standard avec une partie normative et 
->   d'une partie informative 31/05/2022
+   d'une partie informative 31/05/2022
 
-### b. Evolution de la partie normative
+### b. Évolution de la partie normative
 
 L’évolution de la partie normative est un processus continu qui vise à 
 répondre aux exigences de performance et stabilité de standard d’une part, aux 
@@ -357,7 +356,7 @@ Chaque année le groupe de travail doit soumettre un rapport à la communauté
 décrivant les évolutions apportées à l’extension, les implémentations 
 réalisées et leur bilan, ainsi que les perspectives pour l’année suivante 
 (évolutions fonctionnelles envisagées, processus éventuel d’adoption dans la 
-partie normative). A cette occasion la communauté peut prendre une décision de 
+partie normative). À cette occasion la communauté peut prendre une décision de 
 désinscription de l’extension de la partie informative. Cette décision à la 
 majorité qualifiée des 2/3, sera motivée par des critères d’intérêt de la 
 communauté pour l’extension ou de difficultés techniques constatées avec la 
