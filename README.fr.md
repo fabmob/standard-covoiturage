@@ -16,8 +16,8 @@ et opérateurs de MaaS.
 Une documentation additionnelle est en cours de rédaction (cf. le
 [README du répertoire "doc"](./doc/README.fr.md)).
 
-Le standard est publié en version informative, pour permettre une 
-expérimentation avant publication en version normative. À ce titre, il est 
+Le standard est publié en version informative (v1.0.0-alpha), pour permettre 
+une expérimentation avant publication en version normative. À ce titre, il est 
 possible que le standard soit sujet à des changements non rétro-compatibles.  
 Se référer au
 [document de gouvernance](./Gouvernance du GT Covoiturage.md) pour plus de 

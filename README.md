@@ -15,9 +15,9 @@ To date, the standard is based on an
 Additional documentation is currently being written (see the
 [README of the "doc" directory](./doc/README.md)).
 
-The standard is published in a draft version, to allow an experimentation 
-before publication in a final version. As such, it might be subject to 
-breaking changes.
+The standard is published in a draft version (v1.0.0-alpha), to allow an 
+experimentation before publication in a final version. As such, it might be 
+subject to breaking changes.
 
 The publication in final version is planned for the end of 2022.
 
