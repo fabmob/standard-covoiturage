@@ -269,21 +269,21 @@ covoiturage ».
 ### a. Elaboration de la version 1.0.0
 
 > Julie : à revoir
-:::warning
-Les contributeurs de la communauté adoptent à l’unanimité une version 0.3.0 du 
-standard composée uniquement du présent document de gouvernance. A partir de 
-ce moment, les signataires ayant apporté leur soutien seront ajoutés dans la 
-partie 4 et deviennent membres délibérants de droit. Les règes de la 
-gouvernance sont dès lors appliquées pour faire évoluer le document de 
-gouvernance et publier des premières versions des travaux dans les volets 
-informatifs puis normatifs. Ce standard publié sur le dépôt de référence 
-contient les éléments suivants :
-* Validation de la version 0.3.0 au 31/01/2022
-* Adoption des thèmes des premiers groupes de travail : d'ici le 07/02/2022
-* Publication des premiers résultats au volet informatif : 31/03/2022
-* Publication d'une version 1.0.0 du standard avec une partie normative et 
-  d'une partie informative 31/05/2022
-:::
+
+> :warning:
+> Les contributeurs de la communauté adoptent à l’unanimité une version 0.3.0 
+> du standard composée uniquement du présent document de gouvernance. A partir 
+> de ce moment, les signataires ayant apporté leur soutien seront ajoutés dans 
+> la partie 4 et deviennent membres délibérants de droit. Les règes de la 
+> gouvernance sont dès lors appliquées pour faire évoluer le document de 
+> gouvernance et publier des premières versions des travaux dans les volets 
+> informatifs puis normatifs. Ce standard publié sur le dépôt de référence 
+> contient les éléments suivants :
+> * Validation de la version 0.3.0 au 31/01/2022
+> * Adoption des thèmes des premiers groupes de travail : d'ici le 07/02/2022
+> * Publication des premiers résultats au volet informatif : 31/03/2022
+> * Publication d'une version 1.0.0 du standard avec une partie normative et 
+>   d'une partie informative 31/05/2022
 
 ### b. Evolution de la partie normative
 
