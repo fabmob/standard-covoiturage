@@ -1,4 +1,4 @@
-# Introduction to the "standard-covoiturage"
+# Introduction to the "standard covoiturage"
 
 Version française [disponible ici](./README.fr.md).
 
@@ -15,10 +15,11 @@ To date, the standard is based on an
 Additional documentation is being written (see the
 [README of the "doc" directory](./doc/README.md)).
 
-The standard is published in an informative version, to allow an experimentation 
-experimentation before publication in a normative version. As such, it is may be subject to changes that are not backward compatible.
+The standard is published in a draft version, to allow an experimentation 
+before publication in a final version. As such, it might be subject to 
+breaking changes.
 
-Publication in normative version is planned for the end of 2022.
+Publication in final version is planned for the end of 2022.
 
 # Functional scope
 
