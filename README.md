@@ -1,6 +1,6 @@
 # Introduction to the "standard covoiturage"
 
-Version française [disponible ici](./README.fr.md).
+:fr: Version française [disponible ici](./README.fr.md).
 
 This repository presents the work of the "standard covoiturage" ("carpoling 
 standard") working group. It brings together French carpooling and MaaS 
