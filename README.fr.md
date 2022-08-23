@@ -130,7 +130,7 @@ Entrée d'API implémentée par la plateforme de MaaS :
 ## La réservation déléguée via redirection vers l'opérateur de covoiturage (deep link)
 
 La réservation déléguée par deep link est l'un des deux parcours pour la 
-réservation d'un trajet, dans laquelle l'utilisateur est redirigé vers 
+réservation d'un trajet, dans lequel l'utilisateur est redirigé vers 
 l'application de l'opérateur de covoiturage afin de réserver ses trajets.  
 L'opérateur de MaaS peut bénéficier d'un flux d'information concernant les 
 réservations qui sont effectuées. Pour cela, une authentification de 
