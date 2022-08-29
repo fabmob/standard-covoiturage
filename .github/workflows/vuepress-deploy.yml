@@ -13,5 +13,5 @@ jobs:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         TARGET_REPO: fabmob/standard-covoiturage
         TARGET_BRANCH: gh-pages
-        BUILD_SCRIPT: yarn && yarn build
-        BUILD_DIR: docs/.vuepress/dist
+        BUILD_SCRIPT: npm install --prefix docs && npm run build --prefix docs
+        BUILD_DIR: docs/src/.vuepress/dist
