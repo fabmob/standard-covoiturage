@@ -40,8 +40,15 @@ module.exports = {
       }
     ],
     sidebar: [
-      '/'
-    ]
+      {
+        title: 'Introduction',
+        path: '/',
+        sidebarDepth: 3,
+        collapsable: true
+    },
+      '/search', '/authentication'
+    ],
+   displayAllHeaders: true // Default: false
   },
 
   /**
@@ -50,5 +57,6 @@ module.exports = {
   plugins: [
     '@vuepress/plugin-back-to-top',
     '@vuepress/plugin-medium-zoom',
+    '@renovamen/vuepress-plugin-mermaid'
   ]
 }
