@@ -14,6 +14,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "mermaid": "^9.1.6",
     "vuepress": "^1.5.3",
     "vuepress-plugin-mermaidjs": "^1.9.1"
   }
