@@ -66,13 +66,13 @@ comply to the booking feed specification.
 
 ##### Redirection towards the carsharing operator
 
-The transport operator supporting deep linking MUST provide for each `Journey` 
+The carpooling operator supporting deep linking MUST provide for each `Journey` 
 shared with the MaaS platform an attribute `webUrl`, with the full URL (with 
 all needed parameters) for the user's device to redirect the passenger from 
 the app of the MaaS platform to the operator's app or website.
 
 The booking flow with a deep link is initiated by the MaaS platform with a 
-`Journey` object provided by a transport operator (e.g. as a result of a 
+`Journey` object provided by a carpooling operator (e.g. as a result of a 
 previous search). To do that, it MUST redirect the user to the deep link 
 contained in the 
 [webUrl](https://github.com/fabmob/standard-covoiturage/pull/2/files#diff-c722233128f788ea06650bffef56e418732898441b4e2199997c40e9070e3345R269) 
@@ -121,9 +121,9 @@ flowchart LR
 
 #### 3.2.4. Booking information push from carsharing operator to MaaS platform (booking feed flow)
 
-The booking feed is the channel by which the transport operator sends 
+The booking feed is the channel by which the carpooling operator sends 
 information to the MaaS platform, about the booking events happening on the 
-transport operator website or app. The booking feed mechanism relies on an 
+carpooling operator website or app. The booking feed mechanism relies on an 
 [Open ID Connect 1.0](https://openid.net/specs/openid-connect-core-1_0.html) 
 identity layer where the Provider is the MaaS platform, subsequently referred 
 to as "MaaS connect". See [the dedicated 
@@ -135,7 +135,7 @@ The MaaS platform needs to implement the following endpoint:
 
 - `POST /booking_events`
 
-A transport operator offering booking by deep link MUST accept authentication 
+A carpooling operator offering booking by deep link MUST accept authentication 
 via "MaaS connect".  
 
 A MaaS platform SHOULD provide a "MaaS Connect" identity layer in order to get 

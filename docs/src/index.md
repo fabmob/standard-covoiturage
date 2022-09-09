@@ -33,7 +33,7 @@ The publication in final version is planned for the end of 2022.
 ## Functional perimeter
 
 The standard is decomposed into functional blocks. To implement a functional 
-block, the transport operator MUST implement all the specifications related to
+block, the carpooling operator MUST implement all the specifications related to
 this functional block (they have dedicated sections in the current document).
 
 
@@ -45,7 +45,7 @@ Functional blocks for searching:
 - Searching for a regular passenger as a driver
 
 Functional blocks for booking:
-- Delegated booking with a deep link to the transport operator's application
+- Delegated booking with a deep link to the carpooling operator's application
 - Booking information feed to the MaaS (recommended extension to the delegated 
   booking with a deep link)
 - Integrated booking via API
@@ -60,13 +60,13 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 document are to be interpreted as described in [RFC 
 2119](http://tools.ietf.org/html/rfc2119).
 
-To comply with this standard, a transport operator MUST implement at least one 
+To comply with this standard, a carpooling operator MUST implement at least one 
 functional block for performing a search, or one of the two booking options 
 that comply with this specification.
 
-In addition, any functionality offered by the transport operator's API that is 
+In addition, any functionality offered by the carpooling operator's API that is 
 covered by the standard MUST comply with the current specifications. The 
-transport operator MAY agree with the MaaS platform to provide additional 
+carpooling operator MAY agree with the MaaS platform to provide additional 
 functionalities, not covered by the standard, in a custom manner.
 
 

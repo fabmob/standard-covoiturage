@@ -40,13 +40,10 @@ module.exports = {
       }
     ],
     sidebar: [
-      {
-        title: 'Introduction',
-        path: '/',
-        sidebarDepth: 3,
-        collapsable: true
-    },
-      '/search', '/authentication'
+      {title: 'Introduction', path: '/', sidebarDepth: 3, collapsable: true},
+      '/search',
+      '/booking',
+      '/authentication',
     ],
    displayAllHeaders: true // Default: false
   },
