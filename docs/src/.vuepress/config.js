@@ -37,6 +37,10 @@ module.exports = {
       {
         text: 'GitHub repository',
         link: 'https://github.com/fabmob/standard-covoiturage'
+      },
+      {
+        text: 'OpenAPI specification',
+        link: 'https://fabmob.github.io/standard-covoiturage/specification.html'
       }
     ],
     sidebar: [
