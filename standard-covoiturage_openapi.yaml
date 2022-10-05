@@ -34,7 +34,7 @@ paths:
         - $ref: '#/components/parameters/arrivalRadius'
         - $ref: '#/components/parameters/count'
       responses:
-        200:
+        "200":
           description: Ok. Request processed successfully.
           content:
             application/json:
@@ -43,13 +43,13 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/DriverJourney'
-        400:
+        "400":
           $ref: '#/components/responses/BadRequest'
-        401:
+        "401":
           $ref: '#/components/responses/Unauthorized'
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
 
   /passenger_journeys:
@@ -70,7 +70,7 @@ paths:
         - $ref: '#/components/parameters/arrivalRadius'
         - $ref: '#/components/parameters/count'
       responses:
-        200:
+        "200":
           description: Ok. Request processed successfully.
           content:
             application/json:
@@ -79,13 +79,13 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PassengerJourney'
-        400:
+        "400":
           $ref: '#/components/responses/BadRequest'
-        401:
+        "401":
           $ref: '#/components/responses/Unauthorized'
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
 
   /driver_regular_trips:
@@ -109,7 +109,7 @@ paths:
         - $ref: '#/components/parameters/maxDepartureDate'
         - $ref: '#/components/parameters/count'
       responses:
-        200:
+        "200":
           description: Ok. Request processed successfully.
           content:
             application/json:
@@ -124,13 +124,13 @@ paths:
                           type: array
                           items:
                             $ref: '#/components/schemas/Schedule'
-        400:
+        "400":
           $ref: '#/components/responses/BadRequest'
-        401:
+        "401":
           $ref: '#/components/responses/Unauthorized'
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
 
   /passenger_regular_trips:
@@ -154,7 +154,7 @@ paths:
         - $ref: '#/components/parameters/maxDepartureDate'
         - $ref: '#/components/parameters/count'
       responses:
-        200:
+        "200":
           description: Ok. Request processed successfully.
           content:
             application/json:
@@ -169,13 +169,13 @@ paths:
                           type: array
                           items:
                             $ref: '#/components/schemas/Schedule'
-        400:
+        "400":
           $ref: '#/components/responses/BadRequest'
-        401:
+        "401":
           $ref: '#/components/responses/Unauthorized'
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
 
   /booking_events:
@@ -196,15 +196,15 @@ paths:
             schema:
               $ref: '#/components/schemas/CarpoolBookingEvent'
       responses:
-        200:
+        "200":
           description: Ok. Request processed successfully.
-        400:
+        "400":
           $ref: '#/components/responses/BadRequest'
-        401:
+        "401":
           $ref: '#/components/responses/Unauthorized'
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
 
   /messages:
@@ -256,17 +256,17 @@ paths:
                   description: ID of the booking to which the message is related (if any)
 
       responses:
-        201:
+        "201":
           description: Successful operation.
-        404:
+        "404":
           description: The targeted journey or user no more exists.
-        400:
+        "400":
           $ref: '#/components/responses/BadRequest'
-        401:
+        "401":
           $ref: '#/components/responses/Unauthorized'
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
 
   /bookings:
@@ -283,19 +283,19 @@ paths:
               $ref: '#/components/schemas/Booking'
 
       responses:
-        201:
+        "201":
           description: Successful operation. A new Booking has been created.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Booking'
-        400:
+        "400":
           $ref: '#/components/responses/BadRequest'
-        401:
+        "401":
           $ref: '#/components/responses/Unauthorized'
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
 
   /bookings/{bookingId}:
@@ -325,17 +325,17 @@ paths:
           maxLength: 500
 
       responses:
-        200:
+        "200":
           description: Successful operation.
-        400:
+        "400":
           $ref: '#/components/responses/BadRequest'
-        401:
+        "401":
           $ref: '#/components/responses/Unauthorized'
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
-        404:
+        "404":
           description: The targeted journey, booking or user no more exists.  Error code can be among  `missing_journey, missing_booking, missing_user` .
           content:
             application/json:
@@ -346,7 +346,7 @@ paths:
                     type: string
                     description: |-
                       Explain why the request couldn't be processed.
-        409:
+        "409":
           description: Conflict. This booking has already the new status requested. Error code is  `status_already_set`.
           content:
             application/json:
@@ -372,21 +372,21 @@ paths:
         schema:
           $ref: '#/components/schemas/bookingId'
       responses:
-        200:
+        "200":
           description: Successful operation.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Booking'
-        400:
+        "400":
           $ref: '#/components/responses/BadRequest'
-        401:
+        "401":
           $ref: '#/components/responses/Unauthorized'
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
-        404:
+        "404":
           description: This Booking object no more exists. Error code can be among  `missing_journey, missing_booking, missing_user` .
           content:
             application/json:
@@ -404,11 +404,11 @@ paths:
       - status
       summary: Give health status of the webservice.
       responses:
-        200:
+        "200":
           description: Ok. Webservice is available.
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
 
 #
