@@ -14,6 +14,12 @@ info:
 tags:
   - name: Search
     description: API routes to search for journeys. These routes can be left opened to public.
+  - name: Interact
+    description: API routes for sending messages, or creating, updating, or retrieving a booking (integrated booking by API).
+  - name: Webhooks
+    description: API routes implemented by the MaaS platform to get back information of a delegated booking by deeplink.
+  - name: status
+    description: API route to check the status of an API instance
 
 #
 # API Routes
