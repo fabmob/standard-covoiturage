@@ -480,7 +480,7 @@ components:
         type: array
         items:
           type: string
-        default: MON,TUE,WED,THU,FRI,SAT,SUN
+        default: [MON,TUE,WED,THU,FRI,SAT,SUN]
 
     timeDelta:
       name: timeDelta
