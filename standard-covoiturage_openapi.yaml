@@ -1,8 +1,8 @@
 openapi: 3.0.1
 
 info:
-  title: ""
-  description: ""
+  title: API Standard Covoiturage
+  description: The \"standard covoiturage\" is intended to describe reference methods for making data available, carrying out transactions and, more generally, enabling the exchange of services between carpooling operators and MaaS platforms.
   version: 0.0.1
   license:
     name: Apache 2.0
@@ -190,6 +190,7 @@ paths:
         provider. This can be used in the context of a booking flow with deeplinking and
         when a passenger is using the Connect specification to link their accounts of a
         third-party service (e.g., a MaaS) and the operator.
+      operationId: postBookingEvents
       requestBody:
         content:
           application/json:
@@ -403,6 +404,8 @@ paths:
       tags:
       - status
       summary: Give health status of the webservice.
+      description: Endpoint to verify the status of the API instance.
+      operationId: getStatus
       responses:
         "200":
           description: Ok. Webservice is available.
