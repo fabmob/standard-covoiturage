@@ -689,15 +689,15 @@ components:
           maxLength: 255
           description: Journey's id. It MUST be unique for a given operator.
         passengerPickupDate:
-          type: number
+          type: integer
           description: |-
             Passenger pickup datetime as a UNIX UTC timestamp in seconds.
-          format: long
+          format: int64
         driverDepartureDate:
-          type: number
+          type: integer
           description: |-
             Driver departure datetime as a UNIX UTC timestamp in seconds.
-          format: long
+          format: int64
         webUrl:
           type: string
           description: URL of the journey on the webservice provider platform. Required to support booking by deeplink.
@@ -797,9 +797,9 @@ components:
           type: "string"
           description: Unique identifier of the booking.
         passengerPickupDate:
-          type: number
+          type: integer
           description: Passenger pickup datetime as a UNIX UTC timestamp in seconds.
-          format: long
+          format: int64
         passengerPickupLat:
           type: "number"
           format: "double"
@@ -987,9 +987,9 @@ components:
         passenger:
           $ref: '#/components/schemas/User'
         passengerPickupDate:
-          type: number
+          type: integer
           description: Passenger pickup datetime as a UNIX UTC timestamp in seconds.
-          format: long
+          format: int64
         passengerPickupLat:
           type: "number"
           format: "double"
