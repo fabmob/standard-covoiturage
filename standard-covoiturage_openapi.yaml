@@ -1,16 +1,25 @@
 openapi: 3.0.1
 
 info:
-  title: ""
-  description: ""
+  title: API Standard Covoiturage
+  description: The \"standard covoiturage\" is intended to describe reference methods for making data available, carrying out transactions and, more generally, enabling the exchange of services between carpooling operators and MaaS platforms.
   version: 0.0.1
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
+  contact:
+    name: Ghislain Delabie
+    email: ghislain@fabmob.io
 
 tags:
   - name: Search
     description: API routes to search for journeys. These routes can be left opened to public.
+  - name: Interact
+    description: API routes for sending messages, or creating, updating, or retrieving a booking (integrated booking by API).
+  - name: Webhooks
+    description: API routes implemented by the MaaS platform to get back information of a delegated booking by deeplink.
+  - name: status
+    description: API route to check the status of an API instance
 
 #
 # API Routes
@@ -34,7 +43,7 @@ paths:
         - $ref: '#/components/parameters/arrivalRadius'
         - $ref: '#/components/parameters/count'
       responses:
-        200:
+        "200":
           description: Ok. Request processed successfully.
           content:
             application/json:
@@ -43,13 +52,13 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/DriverJourney'
-        400:
+        "400":
           $ref: '#/components/responses/BadRequest'
-        401:
+        "401":
           $ref: '#/components/responses/Unauthorized'
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
 
   /passenger_journeys:
@@ -70,7 +79,7 @@ paths:
         - $ref: '#/components/parameters/arrivalRadius'
         - $ref: '#/components/parameters/count'
       responses:
-        200:
+        "200":
           description: Ok. Request processed successfully.
           content:
             application/json:
@@ -79,13 +88,13 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PassengerJourney'
-        400:
+        "400":
           $ref: '#/components/responses/BadRequest'
-        401:
+        "401":
           $ref: '#/components/responses/Unauthorized'
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
 
   /driver_regular_trips:
@@ -109,7 +118,7 @@ paths:
         - $ref: '#/components/parameters/maxDepartureDate'
         - $ref: '#/components/parameters/count'
       responses:
-        200:
+        "200":
           description: Ok. Request processed successfully.
           content:
             application/json:
@@ -124,13 +133,13 @@ paths:
                           type: array
                           items:
                             $ref: '#/components/schemas/Schedule'
-        400:
+        "400":
           $ref: '#/components/responses/BadRequest'
-        401:
+        "401":
           $ref: '#/components/responses/Unauthorized'
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
 
   /passenger_regular_trips:
@@ -154,7 +163,7 @@ paths:
         - $ref: '#/components/parameters/maxDepartureDate'
         - $ref: '#/components/parameters/count'
       responses:
-        200:
+        "200":
           description: Ok. Request processed successfully.
           content:
             application/json:
@@ -169,13 +178,13 @@ paths:
                           type: array
                           items:
                             $ref: '#/components/schemas/Schedule'
-        400:
+        "400":
           $ref: '#/components/responses/BadRequest'
-        401:
+        "401":
           $ref: '#/components/responses/Unauthorized'
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
 
   /booking_events:
@@ -190,21 +199,22 @@ paths:
         provider. This can be used in the context of a booking flow with deeplinking and
         when a passenger is using the Connect specification to link their accounts of a
         third-party service (e.g., a MaaS) and the operator.
+      operationId: postBookingEvents
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/CarpoolBookingEvent'
       responses:
-        200:
+        "200":
           description: Ok. Request processed successfully.
-        400:
+        "400":
           $ref: '#/components/responses/BadRequest'
-        401:
+        "401":
           $ref: '#/components/responses/Unauthorized'
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
 
   /messages:
@@ -256,17 +266,17 @@ paths:
                   description: ID of the booking to which the message is related (if any)
 
       responses:
-        201:
+        "201":
           description: Successful operation.
-        404:
+        "404":
           description: The targeted journey or user no more exists.
-        400:
+        "400":
           $ref: '#/components/responses/BadRequest'
-        401:
+        "401":
           $ref: '#/components/responses/Unauthorized'
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
 
   /bookings:
@@ -283,19 +293,19 @@ paths:
               $ref: '#/components/schemas/Booking'
 
       responses:
-        201:
+        "201":
           description: Successful operation. A new Booking has been created.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Booking'
-        400:
+        "400":
           $ref: '#/components/responses/BadRequest'
-        401:
+        "401":
           $ref: '#/components/responses/Unauthorized'
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
 
   /bookings/{bookingId}:
@@ -325,17 +335,17 @@ paths:
           maxLength: 500
 
       responses:
-        200:
+        "200":
           description: Successful operation.
-        400:
+        "400":
           $ref: '#/components/responses/BadRequest'
-        401:
+        "401":
           $ref: '#/components/responses/Unauthorized'
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
-        404:
+        "404":
           description: The targeted journey, booking or user no more exists.  Error code can be among  `missing_journey, missing_booking, missing_user` .
           content:
             application/json:
@@ -346,7 +356,7 @@ paths:
                     type: string
                     description: |-
                       Explain why the request couldn't be processed.
-        409:
+        "409":
           description: Conflict. This booking has already the new status requested. Error code is  `status_already_set`.
           content:
             application/json:
@@ -372,21 +382,21 @@ paths:
         schema:
           $ref: '#/components/schemas/bookingId'
       responses:
-        200:
+        "200":
           description: Successful operation.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Booking'
-        400:
+        "400":
           $ref: '#/components/responses/BadRequest'
-        401:
+        "401":
           $ref: '#/components/responses/Unauthorized'
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
-        404:
+        "404":
           description: This Booking object no more exists. Error code can be among  `missing_journey, missing_booking, missing_user` .
           content:
             application/json:
@@ -403,12 +413,14 @@ paths:
       tags:
       - status
       summary: Give health status of the webservice.
+      description: Endpoint to verify the status of the API instance.
+      operationId: getStatus
       responses:
-        200:
+        "200":
           description: Ok. Webservice is available.
-        429:
+        "429":
           $ref: '#/components/responses/TooManyRequests'
-        500:
+        "500":
           $ref: '#/components/responses/InternalServerError'
 
 #
@@ -480,7 +492,7 @@ components:
         type: array
         items:
           type: string
-        default: MON,TUE,WED,THU,FRI,SAT,SUN
+        default: [MON,TUE,WED,THU,FRI,SAT,SUN]
 
     timeDelta:
       name: timeDelta
@@ -677,15 +689,15 @@ components:
           maxLength: 255
           description: Journey's id. It MUST be unique for a given operator.
         passengerPickupDate:
-          type: number
+          type: integer
           description: |-
             Passenger pickup datetime as a UNIX UTC timestamp in seconds.
-          format: long
+          format: int64
         driverDepartureDate:
-          type: number
+          type: integer
           description: |-
             Driver departure datetime as a UNIX UTC timestamp in seconds.
-          format: long
+          format: int64
         webUrl:
           type: string
           description: URL of the journey on the webservice provider platform. Required to support booking by deeplink.
@@ -785,9 +797,9 @@ components:
           type: "string"
           description: Unique identifier of the booking.
         passengerPickupDate:
-          type: number
+          type: integer
           description: Passenger pickup datetime as a UNIX UTC timestamp in seconds.
-          format: long
+          format: int64
         passengerPickupLat:
           type: "number"
           format: "double"
@@ -975,9 +987,9 @@ components:
         passenger:
           $ref: '#/components/schemas/User'
         passengerPickupDate:
-          type: number
+          type: integer
           description: Passenger pickup datetime as a UNIX UTC timestamp in seconds.
-          format: long
+          format: int64
         passengerPickupLat:
           type: "number"
           format: "double"
