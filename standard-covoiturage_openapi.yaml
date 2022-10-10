@@ -765,6 +765,10 @@ components:
         idToken:
           type: string
           description: ID token of the user retrieved using the OpenID Connect flows.
+        message:
+          type: string
+          description: Free text content of a message. The message can give additional information on the event.
+          maxLength: 500
         data:
           oneOf:
           - $ref: '#/components/schemas/DriverCarpoolBooking'
