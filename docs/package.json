@@ -3,10 +3,6 @@
   "version": "0.0.1",
   "description": "The &#34;standard covoiturage&#34; is intended to describe reference methods for making data available, carrying out transactions and, more generally, enabling the exchange of services between carpooling operators and MaaS platforms.",
   "main": "index.js",
-  "authors": {
-    "name": "Pierre Camilleri",
-    "email": "pierre.camilleri@multi.coop"
-  },
   "repository": "fabmob/standard-covoiturage",
   "scripts": {
     "dev": "vuepress dev src",
