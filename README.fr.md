@@ -11,10 +11,12 @@ généralement permettre des échanges de services entre opérateurs de covoitur
 et opérateurs de MaaS.
 
 
+Veuillez consulter la [documentation de la 
+spécification](https://fabmob.github.io/standard-covoiturage/specification.html).
 À date, le standard s'appuye sur une
-[spécification OpenAPI (en)](./standard-covoiturage_openapi.yaml).
-Une documentation additionnelle est en cours de rédaction (cf. le
-[README du répertoire "doc"](./doc/README.fr.md)).
+[spécification OpenAPI (en)](./standard-covoiturage_openapi.yaml) disponible 
+sous forme d'une [documentation 
+swagger](https://fabmob.github.io/standard-covoiturage/specification.html).
 
 Le standard est publié en version informative (v1.0.0-alpha), pour permettre 
 une expérimentation avant publication en version normative. À ce titre, il est 
