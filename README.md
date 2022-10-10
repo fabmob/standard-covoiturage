@@ -10,10 +10,13 @@ The "standard covoiturage" is intended to describe reference methods for
 making data available, carrying out transactions and, more generally, enabling 
 the exchange of services between carpooling operators and MaaS platforms.
 
+Please consult [the
+documentation of the 
+specification](https://fabmob.github.io/standard-covoiturage/).
 To date, the standard is based on an
-[OpenAPI specification](./standard-carpooling_openapi.yaml).
-Additional documentation is currently being written (see the
-[README of the "doc" directory](./doc/README.md)).
+[OpenAPI specification](./standard-carpooling_openapi.yaml), available as a
+[swagger 
+documentation](https://fabmob.github.io/standard-covoiturage/specification.html). 
 
 The standard is published in a draft version (v1.0.0-alpha), to allow an 
 experimentation before publication in a final version. As such, it might be 

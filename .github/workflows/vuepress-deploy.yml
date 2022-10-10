@@ -1,0 +1,20 @@
+name: Build and Deploy
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: copy openAPI spec for swagger
+      run: cp ./standard-covoiturage_openapi.yaml ./docs/src/.vuepress/public/standard-covoiturage_openapi.yaml
+
+    - name: vuepress-deploy
+      uses: jenkey2011/vuepress-deploy@master
+      env:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        TARGET_REPO: fabmob/standard-covoiturage
+        TARGET_BRANCH: gh-pages
+        BUILD_SCRIPT: npm install --prefix docs && npm run build --prefix docs
+        BUILD_DIR: docs/src/.vuepress/dist

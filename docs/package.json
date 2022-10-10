@@ -1,0 +1,17 @@
+{
+  "name": "standard-covoiturage",
+  "version": "0.0.1",
+  "description": "The &#34;standard covoiturage&#34; is intended to describe reference methods for making data available, carrying out transactions and, more generally, enabling the exchange of services between carpooling operators and MaaS platforms.",
+  "main": "index.js",
+  "repository": "fabmob/standard-covoiturage",
+  "scripts": {
+    "dev": "vuepress dev src",
+    "build": "vuepress build src"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "mermaid": "^9.1.6",
+    "vuepress": "^1.5.3",
+    "vuepress-plugin-mermaidjs": "^1.9.1"
+  }
+}
