@@ -7,6 +7,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
+    - name: copy openAPI spec for swagger
+      run: cp ./standard-covoiturage_openapi.yaml ./docs/src/.vuepress/public/standard-covoiturage_openapi.yaml
+
     - name: vuepress-deploy
       uses: jenkey2011/vuepress-deploy@master
       env:
