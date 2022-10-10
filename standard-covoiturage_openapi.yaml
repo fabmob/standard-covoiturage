@@ -811,17 +811,11 @@ components:
           type: string
           description: String representing the drop-off address.
         status:
-          type: string
-          enum:
-            - WAITING_CONFIRMATION
-            - CONFIRMED
-            - CANCELLED
-            - COMPLETED_PENDING_VALIDATION
-            - VALIDATED
+          $ref: '#/components/schemas/bookingStatus'
         distance:
           type: "integer"
           description: |
-            Carpooling distance in meters. When the booking is COMPLETED or VALIDATED, this is the actual distance travelled if available.
+            Carpooling distance in meters. When the booking is COMPLETED, this is the actual distance travelled if available.
         duration:
           type: integer
           description: Carpooling duration in seconds.
@@ -1040,7 +1034,7 @@ components:
         - CONFIRMED
         - CANCELLED
         - COMPLETED_PENDING_VALIDATION
-        - VALIDATED
+        - COMPLETED
       default: WAITING_CONFIRMATION
 
   responses:
