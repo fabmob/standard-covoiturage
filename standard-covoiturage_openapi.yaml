@@ -51,6 +51,8 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         500:
           $ref: '#/components/responses/InternalServerError'
+      security:
+        - apiKeyAuth: []
 
   /passenger_journeys:
     get:
@@ -87,6 +89,8 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         500:
           $ref: '#/components/responses/InternalServerError'
+      security:
+        - apiKeyAuth: []
 
   /driver_regular_trips:
     get:
@@ -132,6 +136,8 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         500:
           $ref: '#/components/responses/InternalServerError'
+      security:
+        - apiKeyAuth: []
 
   /passenger_regular_trips:
     get:
@@ -177,6 +183,8 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         500:
           $ref: '#/components/responses/InternalServerError'
+      security:
+        - apiKeyAuth: []
 
   /booking_events:
     post:
@@ -206,6 +214,8 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         500:
           $ref: '#/components/responses/InternalServerError'
+      security:
+        - apiKeyAuth: []
 
   /messages:
     post:
@@ -268,6 +278,8 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         500:
           $ref: '#/components/responses/InternalServerError'
+      security:
+        - apiKeyAuth: []
 
   /bookings:
     post:
@@ -297,6 +309,8 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         500:
           $ref: '#/components/responses/InternalServerError'
+      security:
+        - apiKeyAuth: []
 
   /bookings/{bookingId}:
     patch:
@@ -357,6 +371,8 @@ paths:
                     type: string
                     description: |-
                       Explain why the request couldn't be processed.
+      security:
+        - apiKeyAuth: []
 
 
     get:
@@ -397,6 +413,8 @@ paths:
                     type: string
                     description: |-
                       Explain why the request couldn't be processed.
+      security:
+        - apiKeyAuth: []
 
   /status:
     get:
@@ -1067,3 +1085,10 @@ components:
             type: integer
     InternalServerError:
       description: Internal Server Error. Please try again later.
+
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      name: api_key
+      in: header
+      description: Each `api_key` must be unique to each operator, in order to be able to confirm that any GET /bookings or POST /booking_event request is made by the authorized organization.
