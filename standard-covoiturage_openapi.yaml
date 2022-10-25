@@ -198,6 +198,9 @@ paths:
         provider. This can be used in the context of a booking flow with deeplinking and
         when a passenger is using the Connect specification to link their accounts of a
         third-party service (e.g., a MaaS) and the operator.
+        When processing a POST /booking_events request, the provider MUST control that the 
+        operator making the request and identified by the given `X-API-Key` is an operator 
+        involved with the driver or the passenger of the specified booking.
       requestBody:
         content:
           application/json:
@@ -222,7 +225,10 @@ paths:
       tags:
       - Interact
       summary: Send a message to the owner of a retrieved journey.
-      description: Route used to allow a user to connect back to the owner of a retrieved journey through a texte message.
+      description: Route used to allow a user to connect back to the owner of a retrieved journey through a text message.
+        When processing a POST /messages request, the provider MUST control that the 
+        operator making the request and identified by the given `X-API-Key` is an operator 
+        involved with the driver or the passenger of the specified booking.
       operationId: postConnections
       requestBody:
         content:
@@ -287,6 +293,9 @@ paths:
       - Interact
       summary: Create a punctual outward Booking request.
       description: Route used to synchronize a Booking request initiated by a platform to the second platform involved in the shared punctual outward journey. While posting a new Booking, its status must always be set first as `status=WAITING_CONFIRMATION`. _Reminder:_ In case of booking without deeplink, the sender platform MUST also store the Booking object, and be ready to receive modifications of it through the PATCH /bookings API endpoint.
+        When processing a POST /bookings request, the provider MUST control that the 
+        operator making the request and identified by the given `X-API-Key` is an operator 
+        involved with the driver or the passenger of the specified booking.
       operationId: postBookings
       requestBody:
         content:
@@ -318,6 +327,9 @@ paths:
       - Interact
       summary: Updates status of an existing Booking request.
       description: Route used to update the status of an existing Booking request. Should be used usually just to confirm, cancel, etc. an existing Booking.
+        When processing a PATCH /bookings request, the provider MUST control that the 
+        operator making the request and identified by the given `X-API-Key` is an operator 
+        involved with the driver or the passenger of the specified booking.
       operationId: patchBookings
       parameters:
       - name: bookingId
@@ -380,6 +392,9 @@ paths:
       - Interact
       summary: Retrieves an existing Booking request.
       description: Route used to retrieve the details of an existing Booking request. Can only be used by the operator having created the Booking request. This route is provided to check if the Booking object state is similar between two operators, but its usage should be required to handle the full use case of a booking.
+        When processing a GET /bookings request, the provider MUST control that the 
+        operator making the request and identified by the given `X-API-Key` is an operator 
+        involved with the driver or the passenger of the specified booking.
       operationId: getBookings
       parameters:
       - name: bookingId
@@ -1091,4 +1106,4 @@ components:
       type: apiKey
       name: X-API-Key
       in: header
-      description: Each `X-API-Key` must be unique to each operator, in order to be able to confirm that any GET /bookings or POST /booking_event request is made by the authorized organization.
+      description: Each `X-API-Key` must be unique to each operator.
