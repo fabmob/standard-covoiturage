@@ -1089,6 +1089,6 @@ components:
   securitySchemes:
     apiKeyAuth:
       type: apiKey
-      name: api_key
+      name: X-API-Key
       in: header
-      description: Each `api_key` must be unique to each operator, in order to be able to confirm that any GET /bookings or POST /booking_event request is made by the authorized organization.
+      description: Each `X-API-Key` must be unique to each operator, in order to be able to confirm that any GET /bookings or POST /booking_event request is made by the authorized organization.
