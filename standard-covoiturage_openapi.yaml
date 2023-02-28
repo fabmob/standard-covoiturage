@@ -224,6 +224,7 @@ paths:
                 - to
                 - message
                 - recipientCarpoolerType
+                - bookingId
               properties:
                 from:
                   $ref: '#/components/schemas/User'
@@ -280,7 +281,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Booking'
+              type: object
+              allOf:
+                - $ref: '#/components/schemas/Booking'
+                - type: object
+                  properties:
+                    message:
+                      type: string
+                      maxLength: 500
+                      description: Free text content of a message. The message can contain all the details (phone number, email, etc.) allowing the recipient to call back the sender in order to carpool with him/her.
 
       responses:
         201:
@@ -1036,6 +1045,7 @@ components:
       type: string
       description: Status of the booking.
       enum:
+        - INITIATED
         - WAITING_CONFIRMATION
         - CONFIRMED
         - CANCELLED
