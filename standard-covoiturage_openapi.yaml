@@ -274,7 +274,7 @@ paths:
       tags:
       - Interact
       summary: Create a punctual outward Booking request.
-      description: Route used to synchronize a Booking request initiated by a platform to the second platform involved in the shared punctual outward journey. While posting a new Booking, its status must always be set first as `status=WAITING_CONFIRMATION`. _Reminder:_ In case of booking without deeplink, the sender platform MUST also store the Booking object, and be ready to receive modifications of it through the PATCH /bookings API endpoint.
+      description: Route used to synchronize a Booking request initiated by a platform to the second platform involved in the shared punctual outward journey. While posting a new Booking, its status must always be set first as `status=WAITING_PASSENGER_CONFIRMATION` or `status=WAITING_DRIVER_CONFIRMATION`. _Reminder:_ In case of booking without deeplink, the sender platform MUST also store the Booking object, and be ready to receive modifications of it through the PATCH /bookings API endpoint.
       operationId: postBookings
       requestBody:
         content:
@@ -1036,12 +1036,13 @@ components:
       type: string
       description: Status of the booking.
       enum:
-        - WAITING_CONFIRMATION
+        - WAITING_DRIVER_CONFIRMATION
+        - WAITING_PASSENGER_CONFIRMATION
         - CONFIRMED
         - CANCELLED
         - COMPLETED_PENDING_VALIDATION
         - VALIDATED
-      default: WAITING_CONFIRMATION
+      default: WAITING_PASSENGER_CONFIRMATION
 
   responses:
     BadRequest:
