@@ -11,7 +11,7 @@ making data available, carrying out transactions and, more generally, enabling
 the exchange of services between carpooling operators and MaaS platforms.
 
 To date, the standard is based on an
-[OpenAPI specification](./standard-carpooling_openapi.yaml).
+[OpenAPI specification](./standard-covoiturage_openapi.yaml).
 Additional documentation is currently being written (see the
 [README of the "doc" directory](./doc/README.md)).
 
